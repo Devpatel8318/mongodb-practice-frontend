@@ -1,0 +1,3 @@
+use react state to check for authentication
+access - http cookie
+refresh - httpOnly - only on specific route like - auth/refresh

@@ -1,0 +1,30 @@
+Frontend:
+    + Setup Redux
+    + Setup Router
+    
+    -> AdminPage
+        + Sign-In page UI
+        + api handle using redux
+        + jwt working, all cookie related logic
+        + no-signUp page
+        + See all questions and their answers UI
+        + Create new Questions with their correct answers UI
+
+    -> DashBoard
+        + list of all questions on left Side
+        + UI to show current selected question
+        + Dashboard UI
+        + response viewer
+        + want to have slider to adjust both parts sizes
+        + want to have different colors for different keywords
+
+Backend:
+    + jwt authentication
+    + get all questions
+    + add new question
+    + CRUD for questions
+    + sequence manager for questionId
+
+
+
+    + implement Pagination in BE and FE both
