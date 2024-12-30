@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signInAction, refreshAction } from 'src/features/login/auth.action';
+import {
+    signInAction,
+    refreshAction,
+    logoutAction,
+} from 'src/features/auth/auth.action';
 import { ReducerErrorObject } from 'src/Types/global';
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi';
 
@@ -26,6 +30,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
+        // this will be used when we know that we do need to clear access and refresh tokens
         logoutUser: (state) => {
             Object.assign(state, {
                 isUserLoggedIn: false,
@@ -79,6 +84,9 @@ const authSlice = createSlice({
                 });
                 localStorage.removeItem('isUserLoggedIn');
             })
+
+            // ----------------------------------------------------------------
+
             .addCase(refreshAction.pending, (state) => {
                 Object.assign(state, {
                     status: API_STATUS.PENDING,
@@ -100,6 +108,43 @@ const authSlice = createSlice({
                 localStorage.setItem('isUserLoggedIn', 'true');
             })
             .addCase(refreshAction.rejected, (state, { payload }) => {
+                Object.assign(state, {
+                    status: API_STATUS.REJECTED,
+                    loading: false,
+                    success: false,
+                    data: null,
+                    error: {
+                        message: payload?.message,
+                        reasons: payload?.reasons,
+                    },
+                    isUserLoggedIn: false,
+                });
+                localStorage.removeItem('isUserLoggedIn');
+            })
+
+            // ----------------------------------------------------------------
+
+            .addCase(logoutAction.pending, (state) => {
+                Object.assign(state, {
+                    status: API_STATUS.PENDING,
+                    loading: true,
+                    success: null,
+                    data: null,
+                    error: null,
+                });
+            })
+            .addCase(logoutAction.fulfilled, (state) => {
+                Object.assign(state, {
+                    status: API_STATUS.SUCCESS,
+                    loading: false,
+                    success: true,
+                    data: null,
+                    error: null,
+                    isUserLoggedIn: false,
+                });
+                localStorage.removeItem('isUserLoggedIn');
+            })
+            .addCase(logoutAction.rejected, (state, { payload }) => {
                 Object.assign(state, {
                     status: API_STATUS.REJECTED,
                     loading: false,

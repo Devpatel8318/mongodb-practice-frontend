@@ -1,18 +1,23 @@
 import React, { useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import MainLayout from 'src/MainLayout';
 import { useAppSelector } from 'src/Store';
-import { refreshActionDispatcher } from 'src/features/login/auth.action';
+import { refreshActionDispatcher } from 'src/features/auth/auth.action';
 
 const PrivateRoute: React.FC = () => {
     const { isUserLoggedIn } = useAppSelector((store) => store.auth);
-    console.log({ isUserLoggedIn });
+    const location = useLocation();
 
     useEffect(() => {
+        // NOTE: logout route although being private route, we do not need to check for user login
+        if (location.pathname.includes('/logout')) return;
+
         if (!isUserLoggedIn) {
             refreshActionDispatcher();
         }
-    }, [isUserLoggedIn]);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return isUserLoggedIn ? (
         <MainLayout>

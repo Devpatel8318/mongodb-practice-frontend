@@ -4,7 +4,7 @@ import { ErrorResponse, SuccessResponse } from 'src/Types/global';
 import callApi from 'src/utils/callApi';
 
 export const signInAction = createAsyncThunk<
-    SuccessResponse<undefined>,
+    SuccessResponse,
     { email: string; password: string },
     {
         rejectValue: ErrorResponse;
@@ -12,7 +12,7 @@ export const signInAction = createAsyncThunk<
 >('auth/signIn', async (payload, { rejectWithValue }) => {
     const { email, password } = payload;
     try {
-        return await callApi<undefined>(
+        return await callApi(
             '/user/login',
             'POST',
             {
@@ -39,13 +39,9 @@ export const refreshAction = createAsyncThunk<
     {
         rejectValue: ErrorResponse;
     }
->('auth/refresh', async (payload, { rejectWithValue }) => {
+>('auth/refresh', async (_payload, { rejectWithValue }) => {
     try {
-        await callApi('/user/me', 'GET');
-        return {
-            success: true,
-            message: 'Successfully fetched access token',
-        };
+        return await callApi('/user/me', 'GET');
     } catch (e) {
         return rejectWithValue(e as ErrorResponse);
     }
@@ -53,4 +49,23 @@ export const refreshAction = createAsyncThunk<
 
 export const refreshActionDispatcher = () => {
     appDispatcher(refreshAction());
+};
+
+// this will be used when we need to clear access and refresh tokens
+export const logoutAction = createAsyncThunk<
+    SuccessResponse,
+    void,
+    {
+        rejectValue: ErrorResponse;
+    }
+>('auth/logout', async (_payload, { rejectWithValue }) => {
+    try {
+        return await callApi('/user/logout', 'GET');
+    } catch (e) {
+        return rejectWithValue(e as ErrorResponse);
+    }
+});
+
+export const logoutActionDispatcher = () => {
+    appDispatcher(logoutAction());
 };

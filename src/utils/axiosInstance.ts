@@ -38,6 +38,7 @@ instance.interceptors.response.use(
                     // Retry the original request with the new token
                     return instance(originalRequest);
                 } catch (refreshError) {
+                    // no need to clear the token as both are invalid, so only loggout the user by updating redux state
                     appDispatcher(logoutUser());
                 } finally {
                     isRefreshing = false;

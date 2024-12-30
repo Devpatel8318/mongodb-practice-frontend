@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Dashboard from 'src/features/dashboard/Dashboard';
-import Login from 'src/features/login/Login';
+import Login from 'src/features/auth/Login';
 import PrivateRoute from './PrivateRoute';
 import NotFound from 'src/features/NotFound/NotFound';
 import PublicRoute from './PublicRoute';
 import CustomRoute, { RouteObjectType } from './CustomRoute';
+import Logout from 'src/features/auth/Logout';
 
 export const privateRoutes: RouteObjectType[] = [
     { path: '/', title: 'Dashboard', component: <Dashboard /> },
@@ -12,6 +13,11 @@ export const privateRoutes: RouteObjectType[] = [
         path: '/dashboard',
         title: 'Dashboard',
         component: <Dashboard />,
+    },
+    {
+        path: '/logout',
+        title: 'Logout',
+        component: <Logout />,
     },
 ];
 
