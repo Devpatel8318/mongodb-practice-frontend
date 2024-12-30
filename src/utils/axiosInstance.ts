@@ -2,6 +2,7 @@ import axios from 'axios';
 import { BACKEND_URL } from './config';
 import getToken from './getToken';
 import { logoutUser } from 'src/Store/reducers/auth.reducer';
+import { appDispatcher } from 'src/Store';
 
 let isRefreshing = false;
 let refreshQueue: (() => void)[] = [];
@@ -37,7 +38,7 @@ instance.interceptors.response.use(
                     // Retry the original request with the new token
                     return instance(originalRequest);
                 } catch (refreshError) {
-                    logoutUser();
+                    appDispatcher(logoutUser());
                 } finally {
                     isRefreshing = false;
                     // Process queued requests

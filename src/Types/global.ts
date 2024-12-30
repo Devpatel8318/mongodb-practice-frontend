@@ -1,11 +1,84 @@
 export interface SuccessResponse<T = undefined> {
     success: boolean;
     message: string;
-    response?: T;
+    data?: T;
+}
+
+export interface Reasons {
+    field: string;
+    message: string;
 }
 
 export interface ErrorResponse {
     success: boolean;
     message: string;
-    reasons?: string | { field: string; message: string }[];
+    reasons?: Reasons[];
 }
+
+//  possible keys in response [status, success, message, reasons, data];
+/**
+ // * status compulsory will come
+ // * status not required to handle
+ // * message will also come compulsory until now
+ // * is success then data will come
+ // * if not success then reasons will come
+ * 
+{
+    "status": 401,
+    "success": false,
+    "message": "Validation Failed.",
+    "reasons": [
+        {
+            "message": "Please Provide Password",
+            "field": "password"
+        },
+        {
+            "message": "Invalid email",
+            "field": "email"
+        }
+    ]
+}
+
+{
+    "status": 401,
+    "success": false,
+    "message": "Invalid Credentials"
+}
+
+{
+    "success": true,
+    "message": "Login Successfull."
+}
+
+{
+    "status": 401,
+    "success": false,
+    "message": "Permission denied."
+}
+
+{
+    "success": true,
+    "message": "Access Token Provided"
+}
+
+{
+    "success": true,
+    "message": "data displayed successfully.",
+    "data": {
+        "list": [
+            {
+                "_id": "660aa028b754e99f5885260f",
+                "question": "Get single post with title 'Post 202'",
+                "answer": "collection(\"posts\").findOne({title:\"Post 202\"})",
+                "questionId": 1
+            },
+            {
+                "_id": "66bba071940c2a30ada50e70",
+                "question": "Get single post with title 'Post 202'",
+                "answer": "collection(\"posts\").findOne({title:\"Post 202\"})",
+                "questionId": 2
+            }
+        ]
+    }
+}
+**/

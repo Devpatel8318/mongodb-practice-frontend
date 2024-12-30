@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getAllQuestionsAction } from 'src/features/dashboard/dashboard.action';
-import { ErrorResponse, SuccessResponse } from 'src/Types/global';
+import { Reasons } from 'src/Types/global';
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi';
 
 export type Question = {
@@ -10,24 +10,20 @@ export type Question = {
     questionId: number;
 };
 
-export type AllQuestions = {
-    list: Question[];
-};
-
-export interface UserStateType {
-    status: API_STATUS_TYPE;
-    data: SuccessResponse<AllQuestions> | null;
-    error: ErrorResponse | null;
-    questions: Question[] | [];
+export interface DashboardStateType {
+    status: null | API_STATUS_TYPE;
+    data: [] | Question[];
+    error: null | Reasons[];
     loading: boolean;
+    success: null | boolean;
 }
 
-const initialState: UserStateType = {
+const initialState: DashboardStateType = {
     status: null,
-    data: null,
+    data: [],
     error: null,
-    questions: [],
     loading: false,
+    success: null,
 };
 
 const dashBoardSlice = createSlice({
@@ -37,34 +33,31 @@ const dashBoardSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getAllQuestionsAction.pending, (state) => {
-                state.status = API_STATUS.PENDING;
-                state.data = null;
-                state.error = null;
-                state.loading = true;
+                Object.assign(state, {
+                    status: API_STATUS.PENDING,
+                    data: [],
+                    error: null,
+                    loading: true,
+                    success: null,
+                });
             })
             .addCase(getAllQuestionsAction.fulfilled, (state, { payload }) => {
-                console.log({
-                    p: payload.response,
+                Object.assign(state, {
+                    status: API_STATUS.SUCCESS,
+                    loading: false,
+                    success: payload.success,
+                    data: payload.data?.list || [],
+                    error: null,
                 });
-                state.status = API_STATUS.SUCCESS;
-                state.data = {
-                    success: true,
-                    message: payload.message,
-                    response: payload.response,
-                };
-                state.error = null;
-                state.loading = false;
-                state.questions = payload.response?.list ?? [];
             })
             .addCase(getAllQuestionsAction.rejected, (state, { payload }) => {
-                state.status = API_STATUS.REJECTED;
-                state.data = null;
-                state.error = {
+                Object.assign(state, {
+                    status: API_STATUS.REJECTED,
+                    data: [],
+                    error: payload?.reasons || null,
+                    loading: false,
                     success: false,
-                    message: payload?.message || 'Something Went Wrong!!!',
-                    reasons: payload?.reasons || [],
-                };
-                state.loading = false;
+                });
             });
     },
 });

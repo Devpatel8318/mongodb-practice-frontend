@@ -21,6 +21,7 @@ const Login: React.FC = () => {
             showToast('success', 'Login successful');
             navigate('/', { replace: true });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [status]);
 
     useEffect(() => {
