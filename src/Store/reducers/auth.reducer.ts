@@ -1,19 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { signInAction, refreshAction } from 'src/features/login/auth.action';
-import { ErrorResponse, SuccessResponse } from 'src/Types/global';
+import { ReducerErrorObject } from 'src/Types/global';
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi';
 
 export interface UserStateType {
     status: API_STATUS_TYPE;
-    data: SuccessResponse | null;
-    error: ErrorResponse | null | false;
+    data: null;
+    error: null | ReducerErrorObject;
+    loading: boolean;
     isUserLoggedIn: boolean;
+    success: null | boolean;
 }
 
 export const initialState: UserStateType = {
     status: null,
     data: null,
     error: null,
+    loading: false,
+    success: null,
     isUserLoggedIn: false,
 };
 
@@ -23,71 +27,91 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logoutUser: (state) => {
-            state.isUserLoggedIn = false;
-            state.data = null;
-            state.error = null;
-            localStorage.removeItem('isUserLoggedIn'); // Remove from localStorage on logout
+            Object.assign(state, {
+                isUserLoggedIn: false,
+                data: null,
+                error: null,
+            });
+            localStorage.removeItem('isUserLoggedIn');
         },
         loginUser: (state) => {
-            state.isUserLoggedIn = true;
-            // state.data = action.payload; // Assuming payload contains user data
-            state.error = null;
-            localStorage.setItem('isUserLoggedIn', 'true'); // Store the login state in localStorage
+            Object.assign(state, {
+                isUserLoggedIn: true,
+                error: null,
+                // data = action.payload; // Assuming payload contains user data
+            });
+            localStorage.setItem('isUserLoggedIn', 'true');
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(signInAction.pending, (state) => {
-                state.status = API_STATUS.PENDING;
-                state.data = null;
-                state.error = null;
+                Object.assign(state, {
+                    status: API_STATUS.PENDING,
+                    loading: true,
+                    success: null,
+                    data: null,
+                    error: null,
+                });
             })
             .addCase(signInAction.fulfilled, (state, { payload }) => {
-                state.status = API_STATUS.SUCCESS;
-                state.data = {
-                    success: true,
-                    message: payload.message,
-                };
-                state.error = null;
-                state.isUserLoggedIn = true;
-                localStorage.setItem('isUserLoggedIn', 'true'); // Set login state in localStorage
+                Object.assign(state, {
+                    status: API_STATUS.SUCCESS,
+                    loading: false,
+                    success: payload.success,
+                    data: null,
+                    error: null,
+                    isUserLoggedIn: true,
+                });
+                localStorage.setItem('isUserLoggedIn', 'true');
             })
             .addCase(signInAction.rejected, (state, { payload }) => {
-                state.status = API_STATUS.REJECTED;
-                state.data = null;
-                state.error = {
+                Object.assign(state, {
+                    status: API_STATUS.REJECTED,
+                    loading: false,
                     success: false,
-                    message: payload?.message || '',
-                    reasons: payload?.reasons || [],
-                };
-                state.isUserLoggedIn = false;
-                localStorage.removeItem('isUserLoggedIn'); // Remove login state from localStorage on failure
+                    data: null,
+                    error: {
+                        message: payload?.message,
+                        reasons: payload?.reasons,
+                    },
+                    isUserLoggedIn: false,
+                });
+                localStorage.removeItem('isUserLoggedIn');
             })
             .addCase(refreshAction.pending, (state) => {
-                state.status = API_STATUS.PENDING;
-                state.data = null;
-                state.error = null;
+                Object.assign(state, {
+                    status: API_STATUS.PENDING,
+                    loading: true,
+                    success: null,
+                    data: null,
+                    error: null,
+                });
             })
             .addCase(refreshAction.fulfilled, (state, { payload }) => {
-                state.status = API_STATUS.SUCCESS;
-                state.data = {
-                    success: true,
-                    message: payload.message,
-                };
-                state.error = null;
-                state.isUserLoggedIn = true;
-                localStorage.setItem('isUserLoggedIn', 'true'); // Update localStorage on refresh success
+                Object.assign(state, {
+                    status: API_STATUS.SUCCESS,
+                    loading: false,
+                    success: payload.success,
+                    data: null,
+                    error: null,
+                    isUserLoggedIn: true,
+                });
+                localStorage.setItem('isUserLoggedIn', 'true');
             })
             .addCase(refreshAction.rejected, (state, { payload }) => {
-                state.status = API_STATUS.REJECTED;
-                state.data = null;
-                state.error = {
+                Object.assign(state, {
+                    status: API_STATUS.REJECTED,
+                    loading: false,
                     success: false,
-                    message: payload?.message || '',
-                    reasons: payload?.reasons || [],
-                };
-                state.isUserLoggedIn = false;
-                localStorage.removeItem('isUserLoggedIn'); // Remove from localStorage on refresh failure
+                    data: null,
+                    error: {
+                        message: payload?.message,
+                        reasons: payload?.reasons,
+                    },
+                    isUserLoggedIn: false,
+                });
+                localStorage.removeItem('isUserLoggedIn');
             });
     },
 });

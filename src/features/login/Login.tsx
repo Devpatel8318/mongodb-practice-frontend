@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react';
 import { signInActionDispatcher } from './auth.action';
 import { useAppSelector } from 'src/Store';
@@ -12,24 +11,22 @@ const Login: React.FC = () => {
     const [errors, setErrors] = useState({ email: '', password: '' });
 
     const navigate = useNavigate();
-    const { isUserLoggedIn, error, status } = useAppSelector(
+    const { isUserLoggedIn, error, loading } = useAppSelector(
         (store) => store.auth
     );
 
     useEffect(() => {
-        if (isUserLoggedIn) {
+        if (loading) return;
+
+        if (error) {
+            showToast('error', error.message);
+        } else if (isUserLoggedIn) {
             showToast('success', 'Login successful');
             navigate('/', { replace: true });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [status]);
 
-    useEffect(() => {
-        console.log(error);
-        if (error) {
-            showToast('error', 'Invalid credentials');
-        }
-    }, [error]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading]);
 
     const validateSubmit = (): boolean => {
         const emailError = emailValidator(formData.email);

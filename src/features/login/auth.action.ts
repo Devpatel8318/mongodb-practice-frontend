@@ -4,7 +4,7 @@ import { ErrorResponse, SuccessResponse } from 'src/Types/global';
 import callApi from 'src/utils/callApi';
 
 export const signInAction = createAsyncThunk<
-    SuccessResponse,
+    SuccessResponse<undefined>,
     { email: string; password: string },
     {
         rejectValue: ErrorResponse;
@@ -12,7 +12,7 @@ export const signInAction = createAsyncThunk<
 >('auth/signIn', async (payload, { rejectWithValue }) => {
     const { email, password } = payload;
     try {
-        await callApi(
+        return await callApi<undefined>(
             '/user/login',
             'POST',
             {
@@ -21,11 +21,6 @@ export const signInAction = createAsyncThunk<
             },
             true
         );
-
-        return {
-            success: true,
-            message: 'Login successful',
-        };
     } catch (e) {
         return rejectWithValue(e as ErrorResponse);
     }

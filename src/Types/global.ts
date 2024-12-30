@@ -1,18 +1,24 @@
-export interface SuccessResponse<T = undefined> {
+export interface BaseResponse {
     success: boolean;
     message: string;
+}
+
+export interface SuccessResponse<T = undefined> extends BaseResponse {
     data?: T;
 }
 
-export interface Reasons {
+export interface FieldErrors {
     field: string;
     message: string;
 }
 
-export interface ErrorResponse {
-    success: boolean;
+export interface ErrorResponse extends BaseResponse {
+    reasons?: FieldErrors[];
+}
+
+export interface ReducerErrorObject {
     message: string;
-    reasons?: Reasons[];
+    reasons?: FieldErrors[];
 }
 
 //  possible keys in response [status, success, message, reasons, data];

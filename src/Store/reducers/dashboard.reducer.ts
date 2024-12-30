@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getAllQuestionsAction } from 'src/features/dashboard/dashboard.action';
-import { Reasons } from 'src/Types/global';
+import { FieldErrors } from 'src/Types/global';
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi';
 
 export type Question = {
@@ -13,7 +13,7 @@ export type Question = {
 export interface DashboardStateType {
     status: null | API_STATUS_TYPE;
     data: [] | Question[];
-    error: null | Reasons[];
+    error: null | FieldErrors[];
     loading: boolean;
     success: null | boolean;
 }
@@ -54,7 +54,10 @@ const dashBoardSlice = createSlice({
                 Object.assign(state, {
                     status: API_STATUS.REJECTED,
                     data: [],
-                    error: payload?.reasons || null,
+                    error: {
+                        message: payload?.message,
+                        reasons: payload?.reasons,
+                    },
                     loading: false,
                     success: false,
                 });
