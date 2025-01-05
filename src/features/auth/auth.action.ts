@@ -35,7 +35,9 @@ export const signInActionDispatcher = (payload: {
 
 export const refreshAction = createAsyncThunk<
     SuccessResponse,
-    void,
+    {
+        showAlertMessage?: boolean;
+    },
     {
         rejectValue: ErrorResponse;
     }
@@ -48,10 +50,10 @@ export const refreshAction = createAsyncThunk<
 });
 
 export const refreshActionDispatcher = () => {
-    appDispatcher(refreshAction());
+    appDispatcher(refreshAction({ showAlertMessage: false }));
 };
 
-// this will be used when we need to clear access and refresh tokens
+// this will be used when we need to clear access-token, refresh-token and localStorage
 export const logoutAction = createAsyncThunk<
     SuccessResponse,
     void,

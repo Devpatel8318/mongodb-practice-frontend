@@ -1,0 +1,1 @@
+when going on logout route, there happens 2 other unnecessary api calls

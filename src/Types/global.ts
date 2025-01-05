@@ -7,18 +7,18 @@ export interface SuccessResponse<T = undefined> extends BaseResponse {
     data?: T;
 }
 
-export interface FieldErrors {
+export interface FieldError {
     field: string;
     message: string;
 }
 
 export interface ErrorResponse extends BaseResponse {
-    reasons?: FieldErrors[];
+    reasons?: FieldError[];
 }
 
 export interface ReducerErrorObject {
     message: string;
-    reasons?: FieldErrors[];
+    reasons?: FieldError[];
 }
 
 //  possible keys in response [status, success, message, reasons, data];
@@ -28,7 +28,7 @@ export interface ReducerErrorObject {
  // * message will also come compulsory until now
  // * is success then data will come
  // * if not success then reasons will come
- * 
+ *
 {
     "status": 401,
     "success": false,

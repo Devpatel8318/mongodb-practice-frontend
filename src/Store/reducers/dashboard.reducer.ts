@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { getAllQuestionsAction } from 'src/features/dashboard/dashboard.action';
-import { FieldErrors } from 'src/Types/global';
-import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi';
+import { createSlice } from "@reduxjs/toolkit";
+import { getAllQuestionsAction } from "src/features/dashboard/dashboard.action";
+import { FieldError } from "src/Types/global";
+import { API_STATUS, API_STATUS_TYPE } from "src/utils/callApi";
 
 export type Question = {
     _id: string;
@@ -13,7 +13,7 @@ export type Question = {
 export interface DashboardStateType {
     status: null | API_STATUS_TYPE;
     data: [] | Question[];
-    error: null | FieldErrors[];
+    error: null | FieldError[];
     loading: boolean;
     success: null | boolean;
 }
@@ -27,7 +27,7 @@ const initialState: DashboardStateType = {
 };
 
 const dashBoardSlice = createSlice({
-    name: 'dashBoard',
+    name: "dashBoard",
     initialState,
     reducers: {},
     extraReducers: (builder) => {

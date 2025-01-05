@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 import {
-    signInAction,
-    refreshAction,
     logoutAction,
-} from 'src/features/auth/auth.action';
-import { ReducerErrorObject } from 'src/Types/global';
-import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi';
+    refreshAction,
+    signInAction,
+} from "src/features/auth/auth.action";
+import { ReducerErrorObject } from "src/Types/global";
+import { API_STATUS, API_STATUS_TYPE } from "src/utils/callApi";
 
 export interface UserStateType {
     status: API_STATUS_TYPE;
@@ -14,6 +14,7 @@ export interface UserStateType {
     loading: boolean;
     isUserLoggedIn: boolean;
     success: null | boolean;
+    showAlertMessage: true;
 }
 
 export const initialState: UserStateType = {
@@ -23,11 +24,11 @@ export const initialState: UserStateType = {
     loading: false,
     success: null,
     isUserLoggedIn: false,
+    showAlertMessage: true,
 };
-
 // Create slice
 const authSlice = createSlice({
-    name: 'auth',
+    name: "auth",
     initialState,
     reducers: {
         // this will be used when we know that we do need to clear access and refresh tokens
@@ -37,7 +38,7 @@ const authSlice = createSlice({
                 data: null,
                 error: null,
             });
-            localStorage.removeItem('isUserLoggedIn');
+            localStorage.removeItem("isUserLoggedIn");
         },
         loginUser: (state) => {
             Object.assign(state, {
@@ -45,7 +46,7 @@ const authSlice = createSlice({
                 error: null,
                 // data = action.payload; // Assuming payload contains user data
             });
-            localStorage.setItem('isUserLoggedIn', 'true');
+            localStorage.setItem("isUserLoggedIn", "true");
         },
     },
     extraReducers: (builder) => {
@@ -57,6 +58,7 @@ const authSlice = createSlice({
                     success: null,
                     data: null,
                     error: null,
+                    showAlertMessage: true,
                 });
             })
             .addCase(signInAction.fulfilled, (state, { payload }) => {
@@ -68,7 +70,7 @@ const authSlice = createSlice({
                     error: null,
                     isUserLoggedIn: true,
                 });
-                localStorage.setItem('isUserLoggedIn', 'true');
+                localStorage.setItem("isUserLoggedIn", "true");
             })
             .addCase(signInAction.rejected, (state, { payload }) => {
                 Object.assign(state, {
@@ -82,9 +84,8 @@ const authSlice = createSlice({
                     },
                     isUserLoggedIn: false,
                 });
-                localStorage.removeItem('isUserLoggedIn');
+                localStorage.removeItem("isUserLoggedIn");
             })
-
             // ----------------------------------------------------------------
 
             .addCase(refreshAction.pending, (state) => {
@@ -94,6 +95,7 @@ const authSlice = createSlice({
                     success: null,
                     data: null,
                     error: null,
+                    showAlertMessage: true,
                 });
             })
             .addCase(refreshAction.fulfilled, (state, { payload }) => {
@@ -105,9 +107,11 @@ const authSlice = createSlice({
                     error: null,
                     isUserLoggedIn: true,
                 });
-                localStorage.setItem('isUserLoggedIn', 'true');
+                localStorage.setItem("isUserLoggedIn", "true");
             })
-            .addCase(refreshAction.rejected, (state, { payload }) => {
+            .addCase(refreshAction.rejected, (state, action) => {
+                const { payload, meta } = action;
+                console.log(meta.arg.showAlertMessage);
                 Object.assign(state, {
                     status: API_STATUS.REJECTED,
                     loading: false,
@@ -118,10 +122,10 @@ const authSlice = createSlice({
                         reasons: payload?.reasons,
                     },
                     isUserLoggedIn: false,
+                    showAlertMessage: meta.arg.showAlertMessage ?? true,
                 });
-                localStorage.removeItem('isUserLoggedIn');
+                localStorage.removeItem("isUserLoggedIn");
             })
-
             // ----------------------------------------------------------------
 
             .addCase(logoutAction.pending, (state) => {
@@ -131,6 +135,7 @@ const authSlice = createSlice({
                     success: null,
                     data: null,
                     error: null,
+                    showAlertMessage: true,
                 });
             })
             .addCase(logoutAction.fulfilled, (state) => {
@@ -142,7 +147,7 @@ const authSlice = createSlice({
                     error: null,
                     isUserLoggedIn: false,
                 });
-                localStorage.removeItem('isUserLoggedIn');
+                localStorage.removeItem("isUserLoggedIn");
             })
             .addCase(logoutAction.rejected, (state, { payload }) => {
                 Object.assign(state, {
@@ -156,7 +161,7 @@ const authSlice = createSlice({
                     },
                     isUserLoggedIn: false,
                 });
-                localStorage.removeItem('isUserLoggedIn');
+                localStorage.removeItem("isUserLoggedIn");
             });
     },
 });

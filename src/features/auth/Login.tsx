@@ -11,14 +11,14 @@ const Login: React.FC = () => {
     const [errors, setErrors] = useState({ email: '', password: '' });
 
     const navigate = useNavigate();
-    const { isUserLoggedIn, error, loading } = useAppSelector(
+    const { isUserLoggedIn, error, loading, showAlertMessage } = useAppSelector(
         (store) => store.auth
     );
 
     useEffect(() => {
         if (loading) return;
 
-        if (error) {
+        if (error && showAlertMessage) {
             showToast('error', error.message);
         } else if (isUserLoggedIn) {
             showToast('success', 'Login successful');
