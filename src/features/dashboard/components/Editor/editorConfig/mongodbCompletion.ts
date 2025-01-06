@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import * as monaco from 'monaco-editor';
 
 export const mongodbCompletion = {

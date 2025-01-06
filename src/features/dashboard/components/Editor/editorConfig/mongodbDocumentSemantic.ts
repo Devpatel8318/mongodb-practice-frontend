@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import * as monaco from 'monaco-editor';
 
 // Semantic Tokens Legend for MongoDB

@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 // MongoDB language configuration
 export const mongodbLanguage = {
     defaultToken: 'invalid',
