@@ -14,7 +14,7 @@ const CustomRoute = (routes: RouteObjectType[]): JSX.Element[] =>
             element={
                 <>
                     <Helmet>
-                        <title>{`Admin Panel - ${route.title}`}</title>
+                        <title>{`MongoAcademy - ${route.title}`}</title>
                     </Helmet>
                     {route.component}
                 </>
