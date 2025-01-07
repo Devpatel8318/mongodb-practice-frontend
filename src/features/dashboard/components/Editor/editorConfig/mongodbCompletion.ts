@@ -1,4 +1,4 @@
-/* eslint-disable no-template-curly-in-string */
+// /* eslint-disable no-template-curly-in-string */
 import * as monaco from 'monaco-editor';
 
 export const mongodbCompletion = {
@@ -64,33 +64,56 @@ export const mongodbCompletion = {
                 detail: 'Delete a single document from a collection',
                 range: range,
             },
+            {
+                label: 'db.collection.aggregate',
+                kind: monaco.languages.CompletionItemKind.Method,
+                detail: 'Run an aggregation pipeline on a collection',
+                range: range,
+                insertTextRules:
+                    monaco.languages.CompletionItemInsertTextRule
+                        .InsertAsSnippet,
+                insertText:
+                    'db.collection.aggregate([\n\t{ "\\$match": { ${1:criteria} } }\n])',
+            },
 
             // Aggregation Stages
             {
                 label: '$match',
                 kind: monaco.languages.CompletionItemKind.Keyword,
-                insertText: '"$match": {${1}}', // Cursor will be placed between {}
+                insertText: '"\\$match": {${1}}', // Cursor will be placed between {}
+                insertTextRules:
+                    monaco.languages.CompletionItemInsertTextRule
+                        .InsertAsSnippet,
                 detail: 'Filter documents in an aggregation pipeline',
                 range: range,
             },
             {
                 label: '$group',
                 kind: monaco.languages.CompletionItemKind.Keyword,
-                insertText: '"$group": {${1}}', // Cursor will be placed between {}
+                insertText: '"\\$group": {${1}}', // Cursor will be placed between {}
+                insertTextRules:
+                    monaco.languages.CompletionItemInsertTextRule
+                        .InsertAsSnippet,
                 detail: 'Group documents by a specified key',
                 range: range,
             },
             {
                 label: '$sort',
                 kind: monaco.languages.CompletionItemKind.Keyword,
-                insertText: '"$sort": {${1}}', // Cursor will be placed between {}
+                insertText: '"\\$sort": {${1}}', // Cursor will be placed between {}
+                insertTextRules:
+                    monaco.languages.CompletionItemInsertTextRule
+                        .InsertAsSnippet,
                 detail: 'Sort documents in an aggregation pipeline',
                 range: range,
             },
             {
                 label: '$project',
                 kind: monaco.languages.CompletionItemKind.Keyword,
-                insertText: '"$project": {${1}}', // Cursor will be placed between {}
+                insertText: '"\\$project": {${1}}', // Cursor will be placed between {}
+                insertTextRules:
+                    monaco.languages.CompletionItemInsertTextRule
+                        .InsertAsSnippet,
                 detail: 'Include or exclude fields in output documents',
                 range: range,
             },
@@ -99,21 +122,30 @@ export const mongodbCompletion = {
             {
                 label: '$eq',
                 kind: monaco.languages.CompletionItemKind.Operator,
-                insertText: '"$eq": {${1}}', // Cursor will be placed between {}
+                insertText: '"\\$eq": {${1}}', // Cursor will be placed between {}
+                insertTextRules:
+                    monaco.languages.CompletionItemInsertTextRule
+                        .InsertAsSnippet,
                 detail: 'Equality operator',
                 range: range,
             },
             {
                 label: '$gt',
                 kind: monaco.languages.CompletionItemKind.Operator,
-                insertText: '"$gt": {${1}}', // Cursor will be placed between {}
+                insertText: '"\\$gt": {${1}}', // Cursor will be placed between {}
+                insertTextRules:
+                    monaco.languages.CompletionItemInsertTextRule
+                        .InsertAsSnippet,
                 detail: 'Greater than operator',
                 range: range,
             },
             {
                 label: '$in',
                 kind: monaco.languages.CompletionItemKind.Operator,
-                insertText: '"$in": [${1}]', // Cursor will be placed between []
+                insertText: '"\\$in": [${1}]', // Cursor will be placed between []
+                insertTextRules:
+                    monaco.languages.CompletionItemInsertTextRule
+                        .InsertAsSnippet,
                 detail: 'In operator',
                 range: range,
             },
