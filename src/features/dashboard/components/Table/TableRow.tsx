@@ -22,13 +22,13 @@ const getDifficultyColor = (difficulty: Question['difficulty']) => {
 
 const TableRow = ({ item, key }: { item: Question; key: string | number }) => (
     <tr key={key} className="hover:bg-gray-100 cursor-pointer">
-        <td className="h-px whitespace-nowrap w-1/12 px-6 py-3">
+        <td className="h-px whitespace-nowrap w-2/12 px-6 py-3">
             <span className="text-sm font-semibold text-gray-500 flex items-center gap-1">
                 {getStatusIcon(item.status)}
                 {item.status?.toLowerCase()}
             </span>
         </td>
-        <td className="size-px whitespace-nowrap w-9/12 ps-6 py-3">
+        <td className="size-px whitespace-nowrap w-8/12 ps-6 py-3">
             <span className="block text-sm font-medium text-gray-800">
                 {capitalizeFirstLetter(item.question)}
             </span>

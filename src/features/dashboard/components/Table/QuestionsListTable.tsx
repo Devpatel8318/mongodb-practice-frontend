@@ -136,49 +136,26 @@ const QuestionsListTable = () => {
             })
             .join('&');
 
-        debouncedFetchQuestions({ filterQuery });
-
-        return () => {
-            debouncedFetchQuestions.cancel();
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filters, debouncedFetchQuestions]);
-
-    useEffect(() => {
-        if (isFirstRender) return;
-
         let sortQuery = '';
-
         Object.entries(sort).forEach(([key, value]) => {
             if (value) {
                 sortQuery += `sortBy=${key}&sortOrder=${value}`;
             }
         });
 
-        debouncedFetchQuestions({ sortQuery });
-
-        return () => {
-            debouncedFetchQuestions.cancel();
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sort]);
-
-    useEffect(() => {
-        if (isFirstRender) return;
-
         let searchQuery = '';
-
         if (search) {
             searchQuery = `search=${search}`;
         }
 
-        debouncedFetchQuestions({ searchQuery });
+        debouncedFetchQuestions({ filterQuery, sortQuery, searchQuery });
 
         return () => {
             debouncedFetchQuestions.cancel();
         };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search]);
+    }, [filters, sort, search, filters]);
 
     return (
         <div className="p-1.5 min-w-full inline-block align-middle">
@@ -286,7 +263,7 @@ const QuestionsListTable = () => {
                     </thead>
 
                     <tbody className="divide-y divide-gray-200">
-                        {loading ? (
+                        {0 ? (
                             <QuestionsListTableSkeletonLoader />
                         ) : (
                             tableData.map((item, index) => (
