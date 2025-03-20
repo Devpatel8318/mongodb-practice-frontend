@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { BACKEND_URL } from './config';
-import getToken from './getToken';
-import { logoutUser } from 'src/Store/reducers/auth.reducer';
-import { appDispatcher } from 'src/Store';
+import axios from "axios";
+import { BACKEND_URL } from "./config";
+import getToken from "./getToken";
+import { logoutUser } from "src/Store/reducers/auth.reducer";
+import { appDispatcher } from "src/Store";
 
 let isRefreshing = false;
 let refreshQueue: (() => void)[] = [];
@@ -18,21 +18,21 @@ instance.interceptors.response.use(
         const originalRequest = error.config;
         if (
             error.response?.status === 401 &&
-            error.response.data?.message === 'Permission denied.'
+            error.response.data?.message === "Permission denied."
         ) {
             if (!isRefreshing) {
                 isRefreshing = true;
                 try {
                     const getRefreshResponse = await axios.get(
-                        `${BACKEND_URL}/admin/me`,
+                        `${BACKEND_URL}/user/me`,
                         {
                             withCredentials: true,
-                        }
+                        },
                     );
 
                     // Update the access token
                     originalRequest.headers[
-                        'Authorization'
+                        "Authorization"
                     ] = `Bearer ${getRefreshResponse.data.accessToken}`;
 
                     // Retry the original request with the new token
@@ -49,14 +49,14 @@ instance.interceptors.response.use(
             } else {
                 refreshQueue.push(() => {
                     originalRequest.headers[
-                        'Authorization'
+                        "Authorization"
                     ] = `Bearer ${getToken()}`;
                     instance(originalRequest);
                 });
             }
         }
         return Promise.reject(error);
-    }
+    },
 );
 
 export default instance;

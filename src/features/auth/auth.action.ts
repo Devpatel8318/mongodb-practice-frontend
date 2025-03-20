@@ -1,7 +1,7 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { appDispatcher } from 'src/Store';
-import { ErrorResponse, SuccessResponse } from 'src/Types/global';
-import callApi from 'src/utils/callApi';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { appDispatcher } from "src/Store";
+import { ErrorResponse, SuccessResponse } from "src/Types/global";
+import callApi from "src/utils/callApi";
 
 export const signInAction = createAsyncThunk<
     SuccessResponse,
@@ -9,17 +9,17 @@ export const signInAction = createAsyncThunk<
     {
         rejectValue: ErrorResponse;
     }
->('auth/signIn', async (payload, { rejectWithValue }) => {
+>("auth/signIn", async (payload, { rejectWithValue }) => {
     const { email, password } = payload;
     try {
         return await callApi(
-            '/admin/login',
-            'POST',
+            "/user/login",
+            "POST",
             {
                 email,
                 password,
             },
-            true
+            true,
         );
     } catch (e) {
         return rejectWithValue(e as ErrorResponse);
@@ -41,9 +41,9 @@ export const refreshAction = createAsyncThunk<
     {
         rejectValue: ErrorResponse;
     }
->('auth/refresh', async (_payload, { rejectWithValue }) => {
+>("auth/refresh", async (_payload, { rejectWithValue }) => {
     try {
-        return await callApi('/admin/me', 'GET');
+        return await callApi("/user/me", "GET");
     } catch (e) {
         return rejectWithValue(e as ErrorResponse);
     }
@@ -60,9 +60,9 @@ export const logoutAction = createAsyncThunk<
     {
         rejectValue: ErrorResponse;
     }
->('auth/logout', async (_payload, { rejectWithValue }) => {
+>("auth/logout", async (_payload, { rejectWithValue }) => {
     try {
-        return await callApi('/admin/logout', 'GET');
+        return await callApi("/user/logout", "GET");
     } catch (e) {
         return rejectWithValue(e as ErrorResponse);
     }

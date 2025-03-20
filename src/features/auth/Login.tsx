@@ -57,7 +57,7 @@ const Login: React.FC = () => {
     return (
         <>
             <AuthCard
-                title="Sign up"
+                title="Sign in"
                 footerText={
                     <p>
                         Don't have an account yet?{' '}

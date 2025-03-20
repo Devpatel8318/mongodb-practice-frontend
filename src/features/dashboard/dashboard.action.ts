@@ -13,7 +13,7 @@ export const getAllQuestionsAction = createAsyncThunk<
 >("questions/list", async (payload, { rejectWithValue }) => {
     const { page = 1, limit = 20, searchQuery = "", sortQuery = "" } = payload;
 
-    let url = `/admin/list?page=${page}&limit=${limit}`;
+    let url = `/user/list?page=${page}&limit=${limit}`;
     if (searchQuery) {
         url += `&${searchQuery}`;
     }
