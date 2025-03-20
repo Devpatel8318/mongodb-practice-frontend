@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'src/deps';
 import Dashboard from 'src/features/dashboard/Dashboard';
 import Login from 'src/features/auth/Login';
 import PrivateRoute from './PrivateRoute';
-import NotFound from 'src/features/notFound/NotFound';
+import NotFound from 'src/features/NotFound/NotFound';
 import PublicRoute from './PublicRoute';
 import CustomRoute, { RouteObjectType } from './CustomRoute';
 import Logout from 'src/features/auth/Logout';
