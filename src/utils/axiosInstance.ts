@@ -24,7 +24,7 @@ instance.interceptors.response.use(
                 isRefreshing = true;
                 try {
                     const getRefreshResponse = await axios.get(
-                        `${BACKEND_URL}/user/me`,
+                        `${BACKEND_URL}/admin/me`,
                         {
                             withCredentials: true,
                         }

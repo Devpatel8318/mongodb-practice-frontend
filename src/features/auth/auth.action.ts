@@ -13,7 +13,7 @@ export const signInAction = createAsyncThunk<
     const { email, password } = payload;
     try {
         return await callApi(
-            '/user/login',
+            '/admin/login',
             'POST',
             {
                 email,
@@ -43,7 +43,7 @@ export const refreshAction = createAsyncThunk<
     }
 >('auth/refresh', async (_payload, { rejectWithValue }) => {
     try {
-        return await callApi('/user/me', 'GET');
+        return await callApi('/admin/me', 'GET');
     } catch (e) {
         return rejectWithValue(e as ErrorResponse);
     }
@@ -62,7 +62,7 @@ export const logoutAction = createAsyncThunk<
     }
 >('auth/logout', async (_payload, { rejectWithValue }) => {
     try {
-        return await callApi('/user/logout', 'GET');
+        return await callApi('/admin/logout', 'GET');
     } catch (e) {
         return rejectWithValue(e as ErrorResponse);
     }

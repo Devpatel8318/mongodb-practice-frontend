@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import MonacoEditor, { loader, useMonaco } from '@monaco-editor/react';
+import MonacoEditor, { loader, Monaco, useMonaco } from '@monaco-editor/react';
 import { mongodbCompletion } from './editorConfig/mongodbCompletion';
 import * as monaco from 'monaco-editor';
 import mongodbLanguage from './editorConfig/mongodbLanguage';
@@ -82,8 +82,14 @@ const EditorComponent: React.FC<EditorComponentProps> = ({ onQueryChange }) => {
         <MonacoEditor
             height="500px"
             defaultLanguage="mongodb"
-            // defaultValue="// Write your MongoDB query here"
+            defaultValue={`db.students.find({"userId":1})`}
             onChange={handleEditorChange}
+            onMount={(
+                editor: monaco.editor.IStandaloneCodeEditor,
+                monace: Monaco
+            ) => {
+                onQueryChange && onQueryChange(editor.getValue());
+            }}
             theme="mongodbCustomTheme"
             options={{
                 minimap: { enabled: false },
@@ -99,6 +105,12 @@ const EditorComponent: React.FC<EditorComponentProps> = ({ onQueryChange }) => {
                 overviewRulerBorder: false,
                 folding: false,
                 rulers: [],
+                roundedSelection: true,
+                cursorBlinking: 'blink',
+                cursorSmoothCaretAnimation: 'on',
+                padding: {
+                    top: 10,
+                },
             }}
         />
     );

@@ -5,15 +5,28 @@ import { ErrorResponse, SuccessResponse } from "src/Types/global";
 import callApi from "src/utils/callApi";
 
 export const getAllQuestionsAction = createAsyncThunk<
-    SuccessResponse<{ list: Question[] }>,
-    void,
+    SuccessResponse<{ list: Question[]; total: number }>,
+    { page?: number; limit?: number; searchQuery?: string; sortQuery?: string },
     {
         rejectValue: ErrorResponse;
     }
->("dashboard/list", async (_, { rejectWithValue }) => {
+>("questions/list", async (payload, { rejectWithValue }) => {
+    const { page = 1, limit = 20, searchQuery = "", sortQuery = "" } = payload;
+
+    let url = `/admin/list?page=${page}&limit=${limit}`;
+    if (searchQuery) {
+        url += `&${searchQuery}`;
+    }
+
+    if (sortQuery) {
+        url += `&${sortQuery}`;
+    }
+
     try {
-        // TODO: change /admin/list to /user/list
-        const data = await callApi<{ list: Question[] }>("/admin/list", "GET");
+        const data = await callApi<{ list: Question[]; total: number }>(
+            url,
+            "GET",
+        );
 
         return data;
     } catch (e) {
@@ -21,6 +34,18 @@ export const getAllQuestionsAction = createAsyncThunk<
     }
 });
 
-export const getAllQuestionsActionDispatcher = () => {
-    appDispatcher(getAllQuestionsAction());
+export const getAllQuestionsActionDispatcher = ({
+    page,
+    limit,
+    searchQuery,
+    sortQuery,
+}: {
+    page?: number;
+    limit?: number;
+    searchQuery?: string;
+    sortQuery?: string;
+}) => {
+    appDispatcher(
+        getAllQuestionsAction({ page, limit, searchQuery, sortQuery }),
+    );
 };

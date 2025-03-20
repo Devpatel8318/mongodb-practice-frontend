@@ -8,26 +8,32 @@ export type Question = {
     question: string;
     answer: string;
     questionId: number;
+    difficulty: number;
+    difficultyLabel: "Easy" | "Medium" | "Hard";
+    status: "TODO" | "SOLVED" | "ATTEMPTED";
 };
 
-export interface DashboardStateType {
+export interface QuestionsStateType {
     status: null | API_STATUS_TYPE;
-    data: [] | Question[];
+    data: null | {
+        list: Question[];
+        total: number;
+    };
     error: null | FieldError[];
     loading: boolean;
     success: null | boolean;
 }
 
-const initialState: DashboardStateType = {
+const initialState: QuestionsStateType = {
     status: null,
-    data: [],
+    data: null,
     error: null,
     loading: false,
     success: null,
 };
 
-const dashBoardSlice = createSlice({
-    name: "dashBoard",
+const questionsSlice = createSlice({
+    name: "questions",
     initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -46,7 +52,7 @@ const dashBoardSlice = createSlice({
                     status: API_STATUS.SUCCESS,
                     loading: false,
                     success: payload.success,
-                    data: payload.data?.list || [],
+                    data: payload.data,
                     error: null,
                 });
             })
@@ -65,4 +71,4 @@ const dashBoardSlice = createSlice({
     },
 });
 
-export default dashBoardSlice.reducer;
+export default questionsSlice.reducer;

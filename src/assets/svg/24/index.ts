@@ -1,0 +1,9 @@
+export { ReactComponent as HamburgerMenuIcon } from './hamburgerMenuIcon.svg';
+export { ReactComponent as ProfileIcon } from './profileIcon.svg';
+export { ReactComponent as LeftArrowPaginationIcon } from './leftArrowPaginationIcon.svg';
+export { ReactComponent as RightArrowPaginationIcon } from './rightArrowPaginationIcon.svg';
+export { ReactComponent as TickIcon } from './tickIcon.svg';
+export { ReactComponent as TodoIcon } from './todoIcon.svg';
+export { ReactComponent as AttemptedIcon } from './attemptedIcon.svg';
+export { ReactComponent as FilterIcon } from './filterIcon.svg';
+export { ReactComponent as SearchIcon } from './searchIcon.svg';

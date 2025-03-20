@@ -6,12 +6,12 @@ import showToast from 'src/utils/showToast';
 import { emailValidator } from 'src/utils/emailValidator';
 import { passwordValidator } from 'src/utils/passwordValidator';
 import { Link } from 'react-router-dom';
+import AuthCard from './components/AuthCard';
 import OAuthButton from './components/OAuthButton';
 import TextInput from './components/TextInput';
 import Button from './components/Button';
-import AuthCard from './components/AuthCard';
 
-const Login: React.FC = () => {
+const Signup: React.FC = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({ email: '', password: '' });
 
@@ -26,7 +26,7 @@ const Login: React.FC = () => {
         if (error && showAlertMessage) {
             showToast('error', error.message);
         } else if (isUserLoggedIn) {
-            showToast('success', 'Login successful');
+            showToast('success', 'Successfully Registered');
             navigate('/', { replace: true });
         }
 
@@ -60,12 +60,12 @@ const Login: React.FC = () => {
                 title="Sign up"
                 footerText={
                     <p>
-                        Don't have an account yet?{' '}
+                        Already have an account?{' '}
                         <Link
-                            to="/signup"
+                            to="/login"
                             className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
                         >
-                            Sign up here
+                            Sign in here
                         </Link>
                     </p>
                 }
@@ -99,16 +99,10 @@ const Login: React.FC = () => {
                                 onChange={handleChange}
                                 error={errors.password}
                             />
-                            <Link
-                                className="inline-flex items-center gap-x-1 text-xs text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
-                                to="/forget"
-                            >
-                                Forgot password?
-                            </Link>
                         </div>
                         <Button
                             type="submit"
-                            label="Sign in"
+                            label="Sign up"
                             disabled={loading}
                         />
                     </div>
@@ -118,4 +112,4 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login;
+export default Signup;

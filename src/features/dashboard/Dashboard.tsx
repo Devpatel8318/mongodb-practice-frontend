@@ -1,12 +1,15 @@
-import EditorComponent from './components/Editor/EditorComponent';
+import { useEffect } from 'react';
+import QuestionsListTable from './components/Table/QuestionsListTable';
+import { getAllQuestionsActionDispatcher } from './dashboard.action';
 
 const Dashboard = () => {
-    const handleQueryChange = (query: string) => {
-        console.log(query);
-    };
+    useEffect(() => {
+        getAllQuestionsActionDispatcher({});
+    }, []);
+
     return (
-        <div>
-            <EditorComponent onQueryChange={handleQueryChange} />;
+        <div className="w-9/12 mx-auto">
+            <QuestionsListTable />
         </div>
     );
 };
