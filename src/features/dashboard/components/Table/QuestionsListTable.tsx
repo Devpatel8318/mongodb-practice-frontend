@@ -263,7 +263,7 @@ const QuestionsListTable = () => {
                     </thead>
 
                     <tbody className="divide-y divide-gray-200">
-                        {0 ? (
+                        {loading ? (
                             <QuestionsListTableSkeletonLoader />
                         ) : (
                             tableData.map((item, index) => (
