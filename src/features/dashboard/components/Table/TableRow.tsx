@@ -21,7 +21,7 @@ const getDifficultyColor = (difficulty: Question['difficulty']) => {
 };
 
 const TableRow = ({ item, key }: { item: Question; key: string | number }) => (
-    <tr key={key}>
+    <tr key={key} className="hover:bg-gray-100 cursor-pointer">
         <td className="h-px whitespace-nowrap w-1/12 px-6 py-3">
             <span className="text-sm font-semibold text-gray-500 flex items-center gap-1">
                 {getStatusIcon(item.status)}

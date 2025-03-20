@@ -7,20 +7,36 @@ import callApi from "src/utils/callApi";
 
 export const getAllQuestionsAction = createAsyncThunk<
     SuccessResponse<{ list: Question[]; total: number }>,
-    { page?: number; limit?: number; searchQuery?: string; sortQuery?: string },
+    {
+        page?: number;
+        limit?: number;
+        filterQuery?: string;
+        sortQuery?: string;
+        searchQuery?: string;
+    },
     {
         rejectValue: ErrorResponse;
     }
 >("questions/list", async (payload, { rejectWithValue }) => {
-    const { page = 1, limit = 20, searchQuery = "", sortQuery = "" } = payload;
+    const {
+        page = 1,
+        limit = 20,
+        filterQuery = "",
+        sortQuery = "",
+        searchQuery = "",
+    } = payload;
 
     let url = `/user/list?page=${page}&limit=${limit}`;
-    if (searchQuery) {
-        url += `&${searchQuery}`;
+    if (filterQuery) {
+        url += `&${filterQuery}`;
     }
 
     if (sortQuery) {
         url += `&${sortQuery}`;
+    }
+
+    if (searchQuery) {
+        url += `&${searchQuery}`;
     }
 
     try {
@@ -38,15 +54,23 @@ export const getAllQuestionsAction = createAsyncThunk<
 export const getAllQuestionsActionDispatcher = ({
     page,
     limit,
-    searchQuery,
+    filterQuery,
     sortQuery,
+    searchQuery,
 }: {
     page?: number;
     limit?: number;
-    searchQuery?: string;
+    filterQuery?: string;
     sortQuery?: string;
+    searchQuery?: string;
 }) => {
     appDispatcher(
-        getAllQuestionsAction({ page, limit, searchQuery, sortQuery }),
+        getAllQuestionsAction({
+            page,
+            limit,
+            filterQuery,
+            sortQuery,
+            searchQuery,
+        }),
     );
 };
