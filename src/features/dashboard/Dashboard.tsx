@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect } from 'src/deps';
+
 import QuestionsListTable from './components/Table/QuestionsListTable';
 import { getAllQuestionsActionDispatcher } from './dashboard.action';
 

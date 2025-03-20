@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Toaster } from 'react-hot-toast';
+import { useEffect, useState, Toaster } from 'src/deps';
+
 import Routers from 'src/router';
 import { appDispatcher } from './Store';
 import { loginUser } from './Store/reducers/auth.reducer';

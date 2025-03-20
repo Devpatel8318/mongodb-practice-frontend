@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import { React, useRef } from 'src/deps';
+
 import Icons from 'src/assets/svg';
 import Button from 'src/features/auth/components/Button';
 import useOnClickOutside from 'src/hooks/useOnClickOutside';

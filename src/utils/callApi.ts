@@ -1,25 +1,27 @@
-import axios, {
+import {
+    axios,
+    AxiosError,
+    AxiosResponse,
     CancelToken,
     CancelTokenSource,
-    AxiosResponse,
-    AxiosError,
-} from 'axios';
-import { ErrorResponse, SuccessResponse } from 'src/Types/global';
-import axiosInstance from './axiosInstance';
+} from "src/deps";
 
-export type API_STATUS_TYPE = 'success' | 'pending' | 'rejected' | null;
+import { ErrorResponse, SuccessResponse } from "src/Types/global";
+import axiosInstance from "./axiosInstance";
+
+export type API_STATUS_TYPE = "success" | "pending" | "rejected" | null;
 
 export enum API_STATUS {
-    SUCCESS = 'success',
-    PENDING = 'pending',
-    REJECTED = 'rejected',
+    SUCCESS = "success",
+    PENDING = "pending",
+    REJECTED = "rejected",
 }
 
 const callApi = async <T>(
     apiURL: string,
-    apiMethod: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    apiMethod: "GET" | "POST" | "PUT" | "DELETE",
     apiData?: object,
-    withCredentials: boolean = true
+    withCredentials: boolean = true,
 ): Promise<SuccessResponse<T>> => {
     const requestSource: CancelTokenSource = axios.CancelToken.source();
 
@@ -36,7 +38,7 @@ const callApi = async <T>(
         withCredentials,
     };
 
-    if (['POST', 'PUT', 'DELETE'].includes(apiMethod)) {
+    if (["POST", "PUT", "DELETE"].includes(apiMethod)) {
         requestBody.data = apiData || {};
     } else {
         delete requestBody.data;
@@ -45,7 +47,7 @@ const callApi = async <T>(
     return new Promise((resolve, reject) => {
         axiosInstance(requestBody)
             .then((response: AxiosResponse<SuccessResponse<T>>) => {
-                resolve(response?.data || { message: 'ok' });
+                resolve(response?.data || { message: "ok" });
             })
             .catch((err: AxiosError<ErrorResponse>) => {
                 const errObj = err.response?.data || { message: err.message };

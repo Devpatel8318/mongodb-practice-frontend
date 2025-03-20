@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'src/deps';
 
 const OAuthButton: React.FC = () => {
     return (

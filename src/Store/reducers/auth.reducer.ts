@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "src/deps";
+
 import {
     logoutAction,
     refreshAction,

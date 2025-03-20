@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'src/deps';
 import MonacoEditor, { loader, Monaco, useMonaco } from '@monaco-editor/react';
 import { mongodbCompletion } from './editorConfig/mongodbCompletion';
 import * as monaco from 'monaco-editor';

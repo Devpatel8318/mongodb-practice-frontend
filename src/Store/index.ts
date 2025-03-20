@@ -1,6 +1,12 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import * as reducers from './reducers';
+import {
+    combineReducers,
+    configureStore,
+    TypedUseSelectorHook,
+    useDispatch,
+    useSelector,
+} from "src/deps";
+
+import * as reducers from "./reducers";
 
 const RootReducer = combineReducers({ ...reducers });
 

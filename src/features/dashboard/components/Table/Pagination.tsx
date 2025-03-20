@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'src/deps';
+
 import Button from 'src/features/auth/components/Button';
 import useOnClickOutside from 'src/hooks/useOnClickOutside';
 import { useAppSelector } from 'src/Store';

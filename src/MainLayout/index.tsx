@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { React, Link } from 'src/deps';
+
 import Icons from 'src/assets/svg';
 
 interface MainLayoutProps {

@@ -1,4 +1,5 @@
-import axios from "axios";
+import { axios } from "src/deps";
+
 import { BACKEND_URL } from "./config";
 import getToken from "./getToken";
 import { logoutUser } from "src/Store/reducers/auth.reducer";

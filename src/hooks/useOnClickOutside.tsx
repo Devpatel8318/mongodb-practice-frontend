@@ -1,4 +1,4 @@
-import { useEffect, RefObject } from 'react';
+import { useEffect, RefObject } from 'src/deps';
 
 function useOnClickOutside<T extends HTMLElement>(
     ref: RefObject<T>,

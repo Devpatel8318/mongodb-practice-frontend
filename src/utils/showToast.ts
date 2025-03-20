@@ -1,28 +1,28 @@
-import toast from 'react-hot-toast';
+import { toast } from "src/deps";
 
-type toastType = 'success' | 'error' | 'loading' | 'dismiss' | 'remove';
+type toastType = "success" | "error" | "loading" | "dismiss" | "remove";
 
 const showToast = (toastType: toastType, message: string, toastId?: string) => {
     let id = null;
 
     switch (toastType) {
-        case 'success':
+        case "success":
             id = toast.success(message);
             break;
 
-        case 'error':
+        case "error":
             id = toast.error(message);
             break;
 
-        case 'loading':
+        case "loading":
             id = toast.loading(message);
             break;
 
-        case 'dismiss':
+        case "dismiss":
             id = toast.dismiss(message);
             break;
 
-        case 'remove':
+        case "remove":
             id = toast.remove(message);
             break;
 

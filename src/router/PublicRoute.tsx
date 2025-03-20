@@ -1,5 +1,5 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { React, Navigate, Outlet } from 'src/deps';
+
 import { useAppSelector } from 'src/Store';
 
 const PrivateRoute: React.FC = () => {

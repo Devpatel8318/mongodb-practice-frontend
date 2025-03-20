@@ -1,5 +1,4 @@
-import { Route } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Route, Helmet } from 'src/deps';
 
 export interface RouteObjectType {
     path: string;

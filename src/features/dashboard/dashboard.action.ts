@@ -1,4 +1,5 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "src/deps";
+
 import { appDispatcher } from "src/Store";
 import { Question } from "src/Store/reducers/dashboard.reducer";
 import { ErrorResponse, SuccessResponse } from "src/Types/global";

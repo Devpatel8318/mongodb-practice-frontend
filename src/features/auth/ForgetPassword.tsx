@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
-// import { signInActionDispatcher } from './auth.action';
+import { React, useEffect, useState, Link, useNavigate } from 'src/deps';
+
 import { useAppSelector } from 'src/Store';
-import { useNavigate } from 'react-router-dom';
 import showToast from 'src/utils/showToast';
 import { emailValidator } from 'src/utils/emailValidator';
-import { Link } from 'react-router-dom';
 import Button from './components/Button';
 import TextInput from './components/TextInput';
 import AuthCard from './components/AuthCard';

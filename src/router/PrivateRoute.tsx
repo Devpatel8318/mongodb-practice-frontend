@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { React, useEffect, Navigate, Outlet, useLocation } from 'src/deps';
+
 import MainLayout from 'src/MainLayout';
 import { useAppSelector } from 'src/Store';
 import { refreshActionDispatcher } from 'src/features/auth/auth.action';

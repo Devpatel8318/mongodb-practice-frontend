@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'src/deps';
+
 import Dashboard from 'src/features/dashboard/Dashboard';
 import Login from 'src/features/auth/Login';
 import PrivateRoute from './PrivateRoute';

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'src/deps';
 import { signInActionDispatcher } from './auth.action';
 import { useAppSelector } from 'src/Store';
 import { useNavigate } from 'react-router-dom';
