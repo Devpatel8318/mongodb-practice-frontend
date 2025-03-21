@@ -10,6 +10,7 @@ import debounce from 'src/utils/debounce';
 import { getAllQuestionsActionDispatcher } from '../../dashboard.action';
 import useIsFirstRender from 'src/hooks/useIsFirstRender';
 import Icons from 'src/assets/svg';
+import useLocalStorage from 'src/hooks/useLocalStogare';
 
 const tableHeaderData = [
     { name: 'status', colWidth: 'w-2/12', allowSorting: true },
@@ -17,23 +18,39 @@ const tableHeaderData = [
     { name: 'difficulty', colWidth: 'w-2/12', allowSorting: true },
 ];
 
-const QuestionsListTable = () => {
-    const [filters, setFilters] = useState<Filters>({
-        status: {
-            todo: false,
-            attempted: false,
-            solved: false,
-        },
-        difficulty: {
-            easy: false,
-            medium: false,
-            hard: false,
-        },
-    });
+const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({
+    children,
+    className,
+}) => {
+    return (
+        <div
+            className={`bg-white border border-gray-200 rounded-xl shadow-xs ${className} `}
+        >
+            {children}
+        </div>
+    );
+};
 
-    const [sort, setSort] = useState<
-        Record<keyof Filters, 'ASC' | 'DESC' | ''> | Record<string, string>
-    >({});
+const QuestionsListTable = () => {
+    const [filters, setFilters] = useLocalStorage<Filters>(
+        'questions-filters',
+        {
+            status: {
+                todo: false,
+                attempted: false,
+                solved: false,
+            },
+            difficulty: {
+                easy: false,
+                medium: false,
+                hard: false,
+            },
+        }
+    );
+
+    const [sort, setSort] = useLocalStorage<
+        Record<string, 'ASC' | 'DESC' | ''>
+    >('questions-sort', {});
 
     const [search, setSearch] = useState('');
 
@@ -159,63 +176,60 @@ const QuestionsListTable = () => {
 
     return (
         <div className="p-1.5 min-w-full inline-block align-middle">
-            <div className="bg-white border border-gray-200 rounded-xl shadow-xs my-2">
-                <div className="px-6 py-4">
-                    <div className="flex gap-6 items-center">
-                        <FilterDropdown
-                            type="status"
-                            label="Status"
-                            filters={filters}
-                            toggleFilter={toggleFilter}
-                            openFilter={openFilter}
-                            handleFilterChange={handleFilterChange}
-                            setOpenFilter={setOpenFilter}
+            <Card className="mb-2 px-6 py-4">
+                <div className="flex gap-6 items-center">
+                    <FilterDropdown
+                        type="status"
+                        label="Status"
+                        filters={filters}
+                        toggleFilter={toggleFilter}
+                        openFilter={openFilter}
+                        handleFilterChange={handleFilterChange}
+                        setOpenFilter={setOpenFilter}
+                    />
+                    <FilterDropdown
+                        type="difficulty"
+                        label="Difficulty"
+                        filters={filters}
+                        toggleFilter={toggleFilter}
+                        openFilter={openFilter}
+                        handleFilterChange={handleFilterChange}
+                        setOpenFilter={setOpenFilter}
+                    />
+                    <div className="relative grow max-w-md">
+                        <input
+                            type="text"
+                            name="hs-as-table-product-review-search"
+                            className="border py-2 px-3 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:outline-none"
+                            placeholder="Search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                         />
-                        <FilterDropdown
-                            type="difficulty"
-                            label="Difficulty"
-                            filters={filters}
-                            toggleFilter={toggleFilter}
-                            openFilter={openFilter}
-                            handleFilterChange={handleFilterChange}
-                            setOpenFilter={setOpenFilter}
-                        />
-                        <div className="relative grow max-w-md">
-                            <input
-                                type="text"
-                                name="hs-as-table-product-review-search"
-                                className="border py-2 px-3 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:outline-none"
-                                placeholder="Search"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                            <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4">
-                                <svg
-                                    className="shrink-0 size-4 text-gray-400"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <circle cx="11" cy="11" r="8" />
-                                    <path d="m21 21-4.3-4.3" />
-                                </svg>
-                            </div>
+                        <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4">
+                            <svg
+                                className="shrink-0 size-4 text-gray-400"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.3-4.3" />
+                            </svg>
                         </div>
                     </div>
-                    <ActiveFilters
-                        filters={filters}
-                        handleRemoveAppliedFilter={handleRemoveAppliedFilter}
-                    />
                 </div>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-xl shadow-xs my-2">
+                <ActiveFilters
+                    filters={filters}
+                    handleRemoveAppliedFilter={handleRemoveAppliedFilter}
+                />
+            </Card>
+            <Card className="mb-2">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead>
                         <tr>
@@ -272,11 +286,11 @@ const QuestionsListTable = () => {
                         )}
                     </tbody>
                 </table>
-            </div>
+            </Card>
 
-            <div className="bg-white border border-gray-200 rounded-xl shadow-xs">
+            <Card>
                 <Pagination />
-            </div>
+            </Card>
         </div>
     );
 };
