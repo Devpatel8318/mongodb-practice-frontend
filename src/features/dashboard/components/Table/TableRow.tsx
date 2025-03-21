@@ -4,9 +4,9 @@ import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter';
 
 const getStatusIcon = (status: Question['status']) => {
     const icons = {
-        TODO: <Icons.Images24.TodoIcon />,
-        SOLVED: <Icons.Images24.TickIcon />,
-        ATTEMPTED: <Icons.Images24.AttemptedIcon />,
+        TODO: <Icons.Images16.Todo />,
+        SOLVED: <Icons.Images16.Tick />,
+        ATTEMPTED: <Icons.Images16.Attempted />,
     };
     return icons[status] || null;
 };
@@ -23,7 +23,7 @@ const getDifficultyColor = (difficulty: Question['difficulty']) => {
 const TableRow = ({ item, key }: { item: Question; key: string | number }) => (
     <tr key={key} className="hover:bg-gray-100 cursor-pointer">
         <td className="h-px whitespace-nowrap w-2/12 px-6 py-3">
-            <span className="text-sm font-semibold text-gray-500 flex items-center gap-1">
+            <span className="text-sm font-medium text-gray-500 flex items-center gap-1">
                 {getStatusIcon(item.status)}
                 {item.status?.toLowerCase()}
             </span>

@@ -47,7 +47,7 @@ const ActiveFilters = ({
                     <button
                         onClick={() => handleRemoveAppliedFilter(parent, child)}
                     >
-                        <Icons.Images16.CloseIcon />
+                        <Icons.Images16.Close />
                     </button>
                 </div>
             ))}

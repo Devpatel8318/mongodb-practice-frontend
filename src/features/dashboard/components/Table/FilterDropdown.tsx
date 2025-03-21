@@ -48,7 +48,7 @@ const FilterDropdown = ({
                 name="questions-table-filter-button"
                 variant="outlineGray"
                 size="sm"
-                startIcon={<Icons.Images24.FilterIcon />}
+                startIcon={<Icons.Images24.Filter />}
                 label={label}
                 className="shadow-2xs border-gray-200"
                 onClick={() => {

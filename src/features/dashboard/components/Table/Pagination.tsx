@@ -156,7 +156,7 @@ const Pagination = () => {
                 <Button
                     variant="outlineGray"
                     size="sm"
-                    startIcon={<Icons.Images24.LeftArrowPaginationIcon />}
+                    startIcon={<Icons.Images24.LeftArrowPagination />}
                     label="Prev"
                     className="shadow-2xs"
                     dontShowFocusClasses={true}
@@ -169,7 +169,7 @@ const Pagination = () => {
                 <Button
                     variant="outlineGray"
                     size="sm"
-                    endIcon={<Icons.Images24.RightArrowPaginationIcon />}
+                    endIcon={<Icons.Images24.RightArrowPagination />}
                     label="Next"
                     className="shadow-2xs"
                     dontShowFocusClasses={true}

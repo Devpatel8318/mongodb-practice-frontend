@@ -31,7 +31,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                                 type="button"
                                 className="size-9.5 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none"
                             >
-                                <Icons.Images24.ProfileIcon />
+                                <Icons.Images24.Profile />
                             </button>
                         </div>
                     </div>
