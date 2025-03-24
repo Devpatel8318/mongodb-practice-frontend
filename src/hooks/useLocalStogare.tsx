@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 
+export type useLocalStorageSetValue<T> = (
+    valueOrFn: T | ((prev: T) => T)
+) => void;
+
 function useLocalStorage<T>(
     key: string,
     defaultValue: T
-): [T, (valueOrFn: T | ((prev: T) => T)) => void] {
+): [T, useLocalStorageSetValue<T>] {
     const [localStorageValue, setLocalStorageValue] = useState<T>(() => {
         try {
             const value = localStorage.getItem(key);
