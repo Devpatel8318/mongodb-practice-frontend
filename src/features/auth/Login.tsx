@@ -10,7 +10,7 @@ import TextInput from './components/TextInput';
 import Button from './components/Button';
 import AuthCard from './components/AuthCard';
 
-const Login: React.FC = () => {
+const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({ email: '', password: '' });
 

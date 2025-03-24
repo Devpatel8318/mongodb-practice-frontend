@@ -20,29 +20,31 @@ const getDifficultyColor = (difficulty: Question['difficulty']) => {
     return colors[difficulty] || '';
 };
 
-const TableRow = ({ item, key }: { item: Question; key: string | number }) => (
-    <tr key={key} className="hover:bg-gray-100 cursor-pointer">
-        <td className="h-px whitespace-nowrap w-2/12 px-6 py-3">
-            <span className="text-sm font-medium text-gray-500 flex items-center gap-1">
-                {getStatusIcon(item.status)}
-                {item.status?.toLowerCase()}
-            </span>
-        </td>
-        <td className="size-px whitespace-nowrap w-8/12 ps-6 py-3">
-            <span className="block text-sm font-medium text-gray-800">
-                {capitalizeFirstLetter(item.question)}
-            </span>
-        </td>
-        <td className="size-px whitespace-nowrap w-2/12 px-6 py-3">
-            <span
-                className={`py-1 px-2 inline-flex items-center text-xs font-medium rounded-full capitalize ${getDifficultyColor(
-                    item.difficulty
-                )}`}
-            >
-                {item.difficultyLabel}
-            </span>
-        </td>
-    </tr>
-);
+const TableRow = ({ item }: { item: Question }) => {
+    return (
+        <tr className="hover:bg-gray-100 cursor-pointer">
+            <td className="h-px whitespace-nowrap w-2/12 px-6 py-3">
+                <span className="text-sm font-medium text-gray-500 flex items-center gap-1">
+                    {getStatusIcon(item.status)}
+                    {item.status?.toLowerCase()}
+                </span>
+            </td>
+            <td className="size-px whitespace-nowrap w-8/12 ps-6 py-3">
+                <span className="block text-sm font-medium text-gray-800">
+                    {capitalizeFirstLetter(item.question)}
+                </span>
+            </td>
+            <td className="size-px whitespace-nowrap w-2/12 px-6 py-3">
+                <span
+                    className={`py-1 px-2 inline-flex items-center text-xs font-medium rounded-full capitalize ${getDifficultyColor(
+                        item.difficulty
+                    )}`}
+                >
+                    {item.difficultyLabel}
+                </span>
+            </td>
+        </tr>
+    );
+};
 
 export default TableRow;

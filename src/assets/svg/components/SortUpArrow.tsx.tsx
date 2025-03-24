@@ -7,7 +7,7 @@ const SortUpArrow = ({ color = '#000000' }) => {
             fill={color}
             xmlns="http://www.w3.org/2000/svg"
         >
-            <g clip-path="url(#clip0_42_30)">
+            <g clipPath="url(#clip0_42_30)">
                 <path d="M4 6L8 1L12 6H4Z" />
             </g>
             <defs>

@@ -7,7 +7,7 @@ import Button from './components/Button';
 import TextInput from './components/TextInput';
 import AuthCard from './components/AuthCard';
 
-const ForgetPassword: React.FC = () => {
+const ForgetPassword = () => {
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
 
