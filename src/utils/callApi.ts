@@ -21,7 +21,6 @@ const callApi = async <T>(
     apiURL: string,
     apiMethod: "GET" | "POST" | "PUT" | "DELETE",
     apiData?: object,
-    withCredentials: boolean = true,
 ): Promise<SuccessResponse<T>> => {
     const requestSource: CancelTokenSource = axios.CancelToken.source();
 
@@ -35,7 +34,7 @@ const callApi = async <T>(
         url: apiURL,
         method: apiMethod,
         cancelToken: requestSource.token,
-        withCredentials,
+        withCredentials: true,
     };
 
     if (["POST", "PUT", "DELETE"].includes(apiMethod)) {

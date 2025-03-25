@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "src/deps";
 import { appDispatcher } from "src/Store";
 import { ErrorResponse, SuccessResponse } from "src/Types/global";
 import callApi from "src/utils/callApi";
@@ -47,7 +47,6 @@ export const signInAction = createAsyncThunk<
                 email,
                 password,
             },
-            true,
         );
     } catch (e) {
         return rejectWithValue(e as ErrorResponse);
@@ -59,6 +58,35 @@ export const signInActionDispatcher = (payload: {
     password: string;
 }) => {
     appDispatcher(signInAction(payload));
+};
+
+export const signUpAction = createAsyncThunk<
+    SuccessResponse<{ email: string; userId: number }>,
+    { email: string; password: string },
+    {
+        rejectValue: ErrorResponse;
+    }
+>("auth/signUp", async (payload, { rejectWithValue }) => {
+    const { email, password } = payload;
+    try {
+        return await callApi(
+            "/auth/signup",
+            "POST",
+            {
+                email,
+                password,
+            },
+        );
+    } catch (e) {
+        return rejectWithValue(e as ErrorResponse);
+    }
+});
+
+export const signUpActionDispatcher = (payload: {
+    email: string;
+    password: string;
+}) => {
+    appDispatcher(signUpAction(payload));
 };
 
 export const refreshAction = createAsyncThunk<

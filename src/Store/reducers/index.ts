@@ -1,4 +1,5 @@
-import auth from './auth.reducer';
-import dashboard from './dashboard.reducer';
+import auth from "./auth.reducer";
+import dashboard from "./dashboard.reducer";
+import user from "./user.reducer";
 
-export { auth, dashboard };
+export { auth, dashboard, user };

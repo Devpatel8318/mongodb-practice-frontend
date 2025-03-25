@@ -33,11 +33,14 @@ export { Cookies };
 
 export { ReactDOM };
 
-export { createAsyncThunk } from "@reduxjs/toolkit";
-
 export { Helmet } from "react-helmet";
 
-export { combineReducers, configureStore, createSlice } from "@reduxjs/toolkit";
+export {
+    combineReducers,
+    configureStore,
+    createAsyncThunk,
+    createSlice,
+} from "@reduxjs/toolkit";
 
 export {
     Provider,

@@ -5,27 +5,25 @@ import {
     oauthGoogleAction,
     refreshAction,
     signInAction,
+    signUpAction,
 } from "src/features/auth/auth.action";
 import { ReducerErrorObject } from "src/Types/global";
 import { API_STATUS, API_STATUS_TYPE } from "src/utils/callApi";
 import { appDispatcher } from "src/Store";
 import showToast from "src/utils/showToast";
 
-export interface UserStateType {
+export interface AuthStateType {
     status: API_STATUS_TYPE;
-    data: null;
     error: null | ReducerErrorObject;
     loading: boolean;
     isUserLoggedIn: boolean;
     success: null | boolean;
-    profilePictureUrl?: string;
     email?: string;
     userId?: number;
 }
 
-export const initialState: UserStateType = {
+export const initialState: AuthStateType = {
     status: null,
-    data: null,
     error: null,
     loading: false,
     success: null,
@@ -40,7 +38,6 @@ const authSlice = createSlice({
         logoutUser: (state) => {
             Object.assign(state, {
                 isUserLoggedIn: false,
-                data: null,
                 error: null,
             });
             localStorage.removeItem("isUserLoggedIn");
@@ -61,59 +58,44 @@ const authSlice = createSlice({
                     status: API_STATUS.PENDING,
                     loading: true,
                     success: null,
-                    data: null,
                     error: null,
-                    profilePictureUrl: null,
                     email: null,
                 });
             })
-            .addCase(
-                oauthGoogleAction.fulfilled,
-                (state, { payload }) => {
-                    Object.assign(state, {
-                        status: API_STATUS.SUCCESS,
-                        loading: false,
-                        success: payload.success,
-                        data: null,
-                        error: null,
-                        isUserLoggedIn: true,
-                        profilePictureUrl: payload?.data?.profilePictureUrl,
-                        email: payload?.data?.email,
-                    });
-                    localStorage.setItem("isUserLoggedIn", "true");
-                    showToast("success", payload?.message);
-                },
-            )
-            .addCase(
-                oauthGoogleAction.rejected,
-                (state, { payload }) => {
-                    Object.assign(state, {
-                        status: API_STATUS.REJECTED,
-                        loading: false,
-                        success: false,
-                        data: null,
-                        error: {
-                            message: payload?.message,
-                            reasons: payload?.reasons,
-                        },
-                        isUserLoggedIn: false,
-                    });
-                    localStorage.removeItem("isUserLoggedIn");
-                    showToast(
-                        "error",
-                        payload?.message || "Something went wrong",
-                    );
-                },
-            )
+            .addCase(oauthGoogleAction.fulfilled, (state, { payload }) => {
+                Object.assign(state, {
+                    status: API_STATUS.SUCCESS,
+                    loading: false,
+                    success: payload.success,
+                    error: null,
+                    isUserLoggedIn: true,
+                    email: payload?.data?.email,
+                });
+                localStorage.setItem("isUserLoggedIn", "true");
+                showToast("success", payload?.message);
+            })
+            .addCase(oauthGoogleAction.rejected, (state, { payload }) => {
+                Object.assign(state, {
+                    status: API_STATUS.REJECTED,
+                    loading: false,
+                    success: false,
+                    error: {
+                        message: payload?.message,
+                        reasons: payload?.reasons,
+                    },
+                    isUserLoggedIn: false,
+                });
+                localStorage.removeItem("isUserLoggedIn");
+                showToast("error", payload?.message || "Something went wrong");
+            })
             // ----------------------------------------------------------------
+
             .addCase(signInAction.pending, (state) => {
                 Object.assign(state, {
                     status: API_STATUS.PENDING,
                     loading: true,
                     success: null,
-                    data: null,
                     error: null,
-                    profilePictureUrl: null,
                     email: null,
                 });
             })
@@ -122,7 +104,6 @@ const authSlice = createSlice({
                     status: API_STATUS.SUCCESS,
                     loading: false,
                     success: payload.success,
-                    data: null,
                     error: null,
                     isUserLoggedIn: true,
                     email: payload?.data?.email,
@@ -135,7 +116,6 @@ const authSlice = createSlice({
                     status: API_STATUS.REJECTED,
                     loading: false,
                     success: false,
-                    data: null,
                     error: {
                         message: payload?.message,
                         reasons: payload?.reasons,
@@ -143,10 +123,44 @@ const authSlice = createSlice({
                     isUserLoggedIn: false,
                 });
                 localStorage.removeItem("isUserLoggedIn");
-                showToast(
-                    "error",
-                    payload?.message || "Something went wrong",
-                );
+                showToast("error", payload?.message || "Something went wrong");
+            })
+            // ----------------------------------------------------------------
+
+            .addCase(signUpAction.pending, (state) => {
+                Object.assign(state, {
+                    status: API_STATUS.PENDING,
+                    loading: true,
+                    success: null,
+                    error: null,
+                    email: null,
+                });
+            })
+            .addCase(signUpAction.fulfilled, (state, { payload }) => {
+                Object.assign(state, {
+                    status: API_STATUS.SUCCESS,
+                    loading: false,
+                    success: payload.success,
+                    error: null,
+                    isUserLoggedIn: true,
+                    email: payload?.data?.email,
+                });
+                localStorage.setItem("isUserLoggedIn", "true");
+                showToast("success", payload?.message);
+            })
+            .addCase(signUpAction.rejected, (state, { payload }) => {
+                Object.assign(state, {
+                    status: API_STATUS.REJECTED,
+                    loading: false,
+                    success: false,
+                    error: {
+                        message: payload?.message,
+                        reasons: payload?.reasons,
+                    },
+                    isUserLoggedIn: false,
+                });
+                localStorage.removeItem("isUserLoggedIn");
+                showToast("error", payload?.message || "Something went wrong");
             })
             // ----------------------------------------------------------------
 
@@ -155,7 +169,6 @@ const authSlice = createSlice({
                     status: API_STATUS.PENDING,
                     loading: true,
                     success: null,
-                    data: null,
                     error: null,
                 });
             })
@@ -164,7 +177,6 @@ const authSlice = createSlice({
                     status: API_STATUS.SUCCESS,
                     loading: false,
                     success: payload.success,
-                    data: null,
                     error: null,
                     isUserLoggedIn: true,
                 });
@@ -175,7 +187,6 @@ const authSlice = createSlice({
                     status: API_STATUS.REJECTED,
                     loading: false,
                     success: false,
-                    data: null,
                     error: {
                         message: payload?.message,
                         reasons: payload?.reasons,
@@ -191,9 +202,7 @@ const authSlice = createSlice({
                     status: API_STATUS.PENDING,
                     loading: true,
                     success: null,
-                    data: null,
                     error: null,
-                    profilePictureUrl: null,
                     email: null,
                 });
             })
@@ -202,7 +211,6 @@ const authSlice = createSlice({
                     status: API_STATUS.SUCCESS,
                     loading: false,
                     success: true,
-                    data: null,
                     error: null,
                     isUserLoggedIn: false,
                 });
@@ -213,7 +221,6 @@ const authSlice = createSlice({
                     status: API_STATUS.REJECTED,
                     loading: false,
                     success: false,
-                    data: null,
                     error: {
                         message: payload?.message,
                         reasons: payload?.reasons,

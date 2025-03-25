@@ -3,6 +3,7 @@ import { useEffect, useState, Toaster } from 'src/deps';
 import Routers from 'src/router';
 import { loginUserDispatcher } from './Store/reducers/auth.reducer';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { userSettingActionDispatcher } from './Store/globalActions/user.action';
 
 function App() {
     // * this state is required because without this in initial render, private route will get
@@ -15,6 +16,7 @@ function App() {
             loginUserDispatcher();
         }
         setInitialized(true);
+        userSettingActionDispatcher();
     }, []);
 
     if (!initialized) {

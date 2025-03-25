@@ -37,8 +37,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     });
 
     const auth = useAppSelector((state) => state.auth);
+    const { profilePictureUrl } = useAppSelector((state) => state.user);
 
-    const { profilePictureUrl, loading } = auth;
+    const { loading } = auth;
 
     return (
         <div className="w-screen min-h-screen flex flex-col">
@@ -48,8 +49,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                         {/* Logo */}
                         <Link
                             className="flex-none rounded-md text-xl inline-block font-semibold focus:outline-hidden focus:opacity-80"
-                            to="#"
-                            aria-label="Preline"
+                            to="/"
                         >
                             MongoAcademy
                         </Link>

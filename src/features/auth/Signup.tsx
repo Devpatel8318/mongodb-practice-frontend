@@ -1,5 +1,5 @@
 import { React, useState } from 'src/deps';
-import { signInActionDispatcher } from './auth.action';
+import { signUpActionDispatcher } from './auth.action';
 import { useAppSelector } from 'src/Store';
 import { emailValidator } from 'src/utils/emailValidator';
 import { passwordValidator } from 'src/utils/passwordValidator';
@@ -32,7 +32,7 @@ const Signup = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (validateSubmit()) {
-            signInActionDispatcher(formData);
+            signUpActionDispatcher(formData);
         }
     };
 
