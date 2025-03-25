@@ -2,8 +2,7 @@ import { axios } from "src/deps";
 
 import { BACKEND_URL } from "./config";
 import getToken from "./getToken";
-import { logoutUser } from "src/Store/reducers/auth.reducer";
-import { appDispatcher } from "src/Store";
+import { logoutUserDispatcher } from "src/Store/reducers/auth.reducer";
 
 let isRefreshing = false;
 let refreshQueue: (() => void)[] = [];
@@ -25,7 +24,7 @@ instance.interceptors.response.use(
                 isRefreshing = true;
                 try {
                     const getRefreshResponse = await axios.get(
-                        `${BACKEND_URL}/user/me`,
+                        `${BACKEND_URL}/auth/me`,
                         {
                             withCredentials: true,
                         },
@@ -40,7 +39,7 @@ instance.interceptors.response.use(
                     return instance(originalRequest);
                 } catch (refreshError) {
                     // no need to clear the token as both are invalid, so only loggout the user by updating redux state
-                    appDispatcher(logoutUser());
+                    logoutUserDispatcher();
                 } finally {
                     isRefreshing = false;
                     // Process queued requests

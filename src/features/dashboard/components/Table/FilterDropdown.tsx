@@ -9,7 +9,6 @@ type FilterDropdownProps = {
     type: keyof Filters;
     label: string;
     filters: Filters;
-    toggleFilter: (filterType: keyof Filters) => void;
     openFilter: string | null;
     handleFilterChange: (
         filterType: keyof Filters,
@@ -21,19 +20,30 @@ const FilterDropdown = ({
     type,
     label,
     filters,
-    toggleFilter,
     openFilter,
     handleFilterChange,
     setOpenFilter,
 }: FilterDropdownProps) => {
     const filterRef = useRef<HTMLDivElement | null>(null);
 
+    const toggleFilter = (filterType: string) => {
+        setOpenFilter((prev) => {
+            return prev === filterType ? null : filterType;
+        });
+    };
+
     useOnClickOutside(filterRef, (event) => {
         const clickedElement = event.target as Element;
         const closestButton = clickedElement?.closest('button');
         const buttonName = closestButton?.getAttribute('name');
 
-        if (buttonName === 'questions-table-filter-button') return;
+        if (buttonName === 'questions-table-filter-button') {
+            // * Scenario example: "status" filter dropdown is open and user once again clicks on the "status" filter button
+            // * In this case, we should close the status dropdown
+            // * but what was happening is that usOnClickOutside was closing the dropdown and then toggleFilter was opening it again
+            // * So,need to check if the clicked element is the filter button itself then don't close the dropdown
+            return;
+        }
 
         setOpenFilter(null);
     });
@@ -74,7 +84,7 @@ const FilterDropdown = ({
                                     className="flex py-2 px-4 hover:bg-gray-100"
                                 >
                                     <button
-                                        className="mt-0.5 border-gray-300 rounded-sm flex justify-between grow"
+                                        className="border-gray-300 rounded-sm flex justify-between grow"
                                         onClick={() =>
                                             handleFilterChange(
                                                 type,

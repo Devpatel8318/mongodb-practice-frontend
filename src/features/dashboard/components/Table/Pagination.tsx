@@ -59,7 +59,7 @@ const ItemsPerPageDropdown = ({
                                 className="flex py-2 px-4 hover:bg-gray-100"
                             >
                                 <button
-                                    className="mt-0.5 border-gray-300 rounded-sm flex justify-between grow"
+                                    className="border-gray-300 rounded-sm flex justify-between grow"
                                     onClick={() => {
                                         setItemsPerPage(option);
                                         setShowDropDown(false);

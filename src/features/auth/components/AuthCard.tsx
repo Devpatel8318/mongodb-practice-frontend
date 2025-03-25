@@ -16,9 +16,9 @@ const AuthCard: React.FC<AuthCardProps> = ({ title, children, footerText }) => {
                             {title}
                         </h1>
                         {footerText && (
-                            <p className="mt-2 text-sm text-gray-600">
+                            <div className="mt-2 text-sm text-gray-600">
                                 {footerText}
-                            </p>
+                            </div>
                         )}
                     </div>
                     <div className="mt-5">{children}</div>

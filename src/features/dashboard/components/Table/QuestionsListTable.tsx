@@ -43,12 +43,6 @@ const QuestionsListTable = () => {
 
     const isFirstRender = useIsFirstRender();
 
-    const toggleFilter = (filterType: string) => {
-        setOpenFilter((prev) => {
-            return prev === filterType ? null : filterType;
-        });
-    };
-
     const handleFilterChange = (
         filterType: keyof Filters,
         filterValue: keyof Filters[keyof Filters]
@@ -118,7 +112,6 @@ const QuestionsListTable = () => {
                         type="status"
                         label="Status"
                         filters={filters}
-                        toggleFilter={toggleFilter}
                         openFilter={openFilter}
                         handleFilterChange={handleFilterChange}
                         setOpenFilter={setOpenFilter}
@@ -127,7 +120,6 @@ const QuestionsListTable = () => {
                         type="difficulty"
                         label="Difficulty"
                         filters={filters}
-                        toggleFilter={toggleFilter}
                         openFilter={openFilter}
                         handleFilterChange={handleFilterChange}
                         setOpenFilter={setOpenFilter}

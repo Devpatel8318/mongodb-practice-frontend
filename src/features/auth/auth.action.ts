@@ -3,8 +3,36 @@ import { appDispatcher } from "src/Store";
 import { ErrorResponse, SuccessResponse } from "src/Types/global";
 import callApi from "src/utils/callApi";
 
+export type GoogleAuthPayload =
+    | { code: string; credential?: never }
+    | { credential: string; code?: never };
+
+export const oauthGoogleAction = createAsyncThunk<
+    SuccessResponse<{
+        email: string;
+        userId: number;
+        profilePictureUrl: string;
+        credential: string;
+    }>,
+    GoogleAuthPayload,
+    {
+        rejectValue: ErrorResponse;
+    }
+>("auth/oauthGoogle", async (payload, { rejectWithValue }) => {
+    try {
+        const { code, credential } = payload;
+        return await callApi("/auth/google", "POST", { code, credential });
+    } catch (e) {
+        return rejectWithValue(e as ErrorResponse);
+    }
+});
+
+export const oauthGoogleActionDispatcher = (payload: GoogleAuthPayload) => {
+    appDispatcher(oauthGoogleAction(payload));
+};
+
 export const signInAction = createAsyncThunk<
-    SuccessResponse,
+    SuccessResponse<{ email: string; userId: number }>,
     { email: string; password: string },
     {
         rejectValue: ErrorResponse;
@@ -13,7 +41,7 @@ export const signInAction = createAsyncThunk<
     const { email, password } = payload;
     try {
         return await callApi(
-            "/user/login",
+            "/auth/login",
             "POST",
             {
                 email,
@@ -35,22 +63,20 @@ export const signInActionDispatcher = (payload: {
 
 export const refreshAction = createAsyncThunk<
     SuccessResponse,
-    {
-        showAlertMessage?: boolean;
-    },
+    void,
     {
         rejectValue: ErrorResponse;
     }
 >("auth/refresh", async (_payload, { rejectWithValue }) => {
     try {
-        return await callApi("/user/me", "GET");
+        return await callApi("/auth/me", "GET");
     } catch (e) {
         return rejectWithValue(e as ErrorResponse);
     }
 });
 
 export const refreshActionDispatcher = () => {
-    appDispatcher(refreshAction({ showAlertMessage: false }));
+    appDispatcher(refreshAction());
 };
 
 // this will be used when we need to clear access-token, refresh-token and localStorage
@@ -62,7 +88,7 @@ export const logoutAction = createAsyncThunk<
     }
 >("auth/logout", async (_payload, { rejectWithValue }) => {
     try {
-        return await callApi("/user/logout", "GET");
+        return await callApi("/auth/logout", "GET");
     } catch (e) {
         return rejectWithValue(e as ErrorResponse);
     }
