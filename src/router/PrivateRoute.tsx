@@ -14,7 +14,7 @@ const PrivateRoute: React.FC = () => {
         if (location.pathname.includes('/logout')) return;
 
         if (!isUserLoggedIn) {
-            refreshActionDispatcher();
+            refreshActionDispatcher({ doNotShowAlert: true });
         } else {
             userSettingActionDispatcher();
         }

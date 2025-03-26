@@ -15,7 +15,9 @@ const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({ email: '', password: '' });
 
-    const { loading, status, error } = useAppSelector((store) => store.auth);
+    const { loading, status, error, doNotShowAlert } = useAppSelector(
+        (store) => store.auth
+    );
 
     useEffect(() => {
         if (status !== API_STATUS.REJECTED) return;
@@ -28,7 +30,7 @@ const Login = () => {
         if (field && errors.hasOwnProperty(field)) {
             setErrors((prevErrors) => ({ ...prevErrors, [field]: message }));
         } else {
-            showToast('error', message);
+            !doNotShowAlert && showToast('error', message);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [status, error]);

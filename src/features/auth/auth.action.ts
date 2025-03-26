@@ -78,7 +78,7 @@ export const signUpActionDispatcher = (payload: {
 
 export const refreshAction = createAsyncThunk<
     SuccessResponse,
-    void,
+    { doNotShowAlert: boolean },
     {
         rejectValue: ErrorResponse;
     }
@@ -90,8 +90,12 @@ export const refreshAction = createAsyncThunk<
     }
 });
 
-export const refreshActionDispatcher = () => {
-    appDispatcher(refreshAction());
+export const refreshActionDispatcher = ({
+    doNotShowAlert,
+}: {
+    doNotShowAlert: boolean;
+}) => {
+    appDispatcher(refreshAction({ doNotShowAlert }));
 };
 
 // this will be used when we need to clear access-token, refresh-token and localStorage

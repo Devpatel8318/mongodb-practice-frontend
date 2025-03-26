@@ -18,6 +18,7 @@ export interface AuthStateType {
     error: null | ReducerErrorObject;
     loading: boolean;
     isUserLoggedIn: boolean;
+    doNotShowAlert: boolean;
 }
 
 export const initialState: AuthStateType = {
@@ -26,6 +27,7 @@ export const initialState: AuthStateType = {
     error: null,
     loading: false,
     isUserLoggedIn: false,
+    doNotShowAlert: false,
 };
 
 const handlePending = (state: AuthStateType) => {
@@ -34,6 +36,7 @@ const handlePending = (state: AuthStateType) => {
         loading: true,
         success: null,
         error: null,
+        doNotShowAlert: null,
     });
 };
 
@@ -115,7 +118,20 @@ const authSlice = createSlice({
                 localStorage.setItem('isUserLoggedIn', 'true');
                 if (payload?.message) showToast('success', payload.message);
             })
-            .addCase(refreshAction.rejected, handleRejected)
+            .addCase(refreshAction.rejected, (state, { payload, meta }) => {
+                Object.assign(state, {
+                    status: API_STATUS.REJECTED,
+                    loading: false,
+                    success: false,
+                    error: {
+                        message: payload?.message,
+                        reasons: payload?.reasons,
+                    },
+                    isUserLoggedIn: false,
+                    doNotShowAlert: meta.arg?.doNotShowAlert,
+                });
+                localStorage.removeItem('isUserLoggedIn');
+            })
 
             .addCase(logoutAction.pending, handlePending)
             .addCase(logoutAction.fulfilled, (state) => {
