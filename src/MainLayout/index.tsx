@@ -36,10 +36,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         setShowDropDown(false);
     });
 
-    const auth = useAppSelector((state) => state.auth);
     const { profilePictureUrl } = useAppSelector((state) => state.user);
-
-    const { loading } = auth;
 
     return (
         <div className="w-screen min-h-screen flex flex-col">
@@ -57,7 +54,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <div className="relative">
+                        <div
+                            className="relative"
+                            onMouseEnter={() => setShowDropDown(true)}
+                            onMouseLeave={() => setShowDropDown(false)}
+                        >
                             <button
                                 name="profile-dropdown-button"
                                 type="button"
@@ -111,14 +112,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 </nav>
             </header>
             <div className="p-3 bg-gray-100 h-full grow flex">
-                {/* // TODO: change name from loading -> mainProductLoading , loading should be for used locally */}
-                {loading ? (
-                    // TODO: Add Main Loader
-                    <>loading</>
-                ) : (
-                    // add bg color if required for below div
-                    <div className="grow rounded-md">{children}</div>
-                )}
+                <div className="grow rounded-md">{children}</div>
             </div>
         </div>
     );

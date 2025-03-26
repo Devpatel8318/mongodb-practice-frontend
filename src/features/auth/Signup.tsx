@@ -1,4 +1,4 @@
-import { React, useState } from 'src/deps';
+import { React, useEffect, useState } from 'src/deps';
 import { signUpActionDispatcher } from './auth.action';
 import { useAppSelector } from 'src/Store';
 import { emailValidator } from 'src/utils/emailValidator';
@@ -8,12 +8,30 @@ import AuthCard from './components/AuthCard';
 import OAuthButton from './components/OAuthButton';
 import TextInput from './components/TextInput';
 import Button from './components/Button';
+import { API_STATUS } from 'src/utils/callApi';
+import showToast from 'src/utils/showToast';
 
 const Signup = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({ email: '', password: '' });
 
-    const { loading } = useAppSelector((store) => store.auth);
+    const { loading, status, error } = useAppSelector((store) => store.auth);
+
+    useEffect(() => {
+        if (status !== API_STATUS.REJECTED) return;
+
+        const defaultErrorMessage = 'Something went wrong';
+        const firstErrorReason = error?.reasons?.[0];
+        const field = firstErrorReason?.field;
+        const message = firstErrorReason?.message || defaultErrorMessage;
+
+        if (field && errors.hasOwnProperty(field)) {
+            setErrors((prevErrors) => ({ ...prevErrors, [field]: message }));
+        } else {
+            showToast('error', message);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [status, error]);
 
     const validateSubmit = (): boolean => {
         const emailError = emailValidator(formData.email);

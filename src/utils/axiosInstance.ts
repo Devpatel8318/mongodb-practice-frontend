@@ -1,8 +1,7 @@
-import { axios } from "src/deps";
+import { axios } from 'src/deps';
 
-import { BACKEND_URL } from "./config";
-import getToken from "./getToken";
-import { logoutUserDispatcher } from "src/Store/reducers/auth.reducer";
+import { BACKEND_URL } from './config';
+import { logoutUserDispatcher } from 'src/Store/reducers/auth.reducer';
 
 let isRefreshing = false;
 let refreshQueue: (() => void)[] = [];
@@ -16,26 +15,14 @@ instance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
-        if (
-            error.response?.status === 401 &&
-            error.response.data?.message === "Permission denied."
-        ) {
+        if (error.response?.status === 401) {
             if (!isRefreshing) {
                 isRefreshing = true;
                 try {
-                    const getRefreshResponse = await axios.get(
-                        `${BACKEND_URL}/auth/me`,
-                        {
-                            withCredentials: true,
-                        },
-                    );
+                    await axios.get(`${BACKEND_URL}/auth/refresh`, {
+                        withCredentials: true,
+                    });
 
-                    // Update the access token
-                    originalRequest.headers[
-                        "Authorization"
-                    ] = `Bearer ${getRefreshResponse.data.accessToken}`;
-
-                    // Retry the original request with the new token
                     return instance(originalRequest);
                 } catch (refreshError) {
                     // no need to clear the token as both are invalid, so only loggout the user by updating redux state
@@ -48,15 +35,12 @@ instance.interceptors.response.use(
                 }
             } else {
                 refreshQueue.push(() => {
-                    originalRequest.headers[
-                        "Authorization"
-                    ] = `Bearer ${getToken()}`;
                     instance(originalRequest);
                 });
             }
         }
         return Promise.reject(error);
-    },
+    }
 );
 
 export default instance;

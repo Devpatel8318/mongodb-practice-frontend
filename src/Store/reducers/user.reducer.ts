@@ -1,7 +1,7 @@
-import { createSlice } from "src/deps";
-import { ReducerErrorObject } from "src/Types/global";
-import { API_STATUS, API_STATUS_TYPE } from "src/utils/callApi";
-import { userSettingAction } from "../globalActions/user.action";
+import { createSlice } from 'src/deps';
+import { ReducerErrorObject } from 'src/Types/global';
+import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi';
+import { userSettingAction } from '../globalActions/user.action';
 
 export interface UserStateType {
     status: API_STATUS_TYPE;
@@ -22,7 +22,7 @@ const initialState: UserStateType = {
 };
 
 const userSlice = createSlice({
-    name: "user",
+    name: 'user',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -36,7 +36,6 @@ const userSlice = createSlice({
                 });
             })
             .addCase(userSettingAction.fulfilled, (state, { payload }) => {
-                console.log({ payload });
                 Object.assign(state, {
                     status: API_STATUS.SUCCESS,
                     loading: false,

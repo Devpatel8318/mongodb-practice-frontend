@@ -3,11 +3,10 @@ import { useEffect, useState, Toaster } from 'src/deps';
 import Routers from 'src/router';
 import { loginUserDispatcher } from './Store/reducers/auth.reducer';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { userSettingActionDispatcher } from './Store/globalActions/user.action';
 
 function App() {
     // * this state is required because without this in initial render, private route will get
-    // * default false of isUserLoggedIn as false, due to which it will unnecessary call user/me.
+    // * default false of isUserLoggedIn as false, due to which it will unnecessary call auth/refresh.
     const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
@@ -16,7 +15,6 @@ function App() {
             loginUserDispatcher();
         }
         setInitialized(true);
-        userSettingActionDispatcher();
     }, []);
 
     if (!initialized) {

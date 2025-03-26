@@ -3,6 +3,7 @@ import { React, useEffect, Navigate, Outlet, useLocation } from 'src/deps';
 import MainLayout from 'src/MainLayout';
 import { useAppSelector } from 'src/Store';
 import { refreshActionDispatcher } from 'src/features/auth/auth.action';
+import { userSettingActionDispatcher } from 'src/Store/globalActions/user.action';
 
 const PrivateRoute: React.FC = () => {
     const { isUserLoggedIn } = useAppSelector((store) => store.auth);
@@ -14,6 +15,8 @@ const PrivateRoute: React.FC = () => {
 
         if (!isUserLoggedIn) {
             refreshActionDispatcher();
+        } else {
+            userSettingActionDispatcher();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
