@@ -9,10 +9,10 @@ import { privateRoutes, publicRoutes } from './routes';
 const AppRoutes = () => (
     <BrowserRouter>
         <Routes>
+            <Route element={<PublicRoute />}>{CustomRoute(publicRoutes)}</Route>
             <Route element={<PrivateRoute />}>
                 {CustomRoute(privateRoutes)}
             </Route>
-            <Route element={<PublicRoute />}>{CustomRoute(publicRoutes)}</Route>
             <Route path="*" element={<NotFound />} key={'*'} />
         </Routes>
     </BrowserRouter>
