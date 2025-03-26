@@ -12,8 +12,16 @@ import { API_STATUS } from 'src/utils/callApi';
 import showToast from 'src/utils/showToast';
 
 const Signup = () => {
-    const [formData, setFormData] = useState({ email: '', password: '' });
-    const [errors, setErrors] = useState({ email: '', password: '' });
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
+    const [errors, setErrors] = useState({
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
 
     const { loading, status, error } = useAppSelector((store) => store.auth);
 
@@ -36,10 +44,18 @@ const Signup = () => {
     const validateSubmit = (): boolean => {
         const emailError = emailValidator(formData.email);
         const passwordError = passwordValidator(formData.password);
+        const confirmPasswordError =
+            formData.password !== formData.confirmPassword
+                ? 'Passwords do not match'
+                : '';
 
-        setErrors({ email: emailError, password: passwordError });
+        setErrors({
+            email: emailError,
+            password: passwordError,
+            confirmPassword: confirmPasswordError,
+        });
 
-        return !emailError && !passwordError;
+        return !emailError && !passwordError && !confirmPasswordError;
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +93,7 @@ const Signup = () => {
                 </div>
 
                 <form onSubmit={handleSubmit}>
-                    <div className="flex gap-7 flex-col">
+                    <div className="flex gap-6 flex-col">
                         <div>
                             <TextInput
                                 label="Email address"
@@ -98,6 +114,17 @@ const Signup = () => {
                                 placeholder="••••••••"
                                 onChange={handleChange}
                                 error={errors.password}
+                            />
+                        </div>
+                        <div>
+                            <TextInput
+                                label="Confirm Password"
+                                type="password"
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                placeholder="••••••••"
+                                onChange={handleChange}
+                                error={errors.confirmPassword}
                             />
                         </div>
                         <Button

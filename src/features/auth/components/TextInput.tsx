@@ -1,7 +1,6 @@
-import { React } from 'src/deps';
+import { React, useState } from 'src/deps';
 
 interface TextInputProps {
-    // Core props
     label: string;
     type?: string;
     name: string;
@@ -9,15 +8,9 @@ interface TextInputProps {
     placeholder?: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     error?: string;
-
-    // Enhanced accessibility
     id?: string;
-
-    // Additional states
     disabled?: boolean;
     readOnly?: boolean;
-
-    // Styling & variants
     className?: string;
     inputClassName?: string;
     labelClassName?: string;
@@ -25,7 +18,6 @@ interface TextInputProps {
 }
 
 const TextInput: React.FC<TextInputProps> = ({
-    // Core props
     label,
     type = 'text',
     name,
@@ -33,30 +25,39 @@ const TextInput: React.FC<TextInputProps> = ({
     placeholder,
     onChange,
     error,
-
-    // Enhanced accessibility
     id = name,
-
-    // Additional states
     disabled = false,
     readOnly = false,
-
-    // Styling & variants
     className = '',
     inputClassName = '',
     labelClassName = '',
     errorClassName = '',
 }) => {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+    };
+
     return (
         <div className={className}>
-            <label className={`block mb-2 text-sm ${labelClassName}`}>
+            <label
+                className={`block mb-2 text-sm ${labelClassName}`}
+                htmlFor={id}
+            >
                 {label}
             </label>
 
-            <div className="relative">
+            <div className="relative flex items-center">
                 <input
                     id={id}
-                    type={type}
+                    type={
+                        type === 'password'
+                            ? showPassword
+                                ? 'text'
+                                : 'password'
+                            : type
+                    }
                     name={name}
                     value={value}
                     placeholder={placeholder}
@@ -78,6 +79,18 @@ const TextInput: React.FC<TextInputProps> = ({
                         ${inputClassName}
                     `}
                 />
+
+                {/* Show/Hide password button (Inside Input Field) */}
+                {type === 'password' && (
+                    <button
+                        tabIndex={-1}
+                        type="button"
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-xs font-medium focus:outline-none"
+                        onClick={togglePasswordVisibility}
+                    >
+                        {showPassword ? 'Hide' : 'Show'}
+                    </button>
+                )}
             </div>
 
             {error && (
