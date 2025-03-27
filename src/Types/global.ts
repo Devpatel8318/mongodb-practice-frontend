@@ -1,22 +1,22 @@
 export interface BaseResponse {
-    success: boolean;
-    message: string;
+	success: boolean
+	message: string
 }
 
 export interface SuccessResponse<T = undefined> extends BaseResponse {
-    data?: T;
+	data?: T
 }
 
 export interface FieldError {
-    field: string;
-    message: string;
+	field: string
+	message: string
 }
 
 export interface ErrorResponse extends BaseResponse {
-    reasons?: FieldError[];
+	reasons?: FieldError[]
 }
 
 export interface ReducerErrorObject {
-    message: string;
-    reasons?: FieldError[];
+	message: string
+	reasons?: FieldError[]
 }

@@ -1,4 +1,4 @@
-import SortDownArrow from "./SortDownArrow";
-import SortUpArrow from "./SortUpArrow.tsx";
+import SortDownArrow from './SortDownArrow'
+import SortUpArrow from './SortUpArrow.tsx'
 
-export { SortDownArrow, SortUpArrow };
+export { SortDownArrow, SortUpArrow }

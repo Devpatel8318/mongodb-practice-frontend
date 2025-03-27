@@ -1,15 +1,15 @@
-import { useRef, useEffect } from 'src/deps';
+import { useRef, useEffect } from 'src/deps'
 
 function useIsFirstRender() {
-    const isFirstRender = useRef(true);
+	const isFirstRender = useRef(true)
 
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-        }
-    }, []);
+	useEffect(() => {
+		if (isFirstRender.current) {
+			isFirstRender.current = false
+		}
+	}, [])
 
-    return isFirstRender.current;
+	return isFirstRender.current
 }
 
-export default useIsFirstRender;
+export default useIsFirstRender

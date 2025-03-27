@@ -1,18 +1,18 @@
-type Procedure = (...args: any[]) => void;
+type Procedure = (...args: any[]) => void
 
 const debounce = (delay: number, mainFunction: Procedure) => {
-    let timeoutId: ReturnType<typeof setTimeout>;
+	let timeoutId: ReturnType<typeof setTimeout>
 
-    const debouncedFn = function (...args: Parameters<Procedure>) {
-        timeoutId && clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-            mainFunction(...args);
-        }, delay);
-    };
+	const debouncedFn = function (...args: Parameters<Procedure>) {
+		timeoutId && clearTimeout(timeoutId)
+		timeoutId = setTimeout(() => {
+			mainFunction(...args)
+		}, delay)
+	}
 
-    debouncedFn.cancel = () => timeoutId && clearTimeout(timeoutId);
+	debouncedFn.cancel = () => timeoutId && clearTimeout(timeoutId)
 
-    return debouncedFn;
-};
+	return debouncedFn
+}
 
-export default debounce;
+export default debounce

@@ -1,18 +1,18 @@
-import { useEffect } from 'src/deps';
+import { useEffect } from 'src/deps'
 
-import QuestionsListTable from './components/Table/QuestionsListTable';
-import { getAllQuestionsActionDispatcher } from './dashboard.action';
+import QuestionsListTable from './components/Table/QuestionsListTable'
+import { getAllQuestionsActionDispatcher } from './dashboard.action'
 
 const Dashboard = () => {
-    useEffect(() => {
-        getAllQuestionsActionDispatcher({});
-    }, []);
+	useEffect(() => {
+		getAllQuestionsActionDispatcher({})
+	}, [])
 
-    return (
-        <div className="w-9/12 mx-auto">
-            <QuestionsListTable />
-        </div>
-    );
-};
+	return (
+		<div className="w-9/12 mx-auto">
+			<QuestionsListTable />
+		</div>
+	)
+}
 
-export default Dashboard;
+export default Dashboard
