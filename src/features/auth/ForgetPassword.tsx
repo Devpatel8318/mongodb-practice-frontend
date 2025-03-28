@@ -33,40 +33,40 @@ const ForgetPassword = () => {
 
 	return (
 		<AuthCard
-				title="Forgot password?"
-				footerText={
-					<p>
-						Remember your password?{' '}
-						<Link
-							to="/signup"
-							className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
-						>
-							Sign in here
-						</Link>
-					</p>
-				}
-			>
-				<form onSubmit={handleSubmit}>
-					<div className="flex gap-2 flex-col">
-						<div className="mb-4">
-							<TextInput
-								label="Email address"
-								type="email"
-								name="email"
-								value={email}
-								placeholder="name@company.com"
-								onChange={handleEmailChange}
-								error={emailError}
-							/>
-						</div>
-						<Button
-							type="submit"
-							label="Reset Password"
-							disabled={loading}
+			title="Forgot password?"
+			footerText={
+				<p>
+					Remember your password?{' '}
+					<Link
+						to="/signup"
+						className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
+					>
+						Sign in here
+					</Link>
+				</p>
+			}
+		>
+			<form onSubmit={handleSubmit}>
+				<div className="flex gap-2 flex-col">
+					<div className="mb-4">
+						<TextInput
+							label="Email address"
+							type="email"
+							name="email"
+							value={email}
+							placeholder="name@company.com"
+							onChange={handleEmailChange}
+							error={emailError}
 						/>
 					</div>
-				</form>
-			</AuthCard>
+					<Button
+						type="submit"
+						label="Reset Password"
+						disabled={loading}
+					/>
+				</div>
+			</form>
+		</AuthCard>
 	)
 }
 

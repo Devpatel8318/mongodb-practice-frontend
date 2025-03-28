@@ -72,68 +72,64 @@ const Signup = () => {
 
 	return (
 		<AuthCard
-				title="Sign up"
-				footerText={
-					<p>
-						Already have an account?{' '}
-						<Link
-							to="/login"
-							className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
-						>
-							Sign in here
-						</Link>
-					</p>
-				}
-			>
-				<OAuthButton />
+			title="Sign up"
+			footerText={
+				<p>
+					Already have an account?{' '}
+					<Link
+						to="/login"
+						className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
+					>
+						Sign in here
+					</Link>
+				</p>
+			}
+		>
+			<OAuthButton />
 
-				<div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6">
-					Or
-				</div>
+			<div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6">
+				Or
+			</div>
 
-				<form onSubmit={handleSubmit}>
-					<div className="flex gap-6 flex-col">
-						<div>
-							<TextInput
-								label="Email address"
-								type="email"
-								name="email"
-								value={formData.email}
-								placeholder="name@company.com"
-								onChange={handleChange}
-								error={errors.email}
-							/>
-						</div>
-						<div>
-							<TextInput
-								label="Password"
-								type="password"
-								name="password"
-								value={formData.password}
-								placeholder="••••••••"
-								onChange={handleChange}
-								error={errors.password}
-							/>
-						</div>
-						<div>
-							<TextInput
-								label="Confirm Password"
-								type="password"
-								name="confirmPassword"
-								value={formData.confirmPassword}
-								placeholder="••••••••"
-								onChange={handleChange}
-								error={errors.confirmPassword}
-							/>
-						</div>
-						<Button
-							type="submit"
-							label="Sign up"
-							disabled={loading}
+			<form onSubmit={handleSubmit}>
+				<div className="flex gap-6 flex-col">
+					<div>
+						<TextInput
+							label="Email address"
+							type="email"
+							name="email"
+							value={formData.email}
+							placeholder="name@company.com"
+							onChange={handleChange}
+							error={errors.email}
 						/>
 					</div>
-				</form>
-			</AuthCard>
+					<div>
+						<TextInput
+							label="Password"
+							type="password"
+							name="password"
+							value={formData.password}
+							placeholder="••••••••"
+							onChange={handleChange}
+							error={errors.password}
+						/>
+					</div>
+					<div>
+						<TextInput
+							label="Confirm Password"
+							type="password"
+							name="confirmPassword"
+							value={formData.confirmPassword}
+							placeholder="••••••••"
+							onChange={handleChange}
+							error={errors.confirmPassword}
+						/>
+					</div>
+					<Button type="submit" label="Sign up" disabled={loading} />
+				</div>
+			</form>
+		</AuthCard>
 	)
 }
 

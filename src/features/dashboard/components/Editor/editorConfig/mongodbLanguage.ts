@@ -1,4 +1,3 @@
- 
 // MongoDB language configuration
 export const mongodbLanguage = {
 	defaultToken: 'invalid',
