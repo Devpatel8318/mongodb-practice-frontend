@@ -111,7 +111,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 					</div>
 				</nav>
 			</header>
-			<div className="p-3 bg-gray-100 h-full grow flex">
+			<div className="p-2 bg-gray-100 h-full grow flex">
 				<div className="grow rounded-md">{children}</div>
 			</div>
 		</div>

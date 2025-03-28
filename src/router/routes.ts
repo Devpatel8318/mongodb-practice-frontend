@@ -3,6 +3,7 @@ import Login from 'src/features/auth/Login'
 import Logout from 'src/features/auth/Logout'
 import Signup from 'src/features/auth/Signup'
 import ForgetPassword from 'src/features/auth/ForgetPassword'
+import QueryPracticePage from 'src/features/queryPractice/QueryPracticePage'
 
 export const privateRoutes = [
 	...['/dashboard', '/'].map((path) => ({
@@ -13,7 +14,7 @@ export const privateRoutes = [
 	{
 		path: '/problems/:questionId',
 		title: 'Dashboard',
-		component: Dashboard,
+		component: QueryPracticePage,
 	},
 	{
 		path: '/logout',

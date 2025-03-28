@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import Icons from 'src/assets/svg'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
@@ -21,8 +22,13 @@ const getDifficultyColor = (difficulty: Question['difficulty']) => {
 }
 
 const TableRow = ({ item }: { item: Question }) => {
+	const navigate = useNavigate()
+
 	return (
-		<tr className="hover:bg-gray-100 cursor-pointer">
+		<tr
+			onClick={() => navigate(`/problems/${item.questionId}`)}
+			className="hover:bg-gray-100 cursor-pointer"
+		>
 			<td className="h-px whitespace-nowrap w-2/12 px-6 py-3">
 				<span className="text-sm font-medium text-gray-500 flex items-center gap-1">
 					{getStatusIcon(item.status)}
