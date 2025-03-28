@@ -32,8 +32,7 @@ const ForgetPassword = () => {
 	}
 
 	return (
-		<>
-			<AuthCard
+		<AuthCard
 				title="Forgot password?"
 				footerText={
 					<p>
@@ -68,7 +67,6 @@ const ForgetPassword = () => {
 					</div>
 				</form>
 			</AuthCard>
-		</>
 	)
 }
 

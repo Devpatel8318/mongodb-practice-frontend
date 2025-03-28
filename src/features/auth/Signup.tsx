@@ -71,8 +71,7 @@ const Signup = () => {
 	}
 
 	return (
-		<>
-			<AuthCard
+		<AuthCard
 				title="Sign up"
 				footerText={
 					<p>
@@ -135,7 +134,6 @@ const Signup = () => {
 					</div>
 				</form>
 			</AuthCard>
-		</>
 	)
 }
 

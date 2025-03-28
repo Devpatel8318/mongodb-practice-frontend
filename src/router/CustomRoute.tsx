@@ -3,7 +3,7 @@ import { Route, Helmet } from 'src/deps'
 export interface RouteObjectType {
 	path: string
 	title: string
-	component: (() => JSX.Element) | React.FC<{}>
+	component: (() => JSX.Element) | React.FC<object>
 }
 
 const CustomRoute = (routes: RouteObjectType[]): JSX.Element[] =>

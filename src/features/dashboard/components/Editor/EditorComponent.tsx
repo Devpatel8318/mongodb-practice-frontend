@@ -86,9 +86,11 @@ const EditorComponent: React.FC<EditorComponentProps> = ({ onQueryChange }) => {
 			onChange={handleEditorChange}
 			onMount={(
 				editor: monaco.editor.IStandaloneCodeEditor,
-				monace: Monaco
+				_monace: Monaco
 			) => {
-				onQueryChange && onQueryChange(editor.getValue())
+				if (onQueryChange) {
+					onQueryChange(editor.getValue())
+				}
 			}}
 			theme="mongodbCustomTheme"
 			options={{

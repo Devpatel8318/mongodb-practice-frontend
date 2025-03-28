@@ -3,7 +3,7 @@ const Searchbar = ({
 	setSearch,
 }: {
 	search: string
-	setSearch: Function
+	setSearch: (value: string) => void
 }) => {
 	return (
 		<div className="relative grow max-w-md">

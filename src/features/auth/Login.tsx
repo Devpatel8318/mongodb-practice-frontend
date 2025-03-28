@@ -30,7 +30,9 @@ const Login = () => {
 		if (field && errors.hasOwnProperty(field)) {
 			setErrors((prevErrors) => ({ ...prevErrors, [field]: message }))
 		} else {
-			!doNotShowAlert && showToast('error', message)
+			if (!doNotShowAlert) {
+				showToast('error', message)
+			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [status, error])
@@ -59,66 +61,60 @@ const Login = () => {
 	}
 
 	return (
-		<>
-			<AuthCard
-				title="Sign in"
-				footerText={
-					<p>
-						Don't have an account yet?{' '}
-						<Link
-							to="/signup"
-							className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
-						>
-							Sign up here
-						</Link>
-					</p>
-				}
-			>
-				<OAuthButton />
+		<AuthCard
+			title="Sign in"
+			footerText={
+				<p>
+					Don't have an account yet?{' '}
+					<Link
+						to="/signup"
+						className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
+					>
+						Sign up here
+					</Link>
+				</p>
+			}
+		>
+			<OAuthButton />
 
-				<div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6">
-					Or
-				</div>
+			<div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6">
+				Or
+			</div>
 
-				<form onSubmit={handleSubmit}>
-					<div className="flex gap-6 flex-col">
-						<div>
-							<TextInput
-								label="Email address"
-								type="email"
-								name="email"
-								value={formData.email}
-								placeholder="name@company.com"
-								onChange={handleChange}
-								error={errors.email}
-							/>
-						</div>
-						<div>
-							<TextInput
-								label="Password"
-								type="password"
-								name="password"
-								value={formData.password}
-								placeholder="••••••••"
-								onChange={handleChange}
-								error={errors.password}
-							/>
-							<Link
-								className="inline-flex items-center gap-x-1 text-xs text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
-								to="/forget"
-							>
-								Forgot password?
-							</Link>
-						</div>
-						<Button
-							type="submit"
-							label="Sign in"
-							disabled={loading}
+			<form onSubmit={handleSubmit}>
+				<div className="flex gap-6 flex-col">
+					<div>
+						<TextInput
+							label="Email address"
+							type="email"
+							name="email"
+							value={formData.email}
+							placeholder="name@company.com"
+							onChange={handleChange}
+							error={errors.email}
 						/>
 					</div>
-				</form>
-			</AuthCard>
-		</>
+					<div>
+						<TextInput
+							label="Password"
+							type="password"
+							name="password"
+							value={formData.password}
+							placeholder="••••••••"
+							onChange={handleChange}
+							error={errors.password}
+						/>
+						<Link
+							className="inline-flex items-center gap-x-1 text-xs text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
+							to="/forget"
+						>
+							Forgot password?
+						</Link>
+					</div>
+					<Button type="submit" label="Sign in" disabled={loading} />
+				</div>
+			</form>
+		</AuthCard>
 	)
 }
 

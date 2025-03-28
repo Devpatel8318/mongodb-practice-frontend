@@ -2,7 +2,11 @@ import { toast } from 'src/deps'
 
 type toastType = 'success' | 'error' | 'loading' | 'dismiss' | 'remove'
 
-const showToast = (toastType: toastType, message: string, toastId?: string) => {
+const showToast = (
+	toastType: toastType,
+	message: string,
+	_toastId?: string
+) => {
 	let id = null
 
 	switch (toastType) {
