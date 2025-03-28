@@ -70,6 +70,7 @@ const ResizableLayout: React.FC = () => {
 		} else {
 			panelRef.collapse()
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	const maximizeSection = useCallback((section: SectionName) => {
