@@ -119,12 +119,15 @@ const Pagination = () => {
 
 	const debouncedFetchQuestions = useMemo(
 		() =>
-			debounce(300, (currentPage, currentItemsPerPage) => {
-				getAllQuestionsActionDispatcher({
-					page: currentPage,
-					limit: currentItemsPerPage,
-				})
-			}),
+			debounce(
+				300,
+				(currentPage: number, currentItemsPerPage: number) => {
+					getAllQuestionsActionDispatcher({
+						page: currentPage,
+						limit: currentItemsPerPage,
+					})
+				}
+			),
 		[]
 	)
 

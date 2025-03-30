@@ -5,43 +5,38 @@ import Signup from 'src/features/auth/Signup'
 import ForgetPassword from 'src/features/auth/ForgetPassword'
 import QueryPracticePage from 'src/features/queryPractice/QueryPracticePage'
 
-export const privateRoutes = [
-	...['/dashboard', '/'].map((path) => ({
-		path,
-		title: 'Dashboard',
-		component: Dashboard,
-	})),
-	{
-		path: '/problems/:questionId',
-		title: 'Dashboard',
-		component: QueryPracticePage,
-	},
-	{
-		path: '/logout',
-		title: 'Logout',
-		component: Logout,
-	},
+export interface RouteObjectType {
+	path: string
+	title: string
+	component: React.ComponentType
+}
+
+const createRouteObject = (
+	path: string,
+	title: string,
+	component: React.ComponentType
+): RouteObjectType => ({
+	path,
+	title,
+	component,
+})
+
+export const privateRoutes: RouteObjectType[] = [
+	...['/dashboard', '/'].map((path) =>
+		createRouteObject(path, 'Dashboard', Dashboard)
+	),
+	createRouteObject('/problems/:questionId', 'Problem', QueryPracticePage),
+	createRouteObject('/logout', 'Logout', Logout),
 ]
 
-export const publicRoutes = [
-	...['/forget', 'forget-password'].map((path) => ({
-		path,
-		title: 'Forget Password',
-		component: ForgetPassword,
-	})),
-	...['/signup', 'register'].map((path) => ({
-		path,
-		title: 'Register',
-		component: Signup,
-	})),
-	...['/login', 'signin'].map((path) => ({
-		path,
-		title: 'Login',
-		component: Login,
-	})),
-	{
-		path: '/logout',
-		title: 'Logout',
-		component: Logout,
-	},
+export const publicRoutes: RouteObjectType[] = [
+	...['/forget', '/forget-password'].map((path) =>
+		createRouteObject(path, 'Forget Password', ForgetPassword)
+	),
+	...['/signup', '/register'].map((path) =>
+		createRouteObject(path, 'Register', Signup)
+	),
+	...['/login', '/signin'].map((path) =>
+		createRouteObject(path, 'Login', Login)
+	),
 ]
