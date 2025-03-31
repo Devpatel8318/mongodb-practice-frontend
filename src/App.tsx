@@ -22,6 +22,7 @@ const App = () => {
 	}
 
 	const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || ''
+	console.log('testing')
 
 	return (
 		<GoogleOAuthProvider clientId={clientId}>
