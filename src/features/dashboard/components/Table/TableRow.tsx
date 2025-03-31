@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'src/deps'
 import Icons from 'src/assets/svg'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'

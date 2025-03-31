@@ -11,9 +11,13 @@ const Logout = () => {
 		logoutActionDispatcher()
 	}, [])
 
+	const navigateToLogin = async () => {
+		await navigate('/login', { replace: true })
+	}
+
 	useEffect(() => {
 		if (status !== API_STATUS.PENDING) {
-			return navigate('/login', { replace: true })
+			navigateToLogin()
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [loading])

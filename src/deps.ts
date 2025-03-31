@@ -27,7 +27,8 @@ export {
 	Routes,
 	useLocation,
 	useNavigate,
-} from 'react-router-dom'
+	RouterProvider,
+} from 'react-router'
 
 export { Cookies }
 

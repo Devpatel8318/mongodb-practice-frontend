@@ -85,7 +85,8 @@ export default [
 			'react/react-in-jsx-scope': 'off',
 			'react/jsx-uses-react': 'off',
 			'react/no-unescaped-entities': 'off',
-			'react-hooks/exhaustive-deps': 'warn', // ✅ Added this rule
+			'react-hooks/exhaustive-deps': 'warn',
+			'react-hooks/rules-of-hooks': 'warn',
 		},
 	},
 ]
