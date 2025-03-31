@@ -1,4 +1,4 @@
-import { React, useEffect, useMemo, useState } from 'src/deps'
+import { useEffect, useMemo, useState } from 'src/deps'
 
 import { useAppSelector } from 'src/Store'
 import TableRow from './TableRow'

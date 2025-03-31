@@ -8,7 +8,6 @@
     "build": "react-scripts build",
     "format": "prettier  --write 'src/**/*.{ts,tsx}'",
     "lint": "eslint --max-warnings 0 'src/**/*.{ts,tsx}'",
-    "prepare": "husky && husky install",
     "type-check": "tsc --noEmit",
     "validate": "yarn run type-check && yarn run format && yarn run lint"
   },

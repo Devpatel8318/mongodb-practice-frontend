@@ -74,7 +74,7 @@ const FilterDropdown = ({
 			{openFilter === type && (
 				<div
 					ref={filterRef}
-					className="absolute transition-opacity duration-200 divide-y divide-gray-200 min-w-48 bg-white shadow-lg rounded-lg mt-2"
+					className="absolute transition-opacity duration-200 divide-y divide-gray-200 min-w-48 bg-white shadow-lg rounded-lg mt-2 overflow-hidden"
 				>
 					<div className="divide-y divide-gray-200">
 						{Object.entries(filters[type]).map(
@@ -84,7 +84,7 @@ const FilterDropdown = ({
 									className="flex py-2 px-4 hover:bg-gray-100"
 								>
 									<button
-										className="border-gray-300 rounded-sm flex justify-between grow"
+										className="border-gray-300 flex justify-between grow"
 										onClick={() =>
 											handleFilterChange(
 												type,

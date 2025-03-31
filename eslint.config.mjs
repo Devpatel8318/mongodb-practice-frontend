@@ -63,6 +63,7 @@ export default [
 		rules: {
 			...reactPlugin.configs.recommended.rules,
 			...reactHooksPlugin.configs.recommended.rules,
+			'react-hooks/exhaustive-deps': 'warn', // ✅ Added this rule
 			'react/function-component-definition': [
 				'warn',
 				{

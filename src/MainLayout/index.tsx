@@ -85,10 +85,29 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 							{showDropDown && (
 								<div
 									ref={filterRef}
-									className="absolute right-0 w-32 bg-white  shadow-lg rounded-lg "
+									className="absolute right-0 w-32  shadow-lg rounded-lg bg-white overflow-hidden"
 								>
 									<button
-										className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 rounded-lg flex justify-between items-center"
+										className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 flex justify-between items-center border-b"
+										onClick={logoutActionDispatcher}
+									>
+										Profile
+										<svg
+											width="16"
+											height="16"
+											viewBox="0 0 16 16"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											3
+											<path
+												d="M3.33333 14C2.96667 14 2.65278 13.8694 2.39167 13.6083C2.13056 13.3472 2 13.0333 2 12.6667V3.33333C2 2.96667 2.13056 2.65278 2.39167 2.39167C2.65278 2.13056 2.96667 2 3.33333 2H8V3.33333H3.33333V12.6667H8V14H3.33333ZM10.6667 11.3333L9.75 10.3667L11.45 8.66667H6V7.33333H11.45L9.75 5.63333L10.6667 4.66667L14 8L10.6667 11.3333Z"
+												fill="#1F2937"
+											/>
+										</svg>
+									</button>
+									<button
+										className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 flex justify-between items-center"
 										onClick={logoutActionDispatcher}
 									>
 										Logout
