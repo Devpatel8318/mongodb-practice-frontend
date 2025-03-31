@@ -63,7 +63,6 @@ export default [
 		rules: {
 			...reactPlugin.configs.recommended.rules,
 			...reactHooksPlugin.configs.recommended.rules,
-			'react-hooks/exhaustive-deps': 'warn', // ✅ Added this rule
 			'react/function-component-definition': [
 				'warn',
 				{
@@ -86,6 +85,7 @@ export default [
 			'react/react-in-jsx-scope': 'off',
 			'react/jsx-uses-react': 'off',
 			'react/no-unescaped-entities': 'off',
+			'react-hooks/exhaustive-deps': 'warn', // ✅ Added this rule
 		},
 	},
 ]
