@@ -44,7 +44,7 @@ const TableRow = ({ item }: { item: Question }) => {
 			<td className="size-px whitespace-nowrap w-2/12 px-6 py-3">
 				<span
 					className={cn(
-						'`py-1 px-2 inline-flex items-center text-xs font-medium rounded-full capitalize',
+						'py-1 px-2 inline-flex items-center text-xs font-medium rounded-full capitalize',
 						getDifficultyColor(item.difficulty)
 					)}
 				>
