@@ -118,6 +118,7 @@ export const mongodbLanguage = {
 			},
 
 			// Regular expressions
+			// eslint-disable-next-line no-useless-escape
 			{ regex: /\/[^\/]+\/[gimsuy]*/, action: 'regexp' },
 
 			// Delimiters

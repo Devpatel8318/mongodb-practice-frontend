@@ -4,6 +4,7 @@ export const emailValidator = (email: string) => {
 	}
 
 	const tester =
+		// eslint-disable-next-line no-useless-escape
 		/^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/
 
 	if (email.length > 254) return "Email can't be longer than 254 characters"

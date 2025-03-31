@@ -35,6 +35,7 @@ const getModifierIndex = (modifiers: string | string[]) => {
 }
 
 // Token pattern for MongoDB (handles `$`-prefixed operators, identifiers, and strings)
+// eslint-disable-next-line no-useless-escape
 const tokenPattern = /(\$?[a-zA-Z_][\w\$]*)|(["'`][^"'`]*["'`])|(\d+(\.\d+)?)/g
 
 // Updated MongoDB Semantic Token Provider

@@ -32,7 +32,7 @@ const Signup = () => {
 		const field = firstErrorReason?.field
 		const message = firstErrorReason?.message || defaultErrorMessage
 
-		if (field && errors.hasOwnProperty(field)) {
+		if (field && Object.prototype.hasOwnProperty.call(errors, field)) {
 			setErrors((prevErrors) => ({ ...prevErrors, [field]: message }))
 		} else {
 			showToast('error', message)

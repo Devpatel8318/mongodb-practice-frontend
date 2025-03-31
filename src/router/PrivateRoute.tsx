@@ -18,6 +18,7 @@ const PrivateRoute: React.FC = () => {
 		} else {
 			userSettingActionDispatcher()
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	return isUserLoggedIn ? (
