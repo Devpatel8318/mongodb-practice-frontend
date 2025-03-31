@@ -1,4 +1,5 @@
 import { React, useState } from 'src/deps'
+import { cn } from 'src/utils/cn'
 
 interface TextInputProps {
 	label: string
@@ -64,20 +65,15 @@ const TextInput: React.FC<TextInputProps> = ({
 					onChange={onChange}
 					disabled={disabled}
 					readOnly={readOnly}
-					className={`
-                        px-4 py-2.5 text-sm block w-full border rounded-lg 
-                        ${
-							error
-								? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-								: 'border-gray-200 focus:ring-blue-500 focus:border-blue-500'
-						} 
-                        ${
-							disabled
-								? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-								: ''
-						}
-                        ${inputClassName}
-                    `}
+					className={cn(
+						'px-4 py-2.5 text-sm block w-full border rounded-lg',
+						inputClassName,
+						error
+							? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+							: 'border-gray-200 focus:ring-blue-500 focus:border-blue-500',
+						disabled &&
+							'bg-gray-100 text-gray-500 cursor-not-allowed'
+					)}
 				/>
 
 				{/* Show/Hide password button (Inside Input Field) */}

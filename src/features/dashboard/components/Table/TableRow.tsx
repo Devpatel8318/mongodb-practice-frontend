@@ -2,6 +2,7 @@ import { useNavigate } from 'src/deps'
 import Icons from 'src/assets/svg'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
+import { cn } from 'src/utils/cn'
 
 const getStatusIcon = (status: Question['status']) => {
 	const icons = {
@@ -42,9 +43,10 @@ const TableRow = ({ item }: { item: Question }) => {
 			</td>
 			<td className="size-px whitespace-nowrap w-2/12 px-6 py-3">
 				<span
-					className={`py-1 px-2 inline-flex items-center text-xs font-medium rounded-full capitalize ${getDifficultyColor(
-						item.difficulty
-					)}`}
+					className={cn(
+						'`py-1 px-2 inline-flex items-center text-xs font-medium rounded-full capitalize',
+						getDifficultyColor(item.difficulty)
+					)}
 				>
 					{item.difficultyLabel}
 				</span>

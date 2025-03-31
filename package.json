@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "react-scripts start",
+    "dev": "REACT_APP_NODE_ENV=development react-scripts start",
+    "prod": "REACT_APP_NODE_ENV=production react-scripts start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "format": "prettier  --write 'src/**/*.{ts,tsx}'",

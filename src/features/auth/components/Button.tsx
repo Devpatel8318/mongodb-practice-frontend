@@ -1,4 +1,5 @@
 import { React } from 'src/deps'
+import { cn } from 'src/utils/cn'
 
 interface ButtonProps {
 	// Core props
@@ -100,29 +101,24 @@ const Button: React.FC<ButtonProps> = ({
 			type={type}
 			onClick={onClick}
 			disabled={disabled || isLoading}
-			className={`
-                ${variantClasses}
-                ${sizeClasses}
-                ${fullWidth ? 'w-full' : ''}
-                rounded-lg font-medium
-                transition-colors duration-200
-            ${
-				dontShowFocusClasses
-					? ''
-					: 'focus:outline-none focus:ring-2 focus:ring-offset-2'
-			} 
-                disabled:opacity-50 disabled:cursor-not-allowed
-                inline-flex items-center justify-center
-                ${className}
-            `}
+			className={cn(
+				'rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center',
+				variantClasses,
+				sizeClasses,
+				fullWidth && 'w-full',
+				!dontShowFocusClasses &&
+					'focus:outline-none focus:ring-2 focus:ring-offset-2',
+				className
+			)}
 			form={form}
 		>
 			{isLoading ? (
 				<>
 					<svg
-						className={`animate-spin h-5 w-5 ${
-							loadingText ? 'mr-2' : ''
-						}`}
+						className={cn(
+							'animate-spin h-5 w-5',
+							loadingText && 'mr-2'
+						)}
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
@@ -146,17 +142,13 @@ const Button: React.FC<ButtonProps> = ({
 			) : (
 				<>
 					{startIcon && (
-						<span
-							className={`${!iconOnly && content ? 'mr-2' : ''}`}
-						>
+						<span className={cn(!iconOnly && content && 'mr-2')}>
 							{startIcon}
 						</span>
 					)}
 					{(!iconOnly || (!startIcon && !endIcon)) && content}
 					{endIcon && (
-						<span
-							className={`${!iconOnly && content ? 'ml-2' : ''}`}
-						>
+						<span className={cn(!iconOnly && content && 'ml-2')}>
 							{endIcon}
 						</span>
 					)}

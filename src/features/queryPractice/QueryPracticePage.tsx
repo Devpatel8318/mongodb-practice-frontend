@@ -6,6 +6,7 @@ import {
 	PanelResizeHandle,
 } from 'react-resizable-panels'
 import Icons from 'src/assets/svg'
+import { cn } from 'src/utils/cn'
 
 // Improved type definitions
 type SectionName = 'question' | 'codeEditor' | 'submission' | 'rightSection'
@@ -188,9 +189,12 @@ const ResizableLayout: React.FC = () => {
 						<div className="flex-grow p-4">Question content</div>
 					</div>
 				</Panel>
-				<div className="h-full bg-gray-200">
+				<div className="h-full">
 					<div
-						className={`w-8 font-normal h-full flex items-center justify-center rounded-lg tracking-wider text-md bg-white ${collapsedSections.question ? '' : 'hidden'}`}
+						className={cn(
+							'w-8 font-normal h-full flex items-center justify-center rounded-lg tracking-wider text-md bg-white',
+							!collapsedSections.question && 'hidden'
+						)}
 					>
 						<span className="-rotate-90 ">Content</span>
 					</div>
@@ -283,16 +287,22 @@ const ResizableLayout: React.FC = () => {
 					</PanelGroup>
 				</Panel>
 
-				<div className="h-full bg-gray-200 flex flex-col gap-2">
+				<div className="h-full flex flex-col gap-2">
 					<div
-						className={`w-8 font-normal grow flex items-center justify-center rounded-lg tracking-wider text-md bg-white ${collapsedSections.rightSection ? '' : 'hidden'}`}
+						className={cn(
+							'w-8 font-normal grow flex items-center justify-center rounded-lg tracking-wider text-md bg-white',
+							!collapsedSections.rightSection && 'hidden'
+						)}
 					>
 						<span className="-rotate-90 text-nowrap">
 							Code Editor
 						</span>
 					</div>
 					<div
-						className={`w-8 font-normal grow flex items-center justify-center rounded-lg tracking-wider text-md bg-white ${collapsedSections.rightSection ? '' : 'hidden'}`}
+						className={cn(
+							'w-8 font-normal grow flex items-center justify-center rounded-lg tracking-wider text-md bg-white',
+							!collapsedSections.rightSection && 'hidden'
+						)}
 					>
 						<span className="-rotate-90 ">Submission</span>
 					</div>
