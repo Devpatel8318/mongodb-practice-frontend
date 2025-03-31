@@ -21,8 +21,6 @@ const App = () => {
 		return <div>Loading...</div>
 	}
 
-	console.log('testing')
-
 	const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || ''
 
 	return (
