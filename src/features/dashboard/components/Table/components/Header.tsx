@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocalStorageSetValue } from 'src/hooks/useLocalStogare'
+import { useLocalStorageSetValue } from 'src/hooks/useLocalStorage'
 import Icons from 'src/assets/svg'
 import { Sort } from '../QuestionsListTable'
 
@@ -18,7 +18,7 @@ const getNextSortStep = (prev: Sort, current: keyof Sort) => {
 		const currentIndex = steps.indexOf(prev[current])
 		const nextStep = steps[(currentIndex + 1) % steps.length]
 
-		console.log(prev[current], current, nextStep)
+		// Removed debug logging to avoid unintended console output in production
 
 		if (!nextStep) {
 			delete nextSort[current]

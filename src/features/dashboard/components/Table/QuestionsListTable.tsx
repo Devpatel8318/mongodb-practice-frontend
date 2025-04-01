@@ -8,7 +8,7 @@ import ActiveFilters, { Filters } from './components/ActiveFilters'
 import debounce from 'src/utils/debounce'
 import { getAllQuestionsActionDispatcher } from '../../dashboard.action'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
-import useLocalStorage from 'src/hooks/useLocalStogare'
+import useLocalStorage from 'src/hooks/useLocalStorage'
 
 import { formatFilters, formatSortQuery } from './helper'
 import Searchbar from './components/Searchbar'
