@@ -10,7 +10,8 @@ import { cn } from 'src/utils/cn'
 
 // Improved type definitions
 type SectionName = 'question' | 'codeEditor' | 'submission' | 'rightSection'
-type SectionConfig = {
+
+interface SectionConfig {
 	title: string
 	defaultSize?: number
 	minSize: number
@@ -37,7 +38,6 @@ const SECTION_CONFIGS: Record<SectionName, SectionConfig> = {
 	},
 	rightSection: {
 		title: 'rightSection',
-		// defaultSize: 5,
 		minSize: 15,
 		collapsedSize: 0,
 	},
@@ -55,6 +55,7 @@ const ResizableLayout: React.FC = () => {
 		rightSection: false,
 	})
 
+	// Create refs for all panels
 	const panelRefs = {
 		question: useRef<ImperativePanelHandle>(null),
 		codeEditor: useRef<ImperativePanelHandle>(null),
@@ -62,6 +63,7 @@ const ResizableLayout: React.FC = () => {
 		rightSection: useRef<ImperativePanelHandle>(null),
 	}
 
+	// Toggle panel collapse state
 	const toggleSection = useCallback((section: SectionName) => {
 		const panelRef = panelRefs[section].current
 		if (!panelRef) return
@@ -74,16 +76,25 @@ const ResizableLayout: React.FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
+	// Toggle maximized state for a section
 	const maximizeSection = useCallback((section: SectionName) => {
 		setMaximizedSection((current) => (current === section ? null : section))
 	}, [])
 
-	const renderSectionHeader = (section: SectionName) => {
-		const { title } = SECTION_CONFIGS[section]
-		const isMaximized = maximizedSection === section
-		const isCollapsed = panelRefs[section].current?.isCollapsed()
+	// Update collapsed state when panels change
+	const handlePanelStateChange = useCallback(
+		(section: SectionName, isCollapsed: boolean) => {
+			setCollapsedSections((prev) => ({
+				...prev,
+				[section]: isCollapsed,
+			}))
+		},
+		[]
+	)
 
-		const getSectionToggleIcon = () => {
+	// Get the appropriate toggle icon based on section and state
+	const getSectionToggleIcon = useCallback(
+		(section: SectionName, isCollapsed?: boolean) => {
 			if (section === 'question') {
 				return <Icons.Images24.LeftArrowPagination />
 			}
@@ -101,65 +112,76 @@ const ResizableLayout: React.FC = () => {
 			) : (
 				<Icons.Images24.DownArrowPagination />
 			)
-		}
+		},
+		[]
+	)
 
-		return (
-			<div className="flex justify-between items-center p-2 bg-gray-50">
-				<h3>{title}</h3>
-				<div className="flex space-x-2">
-					{!isMaximized && (
-						<button onClick={() => toggleSection(section)}>
-							{getSectionToggleIcon()}
-						</button>
-					)}
-					<button onClick={() => maximizeSection(section)}>
-						{isMaximized ? (
-							<Icons.Images24.Minimize />
-						) : (
-							<Icons.Images24.Maximize />
+	// Section header component
+	const SectionHeader = useCallback(
+		({ section }: { section: SectionName }) => {
+			const { title } = SECTION_CONFIGS[section]
+			const isMaximized = maximizedSection === section
+			const isCollapsed = panelRefs[section].current?.isCollapsed()
+
+			return (
+				<div className="flex justify-between items-center p-2 bg-gray-50">
+					<h3>{title}</h3>
+					<div className="flex space-x-2">
+						{!isMaximized && (
+							<button
+								onClick={() => toggleSection(section)}
+								aria-label={isCollapsed ? 'Expand' : 'Collapse'}
+							>
+								{getSectionToggleIcon(section, isCollapsed)}
+							</button>
 						)}
-					</button>
+						<button
+							onClick={() => maximizeSection(section)}
+							aria-label={isMaximized ? 'Minimize' : 'Maximize'}
+						>
+							{isMaximized ? (
+								<Icons.Images24.Minimize />
+							) : (
+								<Icons.Images24.Maximize />
+							)}
+						</button>
+					</div>
 				</div>
+			)
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[maximizedSection, getSectionToggleIcon, toggleSection, maximizeSection]
+	)
+
+	// Section content component
+	const SectionContent = useCallback(
+		({
+			section,
+			children,
+		}: {
+			section: SectionName
+			children?: React.ReactNode
+		}) => {
+			return (
+				<div className="h-full flex flex-col">
+					<SectionHeader section={section} />
+					<div className="flex-grow p-4">
+						{children || `${section} content`}
+					</div>
+				</div>
+			)
+		},
+		[SectionHeader]
+	)
+
+	// Render maximized content if a section is maximized
+	if (maximizedSection) {
+		return (
+			<div className="w-full h-full">
+				<SectionContent section={maximizedSection} />
 			</div>
 		)
 	}
-
-	const renderMaximizedContent = () => {
-		if (!maximizedSection) return null
-
-		const content = {
-			question: (
-				<div className="w-full h-full flex flex-col">
-					{renderSectionHeader('question')}
-					<div className="flex-grow p-4">Question content</div>
-				</div>
-			),
-			codeEditor: (
-				<div className="w-full h-full flex flex-col">
-					{renderSectionHeader('codeEditor')}
-					<div className="flex-grow p-4">Code editor content</div>
-				</div>
-			),
-			submission: (
-				<div className="w-full h-full flex flex-col">
-					{renderSectionHeader('submission')}
-					<div className="flex-grow p-4">Submission content</div>
-				</div>
-			),
-			// Adding to ignore type error // no use
-			rightSection: (
-				<div className="w-full h-full flex flex-col">
-					{renderSectionHeader('rightSection')}
-					<div className="flex-grow p-4">Right section content</div>
-				</div>
-			),
-		}[maximizedSection]
-
-		return <div className="w-full h-full">{content}</div>
-	}
-
-	// If a section is maximized, render only that section
-	if (maximizedSection) return renderMaximizedContent()
 
 	return (
 		<div className="h-full flex bg-gray-100">
@@ -170,25 +192,13 @@ const ResizableLayout: React.FC = () => {
 					minSize={SECTION_CONFIGS.question.minSize}
 					collapsible={true}
 					ref={panelRefs.question}
-					onCollapse={() =>
-						setCollapsedSections((prev) => ({
-							...prev,
-							question: true,
-						}))
-					}
-					onExpand={() =>
-						setCollapsedSections((prev) => ({
-							...prev,
-							question: false,
-						}))
-					}
+					onCollapse={() => handlePanelStateChange('question', true)}
+					onExpand={() => handlePanelStateChange('question', false)}
 					className="bg-white rounded-lg"
 				>
-					<div className="h-full flex flex-col">
-						{renderSectionHeader('question')}
-						<div className="flex-grow p-4">Question content</div>
-					</div>
+					<SectionContent section="question" />
 				</Panel>
+
 				<div className="h-full">
 					<div
 						className={cn(
@@ -207,17 +217,12 @@ const ResizableLayout: React.FC = () => {
 					minSize={SECTION_CONFIGS.rightSection.minSize}
 					collapsedSize={SECTION_CONFIGS.rightSection.collapsedSize}
 					collapsible={true}
+					ref={panelRefs.rightSection}
 					onCollapse={() =>
-						setCollapsedSections((prev) => ({
-							...prev,
-							rightSection: true,
-						}))
+						handlePanelStateChange('rightSection', true)
 					}
 					onExpand={() =>
-						setCollapsedSections((prev) => ({
-							...prev,
-							rightSection: false,
-						}))
+						handlePanelStateChange('rightSection', false)
 					}
 				>
 					<PanelGroup direction="vertical" className="h-full">
@@ -232,24 +237,13 @@ const ResizableLayout: React.FC = () => {
 							collapsible={true}
 							ref={panelRefs.codeEditor}
 							onCollapse={() =>
-								setCollapsedSections((prev) => ({
-									...prev,
-									codeEditor: true,
-								}))
+								handlePanelStateChange('codeEditor', true)
 							}
 							onExpand={() =>
-								setCollapsedSections((prev) => ({
-									...prev,
-									codeEditor: false,
-								}))
+								handlePanelStateChange('codeEditor', false)
 							}
 						>
-							<div className="h-full flex flex-col">
-								{renderSectionHeader('codeEditor')}
-								<div className="flex-grow p-4">
-									Code editor content
-								</div>
-							</div>
+							<SectionContent section="codeEditor" />
 						</Panel>
 
 						<PanelResizeHandle className="h-1.5 bg-gray-100 hover:bg-gray-200 transition-colors rounded-full" />
@@ -265,24 +259,13 @@ const ResizableLayout: React.FC = () => {
 							}
 							ref={panelRefs.submission}
 							onCollapse={() =>
-								setCollapsedSections((prev) => ({
-									...prev,
-									submission: true,
-								}))
+								handlePanelStateChange('submission', true)
 							}
 							onExpand={() =>
-								setCollapsedSections((prev) => ({
-									...prev,
-									submission: false,
-								}))
+								handlePanelStateChange('submission', false)
 							}
 						>
-							<div className="h-full flex flex-col">
-								{renderSectionHeader('submission')}
-								<div className="flex-grow p-4">
-									Submission content
-								</div>
-							</div>
+							<SectionContent section="submission" />
 						</Panel>
 					</PanelGroup>
 				</Panel>
@@ -304,7 +287,9 @@ const ResizableLayout: React.FC = () => {
 							!collapsedSections.rightSection && 'hidden'
 						)}
 					>
-						<span className="-rotate-90 ">Submission</span>
+						<span className="-rotate-90 text-nowrap">
+							Submission
+						</span>
 					</div>
 				</div>
 			</PanelGroup>
