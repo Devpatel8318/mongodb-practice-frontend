@@ -20,10 +20,10 @@ const NotFound: React.FC = () => {
 						<h1 className="block text-7xl font-bold text-gray-800 sm:text-9xl">
 							404
 						</h1>
-						<p className="mt-3 text-gray-600 ">
+						<p className="mt-3 text-gray-600">
 							Oops, something went wrong.
 						</p>
-						<p className="text-gray-600 ">
+						<p className="text-gray-600">
 							Sorry, we couldn't find your page.
 						</p>
 					</div>

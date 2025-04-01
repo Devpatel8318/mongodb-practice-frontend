@@ -85,7 +85,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 							{showDropDown && (
 								<div
 									ref={filterRef}
-									className="absolute right-0 w-32  overflow-hidden rounded-lg bg-white shadow-lg"
+									className="absolute right-0 w-32 overflow-hidden rounded-lg bg-white shadow-lg"
 								>
 									<button
 										className="flex w-full items-center justify-between border-b px-4 py-2 text-left text-sm text-gray-800 hover:bg-gray-100"

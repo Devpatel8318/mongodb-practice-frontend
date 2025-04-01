@@ -202,11 +202,11 @@ const ResizableLayout: React.FC = () => {
 				<div className="h-full">
 					<div
 						className={cn(
-							'w-8 font-normal h-full flex items-center justify-center rounded-lg tracking-wider text-md bg-white',
+							'text-md flex h-full w-8 items-center justify-center rounded-lg bg-white font-normal tracking-wider',
 							!collapsedSections.question && 'hidden'
 						)}
 					>
-						<span className="-rotate-90 ">Content</span>
+						<span className="-rotate-90">Content</span>
 					</div>
 				</div>
 
@@ -273,7 +273,7 @@ const ResizableLayout: React.FC = () => {
 				<div className="flex h-full flex-col gap-2">
 					<div
 						className={cn(
-							'w-8 font-normal grow flex items-center justify-center rounded-lg tracking-wider text-md bg-white',
+							'text-md flex w-8 grow items-center justify-center rounded-lg bg-white font-normal tracking-wider',
 							!collapsedSections.rightSection && 'hidden'
 						)}
 					>
@@ -283,7 +283,7 @@ const ResizableLayout: React.FC = () => {
 					</div>
 					<div
 						className={cn(
-							'w-8 font-normal grow flex items-center justify-center rounded-lg tracking-wider text-md bg-white',
+							'text-md flex w-8 grow items-center justify-center rounded-lg bg-white font-normal tracking-wider',
 							!collapsedSections.rightSection && 'hidden'
 						)}
 					>

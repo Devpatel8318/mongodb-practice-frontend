@@ -102,7 +102,7 @@ const Button: React.FC<ButtonProps> = ({
 			onClick={onClick}
 			disabled={disabled || isLoading}
 			className={cn(
-				'rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center',
+				'inline-flex items-center justify-center rounded-lg font-medium transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50',
 				variantClasses,
 				sizeClasses,
 				fullWidth && 'w-full',
@@ -116,7 +116,7 @@ const Button: React.FC<ButtonProps> = ({
 				<>
 					<svg
 						className={cn(
-							'animate-spin h-5 w-5',
+							'h-5 w-5 animate-spin',
 							loadingText && 'mr-2'
 						)}
 						xmlns="http://www.w3.org/2000/svg"

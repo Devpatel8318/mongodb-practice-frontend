@@ -41,7 +41,7 @@ const ItemsPerPageDropdown = ({
 				name="questions-table-items-per-page-button"
 				variant="outlineGray"
 				size="sm"
-				className="border-gray-200 "
+				className="border-gray-200"
 				onClick={toggleFilter}
 				dontShowFocusClasses={true}
 			>
@@ -65,7 +65,7 @@ const ItemsPerPageDropdown = ({
 										setShowDropDown(false)
 									}}
 								>
-									<span className="text-sm capitalize text-gray-800 ">
+									<span className="text-sm capitalize text-gray-800">
 										{option}
 									</span>
 									{itemsPerPage === option && (

@@ -66,13 +66,13 @@ const TextInput: React.FC<TextInputProps> = ({
 					disabled={disabled}
 					readOnly={readOnly}
 					className={cn(
-						'px-4 py-2.5 text-sm block w-full border rounded-lg',
+						'block w-full rounded-lg border px-4 py-2.5 text-sm',
 						inputClassName,
 						error
-							? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-							: 'border-gray-200 focus:ring-blue-500 focus:border-blue-500',
+							? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+							: 'border-gray-200 focus:border-blue-500 focus:ring-blue-500',
 						disabled &&
-							'bg-gray-100 text-gray-500 cursor-not-allowed'
+							'cursor-not-allowed bg-gray-100 text-gray-500'
 					)}
 				/>
 
