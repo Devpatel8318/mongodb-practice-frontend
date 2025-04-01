@@ -6,18 +6,18 @@ const Searchbar = ({
 	setSearch: (value: string) => void
 }) => {
 	return (
-		<div className="relative grow max-w-md">
+		<div className="relative max-w-md grow">
 			<input
 				type="text"
 				name="hs-as-table-product-review-search"
-				className="border py-2 px-3 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:outline-none"
+				className="block w-full rounded-lg border border-gray-200 px-3 py-2 ps-11 text-sm focus:outline-none"
 				placeholder="Search"
 				value={search}
 				onChange={(e) => setSearch(e.target.value)}
 			/>
-			<div className="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4">
+			<div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-4">
 				<svg
-					className="shrink-0 size-4 text-gray-400"
+					className="size-4 shrink-0 text-gray-400"
 					xmlns="http://www.w3.org/2000/svg"
 					width="24"
 					height="24"

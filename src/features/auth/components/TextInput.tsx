@@ -43,7 +43,7 @@ const TextInput: React.FC<TextInputProps> = ({
 	return (
 		<div className={className}>
 			<label
-				className={`block mb-2 text-sm ${labelClassName}`}
+				className={`mb-2 block text-sm ${labelClassName}`}
 				htmlFor={id}
 			>
 				{label}
@@ -81,7 +81,7 @@ const TextInput: React.FC<TextInputProps> = ({
 					<button
 						tabIndex={-1}
 						type="button"
-						className="absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-600 text-xs font-medium focus:outline-none"
+						className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-blue-600 focus:outline-none"
 						onClick={togglePasswordVisibility}
 					>
 						{showPassword ? 'Hide' : 'Show'}

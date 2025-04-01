@@ -105,9 +105,9 @@ const QuestionsListTable = () => {
 	const { list: tableData = [] } = data || {}
 
 	return (
-		<div className="p-1.5 min-w-full inline-block align-middle">
+		<div className="inline-block min-w-full p-1.5 align-middle">
 			<Card className="mb-2 px-6 py-4">
-				<div className="flex gap-6 items-center">
+				<div className="flex items-center gap-6">
 					<FilterDropdown
 						type="status"
 						label="Status"

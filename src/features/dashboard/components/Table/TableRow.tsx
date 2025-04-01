@@ -28,20 +28,20 @@ const TableRow = ({ item }: { item: Question }) => {
 	return (
 		<tr
 			onClick={() => navigate(`/problems/${item.questionId}`)}
-			className="hover:bg-gray-100 cursor-pointer"
+			className="cursor-pointer hover:bg-gray-100"
 		>
-			<td className="h-px whitespace-nowrap w-2/12 px-6 py-3">
-				<span className="text-sm font-medium text-gray-500 flex items-center gap-1">
+			<td className="h-px w-2/12 whitespace-nowrap px-6 py-3">
+				<span className="flex items-center gap-1 text-sm font-medium text-gray-500">
 					{getStatusIcon(item.status)}
 					{item.status?.toLowerCase()}
 				</span>
 			</td>
-			<td className="size-px whitespace-nowrap w-8/12 ps-6 py-3">
+			<td className="size-px w-8/12 whitespace-nowrap py-3 ps-6">
 				<span className="block text-sm font-medium text-gray-800">
 					{capitalizeFirstLetter(item.question)}
 				</span>
 			</td>
-			<td className="size-px whitespace-nowrap w-2/12 px-6 py-3">
+			<td className="size-px w-2/12 whitespace-nowrap px-6 py-3">
 				<span
 					className={cn(
 						'py-1 px-2 inline-flex items-center text-xs font-medium rounded-full capitalize',

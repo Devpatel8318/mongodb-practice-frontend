@@ -41,7 +41,7 @@ const ActiveFilters = ({
 			{activeFilters.map(({ parent, child }) => (
 				<div
 					key={`${parent}-${child}`}
-					className="border px-1.5 py-0.5 rounded-lg text-sm flex items-center gap-1"
+					className="flex items-center gap-1 rounded-lg border px-1.5 py-0.5 text-sm"
 				>
 					{child}
 					<button

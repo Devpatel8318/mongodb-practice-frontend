@@ -39,13 +39,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 	const { profilePictureUrl } = useAppSelector((state) => state.user)
 
 	return (
-		<div className="w-screen min-h-screen flex flex-col">
-			<header className="sticky top-0 flex flex-wrap md:justify-start md:flex-nowrap z-48 w-full bg-white border-b border-gray-200 text-sm z-40">
-				<nav className="max-w-[85rem] mx-auto w-full px-4 sm:px-6 lg:px-8 flex basis-full items-center justify-between">
+		<div className="flex min-h-screen w-screen flex-col">
+			<header className="sticky top-0 z-40 flex w-full flex-wrap border-b border-gray-200 bg-white text-sm md:flex-nowrap md:justify-start">
+				<nav className="mx-auto flex w-full max-w-[85rem] basis-full items-center justify-between px-4 sm:px-6 lg:px-8">
 					<div className="me-5">
 						{/* Logo */}
 						<Link
-							className="flex-none rounded-md text-xl inline-block font-semibold focus:outline-hidden focus:opacity-80"
+							className="focus:outline-hidden inline-block flex-none rounded-md text-xl font-semibold focus:opacity-80"
 							to="/"
 						>
 							MongoAcademy
@@ -63,7 +63,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 								name="profile-dropdown-button"
 								type="button"
 								onClick={toggleFilter}
-								className="size-10 flex items-center justify-center rounded-full bg-white transition-all duration-50"
+								className="flex size-10 items-center justify-center rounded-full bg-white"
 							>
 								{profilePictureUrl &&
 								!isProfileImageUrlError ? (
@@ -72,7 +72,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 										alt="profile"
 										width={32}
 										height={32}
-										className="rounded-full object-cover w-8 h-8"
+										className="size-8 rounded-full object-cover"
 										onError={() =>
 											setIsProfileImageUrlError(true)
 										}
@@ -85,17 +85,17 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 							{showDropDown && (
 								<div
 									ref={filterRef}
-									className="absolute right-0 w-32  shadow-lg rounded-lg bg-white overflow-hidden"
+									className="absolute right-0 w-32  overflow-hidden rounded-lg bg-white shadow-lg"
 								>
 									<button
-										className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 flex justify-between items-center border-b"
+										className="flex w-full items-center justify-between border-b px-4 py-2 text-left text-sm text-gray-800 hover:bg-gray-100"
 										onClick={logoutActionDispatcher}
 									>
 										Profile
 										<Icons.Images16.Profile />
 									</button>
 									<button
-										className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 flex justify-between items-center"
+										className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-gray-800 hover:bg-gray-100"
 										onClick={logoutActionDispatcher}
 									>
 										Logout
@@ -107,7 +107,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 					</div>
 				</nav>
 			</header>
-			<div className="p-2 bg-gray-100 h-full grow flex">
+			<div className="flex h-full grow bg-gray-100 p-2">
 				<div className="grow rounded-md">{children}</div>
 			</div>
 		</div>

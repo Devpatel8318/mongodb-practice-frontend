@@ -68,7 +68,7 @@ const Login = () => {
 					Don't have an account yet?{' '}
 					<Link
 						to="/signup"
-						className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
+						className="focus:outline-hidden font-medium text-blue-600 decoration-2 hover:underline focus:underline"
 					>
 						Sign up here
 					</Link>
@@ -77,12 +77,12 @@ const Login = () => {
 		>
 			<OAuthButton />
 
-			<div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6">
+			<div className="flex items-center py-3 text-xs uppercase text-gray-400 before:me-6 before:flex-1 before:border-t before:border-gray-200 after:ms-6 after:flex-1 after:border-t after:border-gray-200">
 				Or
 			</div>
 
 			<form onSubmit={handleSubmit}>
-				<div className="flex gap-6 flex-col">
+				<div className="flex flex-col gap-6">
 					<div>
 						<TextInput
 							label="Email address"
@@ -105,7 +105,7 @@ const Login = () => {
 							error={errors.password}
 						/>
 						<Link
-							className="inline-flex items-center gap-x-1 text-xs text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
+							className="focus:outline-hidden inline-flex items-center gap-x-1 text-xs font-medium text-blue-600 decoration-2 hover:underline focus:underline"
 							to="/forget"
 						>
 							Forgot password?

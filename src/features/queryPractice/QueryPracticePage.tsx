@@ -124,7 +124,7 @@ const ResizableLayout: React.FC = () => {
 			const isCollapsed = panelRefs[section].current?.isCollapsed()
 
 			return (
-				<div className="flex justify-between items-center p-2 bg-gray-50">
+				<div className="flex items-center justify-between bg-gray-50 p-2">
 					<h3>{title}</h3>
 					<div className="flex space-x-2">
 						{!isMaximized && (
@@ -163,9 +163,9 @@ const ResizableLayout: React.FC = () => {
 			children?: React.ReactNode
 		}) => {
 			return (
-				<div className="h-full flex flex-col">
+				<div className="flex h-full flex-col">
 					<SectionHeader section={section} />
-					<div className="flex-grow p-4">
+					<div className="grow p-4">
 						{children || `${section} content`}
 					</div>
 				</div>
@@ -177,14 +177,14 @@ const ResizableLayout: React.FC = () => {
 	// Render maximized content if a section is maximized
 	if (maximizedSection) {
 		return (
-			<div className="w-full h-full">
+			<div className="size-full">
 				<SectionContent section={maximizedSection} />
 			</div>
 		)
 	}
 
 	return (
-		<div className="h-full flex bg-gray-100">
+		<div className="flex h-full bg-gray-100">
 			<PanelGroup direction="horizontal" className="rounded-lg">
 				{/* Question Description */}
 				<Panel
@@ -194,7 +194,7 @@ const ResizableLayout: React.FC = () => {
 					ref={panelRefs.question}
 					onCollapse={() => handlePanelStateChange('question', true)}
 					onExpand={() => handlePanelStateChange('question', false)}
-					className="bg-white rounded-lg"
+					className="rounded-lg bg-white"
 				>
 					<SectionContent section="question" />
 				</Panel>
@@ -210,7 +210,7 @@ const ResizableLayout: React.FC = () => {
 					</div>
 				</div>
 
-				<PanelResizeHandle className="w-1.5 bg-gray-100 hover:bg-gray-200 transition-colors rounded-full" />
+				<PanelResizeHandle className="w-1.5 rounded-full bg-gray-100 transition-colors hover:bg-gray-200" />
 
 				{/* Right Section */}
 				<Panel
@@ -228,7 +228,7 @@ const ResizableLayout: React.FC = () => {
 					<PanelGroup direction="vertical" className="h-full">
 						{/* Code Editor Panel */}
 						<Panel
-							className="bg-white rounded-lg"
+							className="rounded-lg bg-white"
 							defaultSize={SECTION_CONFIGS.codeEditor.defaultSize}
 							minSize={SECTION_CONFIGS.codeEditor.minSize}
 							collapsedSize={
@@ -246,11 +246,11 @@ const ResizableLayout: React.FC = () => {
 							<SectionContent section="codeEditor" />
 						</Panel>
 
-						<PanelResizeHandle className="h-1.5 bg-gray-100 hover:bg-gray-200 transition-colors rounded-full" />
+						<PanelResizeHandle className="h-1.5 rounded-full bg-gray-100 transition-colors hover:bg-gray-200" />
 
 						{/* Submission Panel */}
 						<Panel
-							className="bg-white rounded-lg"
+							className="rounded-lg bg-white"
 							defaultSize={SECTION_CONFIGS.submission.defaultSize}
 							minSize={SECTION_CONFIGS.submission.minSize}
 							collapsible={true}
@@ -270,7 +270,7 @@ const ResizableLayout: React.FC = () => {
 					</PanelGroup>
 				</Panel>
 
-				<div className="h-full flex flex-col gap-2">
+				<div className="flex h-full flex-col gap-2">
 					<div
 						className={cn(
 							'w-8 font-normal grow flex items-center justify-center rounded-lg tracking-wider text-md bg-white',

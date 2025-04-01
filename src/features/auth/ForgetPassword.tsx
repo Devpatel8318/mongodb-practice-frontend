@@ -39,7 +39,7 @@ const ForgetPassword = () => {
 					Remember your password?{' '}
 					<Link
 						to="/signup"
-						className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
+						className="focus:outline-hidden font-medium text-blue-600 decoration-2 hover:underline focus:underline"
 					>
 						Sign in here
 					</Link>
@@ -47,7 +47,7 @@ const ForgetPassword = () => {
 			}
 		>
 			<form onSubmit={handleSubmit}>
-				<div className="flex gap-2 flex-col">
+				<div className="flex flex-col gap-2">
 					<div className="mb-4">
 						<TextInput
 							label="Email address"

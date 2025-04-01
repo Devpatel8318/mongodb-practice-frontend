@@ -9,7 +9,7 @@ const Dashboard = () => {
 	}, [])
 
 	return (
-		<div className="w-9/12 mx-auto">
+		<div className="mx-auto w-9/12">
 			<QuestionsListTable />
 		</div>
 	)

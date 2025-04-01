@@ -60,12 +60,12 @@ const FilterDropdown = ({
 				size="sm"
 				startIcon={<Icons.Images24.Filter />}
 				label={label}
-				className="shadow-2xs border-gray-200"
+				className="border-gray-200"
 				onClick={() => {
 					toggleFilter(type)
 				}}
 				endIcon={
-					<span className="flex rounded-full text-xs font-medium border border-gray-300 text-gray-800 aspect-square items-center justify-center w-6">
+					<span className="flex aspect-square w-6 items-center justify-center rounded-full border border-gray-300 text-xs font-medium text-gray-800">
 						{activeFilterCount}
 					</span>
 				}
@@ -74,17 +74,17 @@ const FilterDropdown = ({
 			{openFilter === type && (
 				<div
 					ref={filterRef}
-					className="absolute transition-opacity duration-200 divide-y divide-gray-200 min-w-48 bg-white shadow-lg rounded-lg mt-2 overflow-hidden"
+					className="absolute mt-2 min-w-48 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-lg transition-opacity duration-200"
 				>
 					<div className="divide-y divide-gray-200">
 						{Object.entries(filters[type]).map(
 							([filter, value]) => (
 								<label
 									key={filter}
-									className="flex py-2 px-4 hover:bg-gray-100"
+									className="flex px-4 py-2 hover:bg-gray-100"
 								>
 									<button
-										className="border-gray-300 flex justify-between grow"
+										className="flex grow justify-between border-gray-300"
 										onClick={() =>
 											handleFilterChange(
 												type,
@@ -92,7 +92,7 @@ const FilterDropdown = ({
 											)
 										}
 									>
-										<span className="text-sm text-gray-800 capitalize">
+										<span className="text-sm capitalize text-gray-800">
 											{filter}
 										</span>
 										{value && (

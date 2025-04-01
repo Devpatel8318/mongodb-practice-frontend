@@ -52,7 +52,7 @@ const Header = ({
 			<tr>
 				{tableHeaderData.map((item, index) => (
 					<th
-						className={`ps-6 py-3 text-start ${item.colWidth}`}
+						className={`py-3 ps-6 text-start ${item.colWidth}`}
 						key={index}
 					>
 						<div className="flex items-center gap-2">
@@ -62,7 +62,7 @@ const Header = ({
 
 							{item.allowSorting && (
 								<button
-									className="px-2 hover:scale-125 transition-all duration-100 py-1"
+									className="px-2 py-1 transition-all duration-100 hover:scale-125"
 									onClick={() => handleSortChange(item.name)}
 								>
 									<Icons.Components.SortUpArrow

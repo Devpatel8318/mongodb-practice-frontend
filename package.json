@@ -9,7 +9,7 @@
     "build": "react-scripts build",
     "format": "prettier  --write 'src/**/*.{ts,tsx}'",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "fix": "eslint 'src/**/*.{ts,tsx}' --fix",
+    "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
     "type-check": "tsc --noEmit",
     "validate": "yarn run type-check && yarn run format && yarn run lint",
     "prepare": "husky"
@@ -67,6 +67,7 @@
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-tailwindcss": "^3.18.0",
     "globals": "^16.0.0",
     "husky": "8.0.0",
     "lint-staged": "^15.5.0",

@@ -41,7 +41,7 @@ const ItemsPerPageDropdown = ({
 				name="questions-table-items-per-page-button"
 				variant="outlineGray"
 				size="sm"
-				className="shadow-2xs border-gray-200"
+				className="border-gray-200 "
 				onClick={toggleFilter}
 				dontShowFocusClasses={true}
 			>
@@ -50,22 +50,22 @@ const ItemsPerPageDropdown = ({
 			{showDropDown && (
 				<div
 					ref={filterRef}
-					className="absolute transition-opacity duration-200 divide-y divide-gray-200 min-w-48 z-20 bg-white shadow-lg rounded-lg mt-2 mb-2 bottom-full"
+					className="absolute bottom-full z-20 my-2 min-w-48 divide-y divide-gray-200 rounded-lg bg-white shadow-lg transition-opacity duration-200"
 				>
 					<div className="divide-y divide-gray-200">
 						{itemsPerPageOptions.map((option) => (
 							<label
 								key={option}
-								className="flex py-2 px-4 hover:bg-gray-100"
+								className="flex px-4 py-2 hover:bg-gray-100"
 							>
 								<button
-									className="border-gray-300 rounded-sm flex justify-between grow"
+									className="flex grow justify-between rounded-sm border-gray-300"
 									onClick={() => {
 										setItemsPerPage(option)
 										setShowDropDown(false)
 									}}
 								>
-									<span className="text-sm text-gray-800 capitalize ">
+									<span className="text-sm capitalize text-gray-800 ">
 										{option}
 									</span>
 									{itemsPerPage === option && (
@@ -143,7 +143,7 @@ const Pagination = () => {
 	}, [page, itemsPerPage, debouncedFetchQuestions])
 
 	return (
-		<div className="flex justify-between items-center px-6 py-4">
+		<div className="flex items-center justify-between px-6 py-4">
 			<div className="inline-flex gap-x-2">
 				<ItemsPerPageDropdown
 					itemsPerPageOptions={itemsPerPageOptions}
@@ -155,13 +155,12 @@ const Pagination = () => {
 				Showing {start} - {end}{' '}
 				{totalRecords && `of ${totalRecords} entries`}
 			</div>
-			<div className="inline-flex gap-x-2 items-center">
+			<div className="inline-flex items-center gap-x-2">
 				<Button
 					variant="outlineGray"
 					size="sm"
 					startIcon={<Icons.Images24.LeftArrowPagination />}
 					label="Prev"
-					className="shadow-2xs"
 					dontShowFocusClasses={true}
 					onClick={() => setPage((prev) => prev - 1)}
 					disabled={page <= 1}
@@ -174,7 +173,6 @@ const Pagination = () => {
 					size="sm"
 					endIcon={<Icons.Images24.RightArrowPagination />}
 					label="Next"
-					className="shadow-2xs"
 					dontShowFocusClasses={true}
 					onClick={() => setPage((prev) => prev + 1)}
 					disabled={page >= totalPages}

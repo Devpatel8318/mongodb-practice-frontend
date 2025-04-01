@@ -8,9 +8,9 @@ interface AuthCardProps {
 
 const AuthCard: React.FC<AuthCardProps> = ({ title, children, footerText }) => {
 	return (
-		<div className="bg-gray-100 flex items-center py-16 h-screen">
-			<div className="w-full max-w-md mx-auto p-6">
-				<div className="mt-7 bg-white border border-gray-200 rounded-xl shadow-2xs p-4 sm:p-7">
+		<div className="flex h-screen items-center bg-gray-100 py-16">
+			<div className="mx-auto w-full max-w-md p-6">
+				<div className="mt-7 rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-7">
 					<div className="text-center">
 						<h1 className="text-2xl font-bold text-gray-800">
 							{title}

@@ -48,10 +48,10 @@ const OAuthButton: React.FC = () => {
 		<button
 			type="button"
 			onClick={googleLogin}
-			className="w-full py-3 px-4 flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 hover:bg-gray-50 focus:outline-none"
+			className="flex w-full items-center justify-center gap-x-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 focus:outline-none"
 		>
 			<svg
-				className="w-4 h-auto"
+				className="h-auto w-4"
 				width="46"
 				height="47"
 				viewBox="0 0 46 47"
