@@ -128,17 +128,11 @@ const ResizableLayout: React.FC = () => {
 					<h3>{title}</h3>
 					<div className="flex space-x-2">
 						{!isMaximized && (
-							<button
-								onClick={() => toggleSection(section)}
-								aria-label={isCollapsed ? 'Expand' : 'Collapse'}
-							>
+							<button onClick={() => toggleSection(section)}>
 								{getSectionToggleIcon(section, isCollapsed)}
 							</button>
 						)}
-						<button
-							onClick={() => maximizeSection(section)}
-							aria-label={isMaximized ? 'Minimize' : 'Maximize'}
-						>
+						<button onClick={() => maximizeSection(section)}>
 							{isMaximized ? (
 								<Icons.Images24.Minimize />
 							) : (
