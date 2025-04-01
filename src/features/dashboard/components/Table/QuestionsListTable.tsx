@@ -1,20 +1,20 @@
 import { useEffect, useMemo, useState } from 'src/deps'
 
 import { useAppSelector } from 'src/Store'
-import TableRow from './TableRow'
-import QuestionsListTableSkeletonLoader from './SkeletonLoader'
-import Pagination from './Pagination'
-import FilterDropdown from './FilterDropdown'
-import ActiveFilters, { Filters } from './ActiveFilters'
+import TableRow from './components/TableRow'
+import QuestionsListTableSkeletonLoader from './components/SkeletonLoader'
+import FilterDropdown from './components/FilterDropdown'
+import ActiveFilters, { Filters } from './components/ActiveFilters'
 import debounce from 'src/utils/debounce'
 import { getAllQuestionsActionDispatcher } from '../../dashboard.action'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import useLocalStorage from 'src/hooks/useLocalStogare'
 
 import { formatFilters, formatSortQuery } from './helper'
-import Searchbar from './Searchbar'
-import Card from './Card'
-import Header from './Header'
+import Searchbar from './components/Searchbar'
+import Card from './components/Card'
+import Pagination from './components/Pagination'
+import Header from './components/Header'
 
 const questionFilters = {
 	status: {

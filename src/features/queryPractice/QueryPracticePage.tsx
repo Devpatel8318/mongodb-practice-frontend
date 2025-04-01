@@ -5,8 +5,10 @@ import {
 	PanelGroup,
 	PanelResizeHandle,
 } from 'react-resizable-panels'
-import Icons from 'src/assets/svg'
 import { cn } from 'src/utils/cn'
+import QuestionPanel from './components/QuestionPanel'
+import CodeEditorPanel from './components/CodeEditorPanel'
+import SubmissionPanel from './components/SubmissionPanel'
 
 // Improved type definitions
 type SectionName = 'question' | 'codeEditor' | 'submission' | 'rightSection'
@@ -63,7 +65,7 @@ const ResizableLayout: React.FC = () => {
 		rightSection: useRef<ImperativePanelHandle>(null),
 	}
 
-	// Toggle panel collapse state
+	// Keep useCallback for key interaction functions
 	const toggleSection = useCallback((section: SectionName) => {
 		const panelRef = panelRefs[section].current
 		if (!panelRef) return
@@ -76,103 +78,47 @@ const ResizableLayout: React.FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
-	// Toggle maximized state for a section
+	// Keep useCallback for key interaction functions
 	const maximizeSection = useCallback((section: SectionName) => {
 		setMaximizedSection((current) => (current === section ? null : section))
 	}, [])
 
-	// Update collapsed state when panels change
-	const handlePanelStateChange = useCallback(
-		(section: SectionName, isCollapsed: boolean) => {
-			setCollapsedSections((prev) => ({
-				...prev,
-				[section]: isCollapsed,
-			}))
-		},
-		[]
-	)
-
-	// Get the appropriate toggle icon based on section and state
-	const getSectionToggleIcon = useCallback(
-		(section: SectionName, isCollapsed?: boolean) => {
-			if (section === 'question') {
-				return <Icons.Images24.LeftArrowPagination />
-			}
-
-			if (section === 'codeEditor') {
-				return isCollapsed ? (
-					<Icons.Images24.DownArrowPagination />
-				) : (
-					<Icons.Images24.UpArrowPagination />
-				)
-			}
-
-			return isCollapsed ? (
-				<Icons.Images24.UpArrowPagination />
-			) : (
-				<Icons.Images24.DownArrowPagination />
-			)
-		},
-		[]
-	)
-
-	// Section header component
-	const SectionHeader = useCallback(
-		({ section }: { section: SectionName }) => {
-			const { title } = SECTION_CONFIGS[section]
-			const isMaximized = maximizedSection === section
-			const isCollapsed = panelRefs[section].current?.isCollapsed()
-
-			return (
-				<div className="flex items-center justify-between bg-gray-50 p-2">
-					<h3>{title}</h3>
-					<div className="flex space-x-2">
-						{!isMaximized && (
-							<button onClick={() => toggleSection(section)}>
-								{getSectionToggleIcon(section, isCollapsed)}
-							</button>
-						)}
-						<button onClick={() => maximizeSection(section)}>
-							{isMaximized ? (
-								<Icons.Images24.Minimize />
-							) : (
-								<Icons.Images24.Maximize />
-							)}
-						</button>
-					</div>
-				</div>
-			)
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[maximizedSection, getSectionToggleIcon, toggleSection, maximizeSection]
-	)
-
-	// Section content component
-	const SectionContent = useCallback(
-		({
-			section,
-			children,
-		}: {
-			section: SectionName
-			children?: React.ReactNode
-		}) => {
-			return (
-				<div className="flex h-full flex-col">
-					<SectionHeader section={section} />
-					<div className="grow p-4">
-						{children || `${section} content`}
-					</div>
-				</div>
-			)
-		},
-		[SectionHeader]
-	)
+	// Convert to regular function
+	function handlePanelStateChange(
+		section: SectionName,
+		isCollapsed: boolean
+	) {
+		setCollapsedSections((prev) => ({
+			...prev,
+			[section]: isCollapsed,
+		}))
+	}
 
 	// Render maximized content if a section is maximized
 	if (maximizedSection) {
 		return (
 			<div className="size-full">
-				<SectionContent section={maximizedSection} />
+				{maximizedSection === 'question' && (
+					<QuestionPanel
+						isMaximized={true}
+						onToggle={() => toggleSection('question')}
+						onMaximize={() => maximizeSection('question')}
+					/>
+				)}
+				{maximizedSection === 'codeEditor' && (
+					<CodeEditorPanel
+						isMaximized={true}
+						onToggle={() => toggleSection('codeEditor')}
+						onMaximize={() => maximizeSection('codeEditor')}
+					/>
+				)}
+				{maximizedSection === 'submission' && (
+					<SubmissionPanel
+						isMaximized={true}
+						onToggle={() => toggleSection('submission')}
+						onMaximize={() => maximizeSection('submission')}
+					/>
+				)}
 			</div>
 		)
 	}
@@ -190,7 +136,12 @@ const ResizableLayout: React.FC = () => {
 					onExpand={() => handlePanelStateChange('question', false)}
 					className="rounded-lg bg-white"
 				>
-					<SectionContent section="question" />
+					<QuestionPanel
+						isMaximized={false}
+						// isCollapsed={collapsedSections.question}
+						onToggle={() => toggleSection('question')}
+						onMaximize={() => maximizeSection('question')}
+					/>
 				</Panel>
 
 				<div className="h-full">
@@ -237,7 +188,12 @@ const ResizableLayout: React.FC = () => {
 								handlePanelStateChange('codeEditor', false)
 							}
 						>
-							<SectionContent section="codeEditor" />
+							<CodeEditorPanel
+								isMaximized={false}
+								isCollapsed={collapsedSections.codeEditor}
+								onToggle={() => toggleSection('codeEditor')}
+								onMaximize={() => maximizeSection('codeEditor')}
+							/>
 						</Panel>
 
 						<PanelResizeHandle className="h-1.5 rounded-full bg-gray-100 transition-colors hover:bg-gray-200" />
@@ -259,7 +215,12 @@ const ResizableLayout: React.FC = () => {
 								handlePanelStateChange('submission', false)
 							}
 						>
-							<SectionContent section="submission" />
+							<SubmissionPanel
+								isMaximized={false}
+								isCollapsed={collapsedSections.submission}
+								onToggle={() => toggleSection('submission')}
+								onMaximize={() => maximizeSection('submission')}
+							/>
 						</Panel>
 					</PanelGroup>
 				</Panel>

@@ -1,7 +1,7 @@
 import React from 'react'
-import { Sort } from './QuestionsListTable'
 import { useLocalStorageSetValue } from 'src/hooks/useLocalStogare'
 import Icons from 'src/assets/svg'
+import { Sort } from '../QuestionsListTable'
 
 const tableHeaderData = [
 	{ name: 'status', colWidth: 'w-2/12', allowSorting: true },

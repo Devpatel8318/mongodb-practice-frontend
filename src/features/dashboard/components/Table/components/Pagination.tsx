@@ -4,7 +4,7 @@ import Button from 'src/features/auth/components/Button'
 import useOnClickOutside from 'src/hooks/useOnClickOutside'
 import { useAppSelector } from 'src/Store'
 import debounce from 'src/utils/debounce'
-import { getAllQuestionsActionDispatcher } from '../../dashboard.action'
+import { getAllQuestionsActionDispatcher } from '../../../dashboard.action'
 import Icons from 'src/assets/svg'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 

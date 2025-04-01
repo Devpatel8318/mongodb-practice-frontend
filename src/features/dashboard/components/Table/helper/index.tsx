@@ -1,4 +1,4 @@
-import { Filters } from '../ActiveFilters'
+import { Filters } from '../components/ActiveFilters'
 
 export const formatFilters = (filters: Filters): string => {
 	return Object.entries(filters)
