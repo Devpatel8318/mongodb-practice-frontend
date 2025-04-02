@@ -42,7 +42,7 @@ const tokenPattern = /(\$?[a-zA-Z_][\w\$]*)|(["'`][^"'`]*["'`])|(\d+(\.\d+)?)/g
 export const mongodbDocumentSemantic = {
 	getLegend: () => legend,
 
-	provideDocumentSemanticTokens: function (model: monaco.editor.ITextModel) {
+	provideDocumentSemanticTokens: (model: monaco.editor.ITextModel) => {
 		const lines = model.getLinesContent()
 		const data: number[] = []
 

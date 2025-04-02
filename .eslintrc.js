@@ -19,7 +19,12 @@ module.exports = {
 			jsx: true,
 		},
 	},
-	plugins: ['@typescript-eslint', 'react', 'react-hooks'],
+	plugins: [
+		'@typescript-eslint',
+		'react',
+		'react-hooks',
+		'prefer-arrow-functions',
+	],
 	settings: {
 		react: {
 			version: '18.0',
@@ -63,5 +68,11 @@ module.exports = {
 		'react/jsx-uses-react': 'off',
 		'react/no-unescaped-entities': 'off',
 		'react-hooks/exhaustive-deps': 'warn', // ✅ Ensures useEffect dependencies are checked
+		'prefer-arrow-functions/prefer-arrow-functions': [
+			'warn',
+			{
+				returnStyle: 'unchanged',
+			},
+		],
 	},
 }

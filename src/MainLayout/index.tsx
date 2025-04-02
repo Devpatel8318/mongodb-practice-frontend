@@ -39,78 +39,80 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
 	const { profilePictureUrl } = useAppSelector((state) => state.user)
 
+	const Header = () => (
+		<header className="sticky top-0 z-40 flex w-full flex-wrap border-b border-gray-300 bg-white text-sm md:flex-nowrap md:justify-start">
+			<nav className="mx-auto flex w-full max-w-[85rem] basis-full items-center justify-between px-4 sm:px-6 lg:px-8">
+				<div className="me-5">
+					{/* Logo */}
+					<Link
+						className="inline-block flex-none rounded-md text-xl font-semibold focus:outline-none"
+						to="/"
+					>
+						MongoAcademy
+					</Link>
+					{/* End Logo */}
+				</div>
+
+				<div className="flex items-center gap-4">
+					<div
+						className="relative"
+						onMouseEnter={() => setShowDropDown(true)}
+						onMouseLeave={() => setShowDropDown(false)}
+					>
+						<button
+							name="profile-dropdown-button"
+							type="button"
+							onClick={toggleFilter}
+							aria-label="Open profile menu"
+							className="flex size-10 items-center justify-center rounded-full bg-white focus:outline-none"
+						>
+							{profilePictureUrl && !isProfileImageUrlError ? (
+								<img
+									src={profilePictureUrl}
+									alt="profile"
+									width={32}
+									height={32}
+									className="size-8 rounded-full object-cover"
+									// TODO: use a better way to handle image error, use   onError={(e) => e.currentTarget.src = '/default-avatar.png'}
+									onError={() =>
+										setIsProfileImageUrlError(true)
+									}
+								/>
+							) : (
+								<Icons.Images24.Profile />
+							)}
+						</button>
+
+						{showDropDown && (
+							<div
+								ref={filterRef}
+								className="absolute right-0 z-50 w-32 overflow-visible rounded-lg bg-white shadow-lg"
+							>
+								<button
+									className="flex w-full items-center justify-between border-b px-4 py-2 text-left text-sm text-gray-800 hover:bg-gray-100"
+									onClick={logoutActionDispatcher}
+								>
+									Profile
+									<Icons.Images16.Profile />
+								</button>
+								<button
+									className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-gray-800 hover:bg-gray-100"
+									onClick={logoutActionDispatcher}
+								>
+									Logout
+									<Icons.Images16.Logout />
+								</button>
+							</div>
+						)}
+					</div>
+				</div>
+			</nav>
+		</header>
+	)
+
 	return (
 		<div className="flex min-h-screen w-full flex-col">
-			<header className="sticky top-0 z-40 flex w-full flex-wrap border-b border-gray-300 bg-white text-sm md:flex-nowrap md:justify-start">
-				<nav className="mx-auto flex w-full max-w-[85rem] basis-full items-center justify-between px-4 sm:px-6 lg:px-8">
-					<div className="me-5">
-						{/* Logo */}
-						<Link
-							className="inline-block flex-none rounded-md text-xl font-semibold focus:outline-none"
-							to="/"
-						>
-							MongoAcademy
-						</Link>
-						{/* End Logo */}
-					</div>
-
-					<div className="flex items-center gap-4">
-						<div
-							className="relative"
-							onMouseEnter={() => setShowDropDown(true)}
-							onMouseLeave={() => setShowDropDown(false)}
-						>
-							<button
-								name="profile-dropdown-button"
-								type="button"
-								onClick={toggleFilter}
-								aria-label="Open profile menu"
-								className="flex size-10 items-center justify-center rounded-full bg-white focus:outline-none"
-							>
-								{profilePictureUrl &&
-								!isProfileImageUrlError ? (
-									<img
-										src={profilePictureUrl}
-										alt="profile"
-										width={32}
-										height={32}
-										className="size-8 rounded-full object-cover"
-										// TODO: use a better way to handle image error, use   onError={(e) => e.currentTarget.src = '/default-avatar.png'}
-										onError={() =>
-											setIsProfileImageUrlError(true)
-										}
-									/>
-								) : (
-									<Icons.Images24.Profile />
-								)}
-							</button>
-
-							{showDropDown && (
-								<div
-									ref={filterRef}
-									className="absolute right-0 z-50 w-32 overflow-visible rounded-lg bg-white shadow-lg"
-								>
-									<button
-										className="flex w-full items-center justify-between border-b px-4 py-2 text-left text-sm text-gray-800 hover:bg-gray-100"
-										onClick={logoutActionDispatcher}
-									>
-										Profile
-										<Icons.Images16.Profile />
-									</button>
-									<button
-										className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-gray-800 hover:bg-gray-100"
-										onClick={logoutActionDispatcher}
-									>
-										Logout
-										<Icons.Images16.Logout />
-									</button>
-								</div>
-							)}
-						</div>
-					</div>
-				</nav>
-			</header>
-
+			<Header />
 			<div className="flex grow bg-gray-100 p-2">
 				<div className="grow rounded-md">{children}</div>
 			</div>

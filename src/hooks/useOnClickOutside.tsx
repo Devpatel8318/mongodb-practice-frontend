@@ -1,12 +1,15 @@
 import { useEffect, RefObject } from 'src/deps'
 
-function useOnClickOutside<T extends HTMLElement>(
+const useOnClickOutside = <T,>(
 	ref: RefObject<T | null>,
 	callback: (argument: MouseEvent | TouchEvent) => void
-) {
+) => {
 	useEffect(() => {
-		function handleClickOutside(event: MouseEvent | TouchEvent) {
-			if (ref.current && !ref.current.contains(event.target as Node)) {
+		const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+			if (
+				ref.current instanceof HTMLElement &&
+				!ref.current.contains(event.target as Node)
+			) {
 				callback(event)
 			}
 		}

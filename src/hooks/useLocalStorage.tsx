@@ -4,10 +4,10 @@ export type useLocalStorageSetValue<T> = (
 	valueOrFn: T | ((prev: T) => T)
 ) => void
 
-function useLocalStorage<T>(
+const useLocalStorage = <T,>(
 	key: string,
 	defaultValue: T
-): [T, useLocalStorageSetValue<T>] {
+): [T, useLocalStorageSetValue<T>] => {
 	const [localStorageValue, setLocalStorageValue] = useState<T>(() => {
 		try {
 			const value = localStorage.getItem(key)

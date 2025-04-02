@@ -9,50 +9,98 @@ import { cn } from 'src/utils/cn'
 import QuestionPanel from './components/QuestionPanel'
 import CodeEditorPanel from './components/CodeEditorPanel'
 import SubmissionPanel from './components/SubmissionPanel'
+import { SECTION_CONFIGS, SectionName } from './helper/sectionConfig'
 
-// Improved type definitions
-type SectionName = 'question' | 'codeEditor' | 'submission' | 'rightSection'
+const RenderMaximizedSection = ({
+	maximizedSection,
+	toggleSection,
+	maximizeSection,
+}: {
+	maximizedSection: SectionName
+	toggleSection: (section: SectionName) => void
+	maximizeSection: (section: SectionName) => void
+}) => (
+	<div className="size-full bg-white">
+		{maximizedSection === 'question' && (
+			<QuestionPanel
+				isMaximized={true}
+				onToggle={() => toggleSection('question')}
+				onMaximize={() => maximizeSection('question')}
+			/>
+		)}
+		{maximizedSection === 'codeEditor' && (
+			<CodeEditorPanel
+				isMaximized={true}
+				onToggle={() => toggleSection('codeEditor')}
+				onMaximize={() => maximizeSection('codeEditor')}
+			/>
+		)}
+		{maximizedSection === 'submission' && (
+			<SubmissionPanel
+				isMaximized={true}
+				onToggle={() => toggleSection('submission')}
+				onMaximize={() => maximizeSection('submission')}
+			/>
+		)}
+	</div>
+)
 
-interface SectionConfig {
-	defaultSize?: number
-	minSize: number
-	collapsedSize?: number
-}
+const LeftCollapsedBar = ({
+	collapsedSections,
+}: {
+	collapsedSections: CollapsedSections
+}) => (
+	<div className="">
+		<div
+			className={cn(
+				'flex h-full w-8 items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
+				!collapsedSections.question && 'hidden'
+			)}
+		>
+			<span className="-rotate-90">Content</span>
+		</div>
+	</div>
+)
 
-const SECTION_CONFIGS = {} as Record<SectionName, SectionConfig>
+const RightCollapsedBar = ({
+	collapsedSections,
+}: {
+	collapsedSections: CollapsedSections
+}) => (
+	<div className="flex flex-col gap-2">
+		<div
+			className={cn(
+				'flex w-8 grow items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
+				!collapsedSections.rightSection && 'hidden'
+			)}
+		>
+			<span className="-rotate-90 text-nowrap">Code Editor</span>
+		</div>
+		<div
+			className={cn(
+				'flex w-8 grow items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
+				!collapsedSections.rightSection && 'hidden'
+			)}
+		>
+			<span className="-rotate-90 text-nowrap">Submission</span>
+		</div>
+	</div>
+)
 
-SECTION_CONFIGS.question = {
-	defaultSize: 50,
-	minSize: 16,
-}
+//**************************************************** Export
 
-SECTION_CONFIGS.codeEditor = {
-	defaultSize: 60,
-	minSize: 20,
-	collapsedSize: 5,
-}
-
-SECTION_CONFIGS.submission = {
-	defaultSize: 100 - (SECTION_CONFIGS.codeEditor.defaultSize || 0),
-	minSize: 20,
-	collapsedSize: 5,
-}
-
-SECTION_CONFIGS.rightSection = {
-	minSize: 15,
-}
+type CollapsedSections = Record<SectionName, boolean>
 
 const ResizableLayout: React.FC = () => {
 	const [maximizedSection, setMaximizedSection] =
 		useState<SectionName | null>(null)
-	const [collapsedSections, setCollapsedSections] = useState<
-		Record<SectionName, boolean>
-	>({
-		question: false,
-		codeEditor: false,
-		submission: false,
-		rightSection: false,
-	})
+	const [collapsedSections, setCollapsedSections] =
+		useState<CollapsedSections>({
+			question: false,
+			codeEditor: false,
+			submission: false,
+			rightSection: false,
+		})
 
 	// Create refs for all panels
 	const panelRefs = {
@@ -62,7 +110,6 @@ const ResizableLayout: React.FC = () => {
 		rightSection: useRef<ImperativePanelHandle>(null),
 	}
 
-	// Keep useCallback for key interaction functions
 	const toggleSection = useCallback((section: SectionName) => {
 		const panelRef = panelRefs[section].current
 		if (!panelRef) return
@@ -75,48 +122,27 @@ const ResizableLayout: React.FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
-	// Keep useCallback for key interaction functions
 	const maximizeSection = useCallback((section: SectionName) => {
 		setMaximizedSection((current) => (current === section ? null : section))
 	}, [])
 
-	// Convert to regular function
-	function handlePanelStateChange(
+	const handlePanelStateChange = (
 		section: SectionName,
 		isCollapsed: boolean
-	) {
+	) => {
 		setCollapsedSections((prev) => ({
 			...prev,
 			[section]: isCollapsed,
 		}))
 	}
 
-	// Render maximized content if a section is maximized
 	if (maximizedSection) {
 		return (
-			<div className="size-full bg-white">
-				{maximizedSection === 'question' && (
-					<QuestionPanel
-						isMaximized={true}
-						onToggle={() => toggleSection('question')}
-						onMaximize={() => maximizeSection('question')}
-					/>
-				)}
-				{maximizedSection === 'codeEditor' && (
-					<CodeEditorPanel
-						isMaximized={true}
-						onToggle={() => toggleSection('codeEditor')}
-						onMaximize={() => maximizeSection('codeEditor')}
-					/>
-				)}
-				{maximizedSection === 'submission' && (
-					<SubmissionPanel
-						isMaximized={true}
-						onToggle={() => toggleSection('submission')}
-						onMaximize={() => maximizeSection('submission')}
-					/>
-				)}
-			</div>
+			<RenderMaximizedSection
+				maximizedSection={maximizedSection}
+				toggleSection={toggleSection}
+				maximizeSection={maximizeSection}
+			/>
 		)
 	}
 
@@ -142,17 +168,7 @@ const ResizableLayout: React.FC = () => {
 					)}
 				</Panel>
 
-				<div className="">
-					<div
-						className={cn(
-							'flex h-full w-8 items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
-							!collapsedSections.question && 'hidden'
-						)}
-					>
-						<span className="-rotate-90">Content</span>
-					</div>
-				</div>
-
+				<LeftCollapsedBar collapsedSections={collapsedSections} />
 				<PanelResizeHandle className="w-1.5 rounded-full bg-gray-100 transition-colors hover:bg-gray-200" />
 
 				{/* Right Section */}
@@ -222,28 +238,7 @@ const ResizableLayout: React.FC = () => {
 					</PanelGroup>
 				</Panel>
 
-				<div className="flex flex-col gap-2">
-					<div
-						className={cn(
-							'flex w-8 grow items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
-							!collapsedSections.rightSection && 'hidden'
-						)}
-					>
-						<span className="-rotate-90 text-nowrap">
-							Code Editor
-						</span>
-					</div>
-					<div
-						className={cn(
-							'flex w-8 grow items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
-							!collapsedSections.rightSection && 'hidden'
-						)}
-					>
-						<span className="-rotate-90 text-nowrap">
-							Submission
-						</span>
-					</div>
-				</div>
+				<RightCollapsedBar collapsedSections={collapsedSections} />
 			</PanelGroup>
 		</div>
 	)

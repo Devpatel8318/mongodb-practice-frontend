@@ -6,7 +6,7 @@ const debounce = <T extends unknown[]>(
 ) => {
 	let timeoutId: ReturnType<typeof setTimeout>
 
-	const debouncedFn = function (...args: Parameters<Procedure<T>>) {
+	const debouncedFn = (...args: Parameters<Procedure<T>>) => {
 		if (timeoutId) {
 			clearTimeout(timeoutId)
 		}

@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'src/deps'
 
-function useIsFirstRender() {
+const useIsFirstRender = () => {
 	const isFirstRender = useRef(true)
 
 	useEffect(() => {
