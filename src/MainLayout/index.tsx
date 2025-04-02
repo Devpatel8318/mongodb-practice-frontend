@@ -4,6 +4,7 @@ import Icons from 'src/assets/svg'
 import { useAppSelector } from 'src/Store'
 import useOnClickOutside from 'src/hooks/useOnClickOutside'
 import { logoutActionDispatcher } from 'src/features/auth/auth.action'
+import { useCallback } from 'react'
 
 interface MainLayoutProps {
 	children: React.ReactNode
@@ -15,9 +16,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 	const [showDropDown, setShowDropDown] = useState(false)
 	const [isProfileImageUrlError, setIsProfileImageUrlError] = useState(false)
 
-	const toggleFilter = () => {
+	const toggleFilter = useCallback(() => {
 		setShowDropDown((prev) => !prev)
-	}
+	}, [])
 
 	useOnClickOutside(filterRef, (event) => {
 		const clickedElement = event.target as Element
@@ -39,13 +40,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 	const { profilePictureUrl } = useAppSelector((state) => state.user)
 
 	return (
-		<div className="flex min-h-screen w-screen flex-col">
-			<header className="sticky top-0 z-40 flex w-full flex-wrap border-b border-gray-200 bg-white text-sm md:flex-nowrap md:justify-start">
+		<div className="flex min-h-screen w-full flex-col">
+			<header className="sticky top-0 z-40 flex w-full flex-wrap border-b border-gray-300 bg-white text-sm md:flex-nowrap md:justify-start">
 				<nav className="mx-auto flex w-full max-w-[85rem] basis-full items-center justify-between px-4 sm:px-6 lg:px-8">
 					<div className="me-5">
 						{/* Logo */}
 						<Link
-							className="focus:outline-hidden inline-block flex-none rounded-md text-xl font-semibold focus:opacity-80"
+							className="inline-block flex-none rounded-md text-xl font-semibold focus:outline-none"
 							to="/"
 						>
 							MongoAcademy
@@ -63,7 +64,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 								name="profile-dropdown-button"
 								type="button"
 								onClick={toggleFilter}
-								className="flex size-10 items-center justify-center rounded-full bg-white"
+								aria-label="Open profile menu"
+								className="flex size-10 items-center justify-center rounded-full bg-white focus:outline-none"
 							>
 								{profilePictureUrl &&
 								!isProfileImageUrlError ? (
@@ -73,6 +75,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 										width={32}
 										height={32}
 										className="size-8 rounded-full object-cover"
+										// TODO: use a better way to handle image error, use   onError={(e) => e.currentTarget.src = '/default-avatar.png'}
 										onError={() =>
 											setIsProfileImageUrlError(true)
 										}
@@ -85,7 +88,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 							{showDropDown && (
 								<div
 									ref={filterRef}
-									className="absolute right-0 w-32 overflow-hidden rounded-lg bg-white shadow-lg"
+									className="absolute right-0 z-50 w-32 overflow-visible rounded-lg bg-white shadow-lg"
 								>
 									<button
 										className="flex w-full items-center justify-between border-b px-4 py-2 text-left text-sm text-gray-800 hover:bg-gray-100"
@@ -107,7 +110,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 					</div>
 				</nav>
 			</header>
-			<div className="flex h-full grow bg-gray-100 p-2">
+
+			<div className="flex grow bg-gray-100 p-2">
 				<div className="grow rounded-md">{children}</div>
 			</div>
 		</div>

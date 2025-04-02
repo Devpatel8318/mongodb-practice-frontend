@@ -15,8 +15,8 @@ const SubmissionPanel = ({
 		<div className="flex h-full flex-col">
 			{/* Custom submission header */}
 			<div className="flex items-center justify-between bg-gray-50 p-2">
-				<h3>Submission</h3>
-				<div className="flex space-x-2">
+				<div className="text-sm">Submission</div>
+				<div className="flex gap-2">
 					{!isMaximized && (
 						<button
 							onClick={onToggle}

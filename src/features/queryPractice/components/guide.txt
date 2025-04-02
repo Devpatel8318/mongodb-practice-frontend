@@ -1,0 +1,59 @@
+Problem Title: Find Users with More than 5 Orders
+
+Problem Statement
+
+You are given a users collection and an orders collection in a MongoDB database. Your task is to write an aggregation query to find all users who have placed more than 5 orders.
+
+Database Schema
+
+Users Collection (users)
+
+Each document in the users collection has the following structure:
+
+{
+  "_id": ObjectId("60a6743efb1a2c3d4e56789a"),
+  "name": "John Doe",
+  "email": "john.doe@example.com"
+}
+
+Orders Collection (orders)
+
+Each document in the orders collection represents an order placed by a user and has the following structure:
+
+{
+  "_id": ObjectId("60a6743efb1a2c3d4e56789b"),
+  "userId": ObjectId("60a6743efb1a2c3d4e56789a"),
+  "amount": 120.5,
+  "date": "2024-03-30T10:15:00Z"
+}
+
+Expected Output
+
+Your query should return a list of users who have placed more than 5 orders, including their _id, name, and email.
+
+Example Output
+
+[
+  {
+    "_id": ObjectId("60a6743efb1a2c3d4e56789a"),
+    "name": "John Doe",
+    "email": "john.doe@example.com"
+  }
+]
+
+Constraints
+	•	A user may have zero or more orders in the orders collection.
+	•	Each order is associated with a user via the userId field.
+	•	The orders collection may contain thousands of records.
+
+⸻
+
+Key Elements to Include in Your Platform’s Question Description:
+	1.	Problem Title: Concise and descriptive, like “Find Users with More than 5 Orders.”
+	2.	Problem Statement: Clearly explains what the user needs to do.
+	3.	Database Schema: Shows the structure of the collections involved.
+	4.	Expected Output: Defines what the query should return.
+	5.	Example Output: Provides sample JSON results for clarity.
+	6.	Constraints: Lists any limitations or considerations.
+
+Would you like to add hints or difficulty levels like LeetCode does? 🚀

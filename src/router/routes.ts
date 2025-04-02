@@ -3,7 +3,7 @@ import Login from 'src/features/auth/Login'
 import Logout from 'src/features/auth/Logout'
 import Signup from 'src/features/auth/Signup'
 import ForgetPassword from 'src/features/auth/ForgetPassword'
-import QueryPracticePage from 'src/features/queryPractice/QueryPracticePage'
+import ProblemPracticePage from 'src/features/queryPractice/ProblemPracticePage'
 
 export interface RouteObjectType {
 	path: string
@@ -25,7 +25,7 @@ export const privateRoutes: RouteObjectType[] = [
 	...['/dashboard', '/'].map((path) =>
 		createRouteObject(path, 'Dashboard', Dashboard)
 	),
-	createRouteObject('/problems/:questionId', 'Problem', QueryPracticePage),
+	createRouteObject('/problems/:questionId', 'Problem', ProblemPracticePage),
 	createRouteObject('/logout', 'Logout', Logout),
 ]
 

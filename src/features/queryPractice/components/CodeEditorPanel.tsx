@@ -12,11 +12,11 @@ const CodeEditorPanel = ({
 	onMaximize: () => void
 }) => {
 	return (
-		<div className="flex h-full flex-col">
+		<div className="">
 			{/* Custom code editor header */}
 			<div className="flex items-center justify-between bg-gray-50 p-2">
-				<h3>Code Editor</h3>
-				<div className="flex space-x-2">
+				<div className="text-sm">Code Editor</div>
+				<div className="flex gap-2">
 					{!isMaximized && (
 						<button
 							onClick={onToggle}

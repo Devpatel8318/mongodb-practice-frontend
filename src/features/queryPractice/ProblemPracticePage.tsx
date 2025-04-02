@@ -14,35 +14,32 @@ import SubmissionPanel from './components/SubmissionPanel'
 type SectionName = 'question' | 'codeEditor' | 'submission' | 'rightSection'
 
 interface SectionConfig {
-	title: string
 	defaultSize?: number
 	minSize: number
 	collapsedSize?: number
 }
 
-const SECTION_CONFIGS: Record<SectionName, SectionConfig> = {
-	question: {
-		title: 'Question Description',
-		defaultSize: 35,
-		minSize: 16,
-	},
-	codeEditor: {
-		title: 'Code Editor',
-		defaultSize: 60,
-		minSize: 20,
-		collapsedSize: 5,
-	},
-	submission: {
-		title: 'Submission',
-		defaultSize: 40,
-		minSize: 20,
-		collapsedSize: 5,
-	},
-	rightSection: {
-		title: 'rightSection',
-		minSize: 15,
-		collapsedSize: 0,
-	},
+const SECTION_CONFIGS = {} as Record<SectionName, SectionConfig>
+
+SECTION_CONFIGS.question = {
+	defaultSize: 50,
+	minSize: 16,
+}
+
+SECTION_CONFIGS.codeEditor = {
+	defaultSize: 60,
+	minSize: 20,
+	collapsedSize: 5,
+}
+
+SECTION_CONFIGS.submission = {
+	defaultSize: 100 - (SECTION_CONFIGS.codeEditor.defaultSize || 0),
+	minSize: 20,
+	collapsedSize: 5,
+}
+
+SECTION_CONFIGS.rightSection = {
+	minSize: 15,
 }
 
 const ResizableLayout: React.FC = () => {
@@ -97,7 +94,7 @@ const ResizableLayout: React.FC = () => {
 	// Render maximized content if a section is maximized
 	if (maximizedSection) {
 		return (
-			<div className="size-full">
+			<div className="size-full bg-white">
 				{maximizedSection === 'question' && (
 					<QuestionPanel
 						isMaximized={true}
@@ -125,7 +122,7 @@ const ResizableLayout: React.FC = () => {
 
 	return (
 		<div className="flex h-full bg-gray-100">
-			<PanelGroup direction="horizontal" className="rounded-lg">
+			<PanelGroup direction="horizontal" className="h-full rounded-lg">
 				{/* Question Description */}
 				<Panel
 					defaultSize={SECTION_CONFIGS.question.defaultSize}
@@ -136,18 +133,19 @@ const ResizableLayout: React.FC = () => {
 					onExpand={() => handlePanelStateChange('question', false)}
 					className="rounded-lg bg-white"
 				>
-					<QuestionPanel
-						isMaximized={false}
-						// isCollapsed={collapsedSections.question}
-						onToggle={() => toggleSection('question')}
-						onMaximize={() => maximizeSection('question')}
-					/>
+					{!collapsedSections.question && (
+						<QuestionPanel
+							isMaximized={false}
+							onToggle={() => toggleSection('question')}
+							onMaximize={() => maximizeSection('question')}
+						/>
+					)}
 				</Panel>
 
-				<div className="h-full">
+				<div className="">
 					<div
 						className={cn(
-							'text-md flex h-full w-8 items-center justify-center rounded-lg bg-white font-normal tracking-wider',
+							'flex h-full w-8 items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
 							!collapsedSections.question && 'hidden'
 						)}
 					>
@@ -160,7 +158,6 @@ const ResizableLayout: React.FC = () => {
 				{/* Right Section */}
 				<Panel
 					minSize={SECTION_CONFIGS.rightSection.minSize}
-					collapsedSize={SECTION_CONFIGS.rightSection.collapsedSize}
 					collapsible={true}
 					ref={panelRefs.rightSection}
 					onCollapse={() =>
@@ -170,7 +167,7 @@ const ResizableLayout: React.FC = () => {
 						handlePanelStateChange('rightSection', false)
 					}
 				>
-					<PanelGroup direction="vertical" className="h-full">
+					<PanelGroup direction="vertical">
 						{/* Code Editor Panel */}
 						<Panel
 							className="rounded-lg bg-white"
@@ -225,10 +222,10 @@ const ResizableLayout: React.FC = () => {
 					</PanelGroup>
 				</Panel>
 
-				<div className="flex h-full flex-col gap-2">
+				<div className="flex flex-col gap-2">
 					<div
 						className={cn(
-							'text-md flex w-8 grow items-center justify-center rounded-lg bg-white font-normal tracking-wider',
+							'flex w-8 grow items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
 							!collapsedSections.rightSection && 'hidden'
 						)}
 					>
@@ -238,7 +235,7 @@ const ResizableLayout: React.FC = () => {
 					</div>
 					<div
 						className={cn(
-							'text-md flex w-8 grow items-center justify-center rounded-lg bg-white font-normal tracking-wider',
+							'flex w-8 grow items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
 							!collapsedSections.rightSection && 'hidden'
 						)}
 					>
