@@ -1,10 +1,12 @@
-// MongoDB language configuration
-export const mongodbLanguage = {
+/* eslint-disable no-useless-escape */
+const mongodbLanguage = {
 	defaultToken: 'invalid',
 	tokenPostfix: '.mongo',
 
-	keywords: [
-		'db',
+	keywords: [],
+
+	functions: [
+		'aggregate',
 		'collection',
 		'createCollection',
 		'drop',
@@ -20,10 +22,37 @@ export const mongodbLanguage = {
 		'show',
 		'use',
 		'exit',
-		'show dbs',
-		'show databases',
-		'show collections',
+		'count',
+		'countDocuments',
+		'distinct',
+		'bulkWrite',
+		'rename',
+		'cloneCollection',
+		'createIndex',
+		'dropIndex',
+		'listIndexes',
+		'indexExists',
+		'getIndexes',
+		'watch',
+		'aggregateCursor',
+		'update',
+		'insert',
+		'delete',
+		'mapReduce',
+		'findOneAndDelete',
+		'findOneAndUpdate',
+		'findOneAndReplace',
+		'save',
+		'size',
+		'validate',
+		'getShardDistribution',
+		'findOneAndModify',
+		'unionWith',
 	],
+
+	db: ['db'],
+	newkeyword: ['new'],
+	isoDate: ['ISODate'],
 
 	operators: [
 		'_id',
@@ -73,70 +102,111 @@ export const mongodbLanguage = {
 		'$facet',
 		'$merge',
 		'$out',
+		'$all',
+		'$elemMatch',
+		'$mod',
+		'$expr',
+		'$jsonSchema',
+		'$near',
+		'$nearSphere',
+		'$rename',
+		'$setOnInsert',
+		'$currentDate',
+		'$bit',
+		'$min',
+		'$max',
+		'$indexOfBytes',
+		'$indexOfCP',
+		'$let',
+		'$cond',
+		'$switch',
+		'$case',
+		'$reduce',
+		'$map',
+		'$filter',
+		'$arrayToObject',
+		'$objectToArray',
+		'$concatArrays',
+		'$zip',
+		'$isArray',
+		'$literal',
+		'$ifNull',
+		'$dayOfWeek',
+		'$dayOfYear',
+		'$isoDayOfWeek',
+		'$isoWeek',
+		'$isoYear',
+		'$week',
+		'$year',
+		'$month',
+		'$dayOfMonth',
+		'$hour',
+		'$minute',
+		'$second',
+		'$millisecond',
+		'$dateToString',
+		'$dateFromParts',
+		'$dateToParts',
+		'$dateDiff',
+		'$convert',
+		'$regexMatch',
 	],
 
 	tokenizer: {
 		root: [
-			// Match the $ operator separately
+			// $operators (force ALL $identifiers to get styled properly)
 			{
-				regex: /\$/g,
-				action: { token: 'operator.keyword' }, // Color only the $ symbol
+				regex: /\$[a-zA-Z_][\w$]*/,
+				action: 'operator', // ✅ style all $-prefixed words as operators
 			},
-			// Match the rest of the operators
-			// {
-			//     regex: /[a-zA-Z_][\w$]*/g,
-			//     action: { token: 'operator' }, // Color the rest of the operator normally
-			// },
-			// Brackets
-			{ regex: /[{}[\]]/, action: 'delimiter.bracket' },
 
-			// Keywords and identifiers
+			// Special keywords
+			{ regex: /\bnew\b/, action: 'newkeyword' },
+			{ regex: /\bISODate\b/, action: 'isoDate' },
 			{
-				regex: /\b[a-zA-Z_$][\w$]*\b/,
+				regex: /\b(aggregate|find|insert|update|delete|show|use)\b/,
+				action: 'function', // Treat these as functions and apply function styling (blue)
+			},
+			{
+				regex: /\b(db\.[a-zA-Z_][\w$]*)\b/,
+				action: 'db', // Treat db.collection as db token
+			},
+
+			// General identifiers (like totalOrderValue, etc.)
+			{
+				regex: /[a-zA-Z_][\w$]*/,
 				action: {
 					cases: {
 						'@keywords': 'keyword',
-						'@operators': 'operator',
-						'@default': 'identifier',
+						'@default': 'keyword', // ✅ color object keys like `totalOrderValue`
 					},
 				},
 			},
 
+			// ObjectId
+			// { regex: /ObjectId\("([a-f0-9]{24})"\)/, action: 'objectId' },
+			{ regex: /\b(ObjectId\("([a-f0-9]{24})"\))\b/, action: 'objectId' }, // Extended to match full ObjectId
+
 			// Numbers
-			{ regex: /\d+/, action: 'number' },
+			{ regex: /\b\d+(\.\d+)?\b/, action: 'number' },
 
-			// Strings
-			{ regex: /"([^"\\]|\\.)*$/, action: 'string.invalid' },
-			{ regex: /'([^'\\]|\\.)*$/, action: 'string.invalid' },
-			{ regex: /"[^"]*"/, action: 'string' },
-			{ regex: /'[^']*'/, action: 'string' },
-
-			// ObjectId pattern
-			{
-				regex: /ObjectId\("([a-f0-9]{24})"\)/,
-				action: 'objectId',
-			},
-
-			// Regular expressions
-			// eslint-disable-next-line no-useless-escape
+			// Regex
 			{ regex: /\/[^\/]+\/[gimsuy]*/, action: 'regexp' },
 
+			// Strings
+			{ regex: /"([^"\\]|\\.)*"/, action: 'string' },
+			{ regex: /'([^'\\]|\\.)*'/, action: 'string' },
+
 			// Delimiters
-			{ regex: /[,:]/, action: 'delimiter' },
+			{ regex: /[{}[\],:]/, action: 'delimiter' },
 
 			// Comments
-			{
-				regex: /\/\*/,
-				action: { token: 'comment', next: '@comment' },
-			},
+			{ regex: /\/\*/, action: { token: 'comment', next: '@comment' } },
 			{ regex: /\/\/.*$/, action: 'comment' },
 		],
 
 		comment: [
-			{
-				regex: /\*\//,
-				action: { token: 'comment', next: '@pop' },
-			},
+			{ regex: /\*\//, action: { token: 'comment', next: '@pop' } },
 			{ regex: /[^*]+/, action: 'comment' },
 			{ regex: /./, action: 'comment' },
 		],

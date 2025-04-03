@@ -33,7 +33,7 @@
     "extends": []
   },
   "dependencies": {
-    "@monaco-editor/react": "^4.6.0",
+    "@monaco-editor/react": "^4.7.0",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.6",
     "@types/react-syntax-highlighter": "^15.5.13",

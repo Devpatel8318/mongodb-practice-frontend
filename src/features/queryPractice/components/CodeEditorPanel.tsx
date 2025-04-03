@@ -1,4 +1,5 @@
 import Icons from 'src/assets/svg'
+import CodeEditor from './codeEditor/CodeEditor'
 
 const CodeEditorPanel = ({
 	isMaximized,
@@ -43,7 +44,9 @@ const CodeEditorPanel = ({
 			</div>
 
 			{/* Content area */}
-			<div className="grow p-4">Code editor content goes here</div>
+			<div className="grow">
+				<CodeEditor />
+			</div>
 		</div>
 	)
 }

@@ -1,0 +1,223 @@
+{
+    "databaseCommands": [
+        {
+            "label": "db",
+            "insertText": "db",
+            "detail": "MongoDB database object"
+        },
+        {
+            "label": "db.collection.find",
+            "insertText": "db.collection.find({${1}})",
+            "detail": "MongoDB find query"
+        },
+        {
+            "label": "db.collection.insertOne",
+            "insertText": "db.collection.insertOne({${1}})",
+            "detail": "Insert a single document into a collection"
+        },
+        {
+            "label": "db.collection.insertMany",
+            "insertText": "db.collection.insertMany([${1}])",
+            "detail": "Insert multiple documents into a collection"
+        },
+        {
+            "label": "db.collection.updateOne",
+            "insertText": "db.collection.updateOne({${1}}, {\\$set: {${2}}})",
+            "detail": "Update a single document in a collection"
+        },
+        {
+            "label": "db.collection.updateMany",
+            "insertText": "db.collection.updateMany({${1}}, {\\$set: {${2}}})",
+            "detail": "Update multiple documents in a collection"
+        },
+        {
+            "label": "db.collection.deleteOne",
+            "insertText": "db.collection.deleteOne({${1}})",
+            "detail": "Delete a single document from a collection"
+        },
+        {
+            "label": "db.collection.deleteMany",
+            "insertText": "db.collection.deleteMany({${1}})",
+            "detail": "Delete multiple documents from a collection"
+        },
+        {
+            "label": "db.collection.aggregate",
+            "insertText": "db.collection.aggregate([\\n\\t{\\$match: {${1}}}\\n])",
+            "detail": "Run an aggregation pipeline on a collection"
+        },
+        {
+            "label": "db.createCollection",
+            "insertText": "db.createCollection('${1}')",
+            "detail": "Create a new collection in MongoDB"
+        },
+        {
+            "label": "db.dropCollection",
+            "insertText": "db.dropCollection('${1}')",
+            "detail": "Drop a collection from the database"
+        },
+        {
+            "label": "db.collection.createIndex",
+            "insertText": "db.collection.createIndex({${1}})",
+            "detail": "Create an index on a collection"
+        },
+        {
+            "label": "db.collection.dropIndex",
+            "insertText": "db.collection.dropIndex('${1}')",
+            "detail": "Drop an index from a collection"
+        },
+        {
+            "label": "db.collection.rename",
+            "insertText": "db.collection.rename('${1}')",
+            "detail": "Rename a collection"
+        }
+    ],
+    "aggregationStages": [
+        {
+            "label": "$match",
+            "insertText": "\"\\$match\": {${1}}",
+            "detail": "Filter documents in an aggregation pipeline"
+        },
+        {
+            "label": "$group",
+            "insertText": "\"\\$group\": {${1}}",
+            "detail": "Group documents by a specified key"
+        },
+        {
+            "label": "$sort",
+            "insertText": "\"\\$sort\": {${1}}",
+            "detail": "Sort documents in an aggregation pipeline"
+        },
+        {
+            "label": "$project",
+            "insertText": "\"\\$project\": {${1}}",
+            "detail": "Include or exclude fields in output documents"
+        },
+        {
+            "label": "$addFields",
+            "insertText": "\"\\$addFields\": {${1}}",
+            "detail": "Add new fields to documents in an aggregation pipeline"
+        },
+        {
+            "label": "$unwind",
+            "insertText": "\"\\$unwind\": {${1}}",
+            "detail": "Deconstruct an array field in a document"
+        },
+        {
+            "label": "$limit",
+            "insertText": "\"\\$limit\": ${1}",
+            "detail": "Limit the number of documents in the aggregation pipeline"
+        },
+        {
+            "label": "$skip",
+            "insertText": "\"\\$skip\": ${1}",
+            "detail": "Skip a specified number of documents in the aggregation pipeline"
+        },
+        {
+            "label": "$lookup",
+            "insertText": "\"\\$lookup\": { ${1} }",
+            "detail": "Join data from another collection"
+        },
+        {
+            "label": "$facet",
+            "insertText": "\"\\$facet\": { ${1} }",
+            "detail": "Define multiple aggregation pipelines within a single stage"
+        },
+        {
+            "label": "$out",
+            "insertText": "\"\\$out\": '${1}'",
+            "detail": "Write the results of an aggregation pipeline to a new collection"
+        }
+    ],
+    "operators": [
+        {
+            "label": "$eq",
+            "insertText": "\"\\$eq\": {${1}}",
+            "detail": "Equality operator"
+        },
+        {
+            "label": "$gt",
+            "insertText": "\"\\$gt\": {${1}}",
+            "detail": "Greater than operator"
+        },
+        {
+            "label": "$lt",
+            "insertText": "\"\\$lt\": {${1}}",
+            "detail": "Less than operator"
+        },
+        {
+            "label": "$in",
+            "insertText": "\"\\$in\": [${1}]",
+            "detail": "In operator"
+        },
+        {
+            "label": "$unset",
+            "insertText": "\"\\$unset\": [${1}]",
+            "detail": "Remove fields from documents in an aggregation pipeline"
+        },
+        {
+            "label": "$exists",
+            "insertText": "\"\\$exists\": ${1}",
+            "detail": "Check for field existence in documents"
+        },
+        {
+            "label": "$ne",
+            "insertText": "\"\\$ne\": {${1}}",
+            "detail": "Not equal operator"
+        },
+        {
+            "label": "$lte",
+            "insertText": "\"\\$lte\": {${1}}",
+            "detail": "Less than or equal operator"
+        },
+        {
+            "label": "$gte",
+            "insertText": "\"\\$gte\": {${1}}",
+            "detail": "Greater than or equal operator"
+        },
+        {
+            "label": "$regex",
+            "insertText": "\"\\$regex\": '${1}'",
+            "detail": "Regular expression operator"
+        },
+        {
+            "label": "$and",
+            "insertText": "\"\\$and\": [${1}]",
+            "detail": "Logical AND operator"
+        },
+        {
+            "label": "$or",
+            "insertText": "\"\\$or\": [${1}]",
+            "detail": "Logical OR operator"
+        },
+        {
+            "label": "$not",
+            "insertText": "\"\\$not\": {${1}}",
+            "detail": "Logical NOT operator"
+        },
+        {
+            "label": "$nor",
+            "insertText": "\"\\$nor\": [${1}]",
+            "detail": "Logical NOR operator"
+        },
+        {
+            "label": "$type",
+            "insertText": "\"\\$type\": '${1}'",
+            "detail": "Check for a specific type in documents"
+        },
+        {
+            "label": "$size",
+            "insertText": "\"\\$size\": ${1}",
+            "detail": "Match documents where the array has a specified size"
+        },
+        {
+            "label": "$all",
+            "insertText": "\"\\$all\": [${1}]",
+            "detail": "Match documents where an array field contains all specified values"
+        },
+        {
+            "label": "$elemMatch",
+            "insertText": "\"\\$elemMatch\": {${1}}",
+            "detail": "Match documents where an array field contains at least one element matching a condition"
+        }
+    ]
+}

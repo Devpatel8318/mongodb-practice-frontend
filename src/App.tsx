@@ -1,3 +1,22 @@
+// Maintaining TODO here
+// TODO: migrate to Vite, and remove GENERATE_SOURCEMAP=false from .env, as vite provide this (exclude specific packages from sourceMap) and it is also faster
+/**
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        sourcemapExcludeSources: [/monaco-editor/], // Ignore monaco-editor source maps
+      },
+    },
+  },
+});
+*/
+
 import { useEffect, useState, Toaster } from 'src/deps'
 
 import Routers from 'src/router'

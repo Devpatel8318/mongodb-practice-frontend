@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import * as monaco from 'monaco-editor'
 
 // Semantic Tokens Legend for MongoDB
@@ -11,7 +12,14 @@ const legend = {
 		'operator',
 		'field',
 		'objectId',
-		'delimiter',
+		'timestamp',
+		'binData',
+		'decimal128',
+		'literal',
+		'function',
+		'db',
+		'array',
+		'object',
 	],
 	tokenModifiers: [
 		'declaration',
@@ -34,9 +42,9 @@ const getModifierIndex = (modifiers: string | string[]) => {
 	}, 0)
 }
 
-// Token pattern for MongoDB (handles `$`-prefixed operators, identifiers, and strings)
-// eslint-disable-next-line no-useless-escape
-const tokenPattern = /(\$?[a-zA-Z_][\w\$]*)|(["'`][^"'`]*["'`])|(\d+(\.\d+)?)/g
+// Updated MongoDB Token Patterns
+const tokenPattern =
+	/(\$?[a-zA-Z_][\w\$]*)|(["'`][^"'`]*["'`])|(\d+(\.\d+)?|Infinity|-Infinity|NaN)|(\bObjectId\("([a-f0-9]{24})"\))|\b(ISODate|new)\b|(\[|\]|\{|\})/g
 
 // Updated MongoDB Semantic Token Provider
 export const mongodbDocumentSemantic = {
@@ -67,8 +75,10 @@ export const mongodbDocumentSemantic = {
 					tokenType = 'number'
 				} else if (/^\$/.test(tokenValue)) {
 					tokenType = 'operator'
+				} else if (/^[a-zA-Z_][\w$]*$/.test(tokenValue)) {
+					tokenType = 'field'
 				} else {
-					tokenType = 'field' // Default to 'field' for identifiers
+					tokenType = 'identifier'
 				}
 
 				const typeIndex = getTypeIndex(tokenType)
