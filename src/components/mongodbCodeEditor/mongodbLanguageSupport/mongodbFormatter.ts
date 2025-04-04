@@ -1,5 +1,3 @@
-// mongodbFormatter.ts
-// MongoDB query formatting function
 const formatMongoDBQuery = (query: string): string => {
 	try {
 		// Special case for aggregation pipelines
@@ -19,7 +17,7 @@ const formatMongoDBQuery = (query: string): string => {
 			const char = query[i]
 			const nextChar = i < query.length - 1 ? query[i + 1] : ''
 
-			// Handle comments
+			// Handle line comments
 			if (char === '/' && nextChar === '/' && !inString) {
 				inComment = true
 				buffer += '// '
@@ -126,6 +124,12 @@ const formatMongoDBQuery = (query: string): string => {
 						buffer = ' '.repeat(indentLevel * 2)
 					}
 				}
+				// Handle inline comments (on the same line as key-value pairs)
+				else if (char === '/' && nextChar === '/') {
+					buffer += ' //'
+					i++ // Skip next '/'
+					continue
+				}
 				// All other characters
 				else {
 					buffer += char
@@ -147,10 +151,10 @@ const formatMongoDBQuery = (query: string): string => {
 	}
 }
 
-// Special formatter for MongoDB aggregation pipelines
+// Improved aggregation pipeline formatting
 const formatAggregationPipeline = (query: string): string => {
 	try {
-		// Extract the collection name and pipeline stages
+		// Extract collection name and pipeline content
 		const match = query.match(
 			/db\.(\w+)\.aggregate\s*\(\s*\[([\s\S]*)\]\s*\)/
 		)
@@ -159,247 +163,494 @@ const formatAggregationPipeline = (query: string): string => {
 		const collection = match[1]
 		const pipelineContent = match[2]
 
-		// Split the pipeline into individual stages with their comments
-		const stages: { comment: string; stage: string }[] = []
-		let currentStage = ''
-		let currentComment = ''
-		let inString = false
-		let inComment = false
-		let braceCount = 0
-		let inLineComment = false
-
-		// Process the pipeline content character by character
-		for (let i = 0; i < pipelineContent.length; i++) {
-			const char = pipelineContent[i]
-			const nextChar =
-				i < pipelineContent.length - 1 ? pipelineContent[i + 1] : ''
-
-			// Handle string literals
-			if (
-				(char === '"' || char === "'") &&
-				(i === 0 || pipelineContent[i - 1] !== '\\')
-			) {
-				inString = !inString
-			}
-
-			if (!inString) {
-				// Handle single-line comments
-				if (
-					char === '/' &&
-					nextChar === '/' &&
-					!inComment &&
-					!inLineComment
-				) {
-					inLineComment = true
-					currentComment += '// '
-					i++ // Skip the second '/'
-					continue
-				}
-
-				if (inLineComment) {
-					if (char === '\n') {
-						inLineComment = false
-						currentComment += '\n  ' // Add proper indentation for the next line
-					} else {
-						currentComment += char
-					}
-					continue
-				}
-
-				// Handle multi-line comments
-				if (
-					char === '/' &&
-					nextChar === '*' &&
-					!inComment &&
-					!inLineComment
-				) {
-					inComment = true
-					currentComment += '/* '
-					i++ // Skip the '*'
-					continue
-				}
-
-				if (inComment) {
-					if (char === '*' && nextChar === '/') {
-						inComment = false
-						currentComment += ' */\n  '
-						i++ // Skip the '/'
-					} else {
-						currentComment += char
-					}
-					continue
-				}
-
-				// Track braces to identify stage boundaries
-				if (char === '{') {
-					braceCount++
-					if (braceCount === 1 && currentStage === '') {
-						// Start of a new stage
-						currentStage += char
-					} else {
-						currentStage += char
-					}
-				} else if (char === '}') {
-					braceCount--
-					currentStage += char
-
-					if (braceCount === 0) {
-						// End of the current stage
-						// Check if there's a comma after this
-						let j = i + 1
-						while (
-							j < pipelineContent.length &&
-							/\s/.test(pipelineContent[j])
-						)
-							j++
-
-						if (
-							j < pipelineContent.length &&
-							pipelineContent[j] === ','
-						) {
-							// Include the comma in the current stage
-							i = j // Skip to the comma
-							currentStage += ','
-						}
-
-						// Store the stage and comment
-						stages.push({
-							comment: currentComment.trim(),
-							stage: currentStage.trim(),
-						})
-
-						currentStage = ''
-						currentComment = ''
-					}
-				} else if (braceCount > 0) {
-					// Inside a stage
-					currentStage += char
-				} else if (!/\s/.test(char) && char !== ',') {
-					// Non-whitespace, non-comma character outside of a stage
-					// This could be a comment or the start of a stage
-					currentStage += char
-				}
-			} else {
-				// Inside a string literal
-				if (braceCount > 0) {
-					currentStage += char
-				}
-			}
-		}
+		// Split pipeline into stages while preserving comments
+		const stages = extractPipelineStages(pipelineContent)
 
 		// Format each stage
-		const formattedStages = stages.map(({ comment, stage }) => {
-			const formattedStage = formatStageContent(stage)
-			if (comment) {
-				return `  ${comment}\n  ${formattedStage}`
+		const formattedStages = stages.map(({ stage, comments }) => {
+			const formattedStage = formatStage(stage)
+
+			// Add stage comments at the beginning
+			if (comments.length > 0) {
+				return `${comments.map((c) => `  ${c}`).join('\n')}\n  ${formattedStage}`
 			}
+
 			return `  ${formattedStage}`
 		})
 
-		// Build the final formatted pipeline
-		return `db.${collection}.aggregate([\n${formattedStages.join(',\n')}\n])`
+		// Reconstruct the full query
+		return `db.${collection}.aggregate([\n${formattedStages.join(',\n\n')}\n])`
 	} catch (error) {
 		console.error('Error formatting aggregation pipeline:', error)
 		return query // Return the original query if formatting fails
 	}
 }
 
-// Helper function to format a single stage
-const formatStageContent = (stage: string): string => {
-	try {
-		// Remove any leading/trailing commas
-		stage = stage.replace(/^,+/, '').replace(/,+$/, '')
-
-		// Keep the opening brace and operator on the same line
-		const operatorMatch = stage.match(/^\s*{\s*(\$\w+)\s*:/)
-		if (!operatorMatch) return stage
-
-		const operator = operatorMatch[1]
-		// Remove the operator part to format the rest
-		const content = stage.replace(/^\s*{\s*\$\w+\s*:/, '{')
-
-		// Format the content with proper indentation
-		const formatted = formatJsonLikeContent(content)
-
-		// Reconstruct with proper spacing
-		return `{${operator}: ${formatted.trim().substring(1)}`
-	} catch (error) {
-		console.error('Error formatting stage:', error)
-		return stage
-	}
-}
-
-// Helper function to format JSON-like content with proper indentation
-const formatJsonLikeContent = (content: string): string => {
-	let result = ''
-	let indentLevel = 0
+// Extract stages and preserve comments
+const extractPipelineStages = (
+	content: string
+): { stage: string; comments: string[] }[] => {
+	const stages: { stage: string; comments: string[] }[] = []
+	let currentStage = ''
+	let pendingComments: string[] = []
 	let inString = false
-	let buffer = ''
+	let inLineComment = false
+	let inBlockComment = false
+	let braceCount = 0
+	let currentComment = ''
 
-	for (let i = 0; i < content.length; i++) {
-		const char = content[i]
+	const processedContent = content.replace(/\r\n/g, '\n') // Normalize line endings
 
-		// Handle string literals
+	// Process content character by character
+	for (let i = 0; i < processedContent.length; i++) {
+		const char = processedContent[i]
+		const nextChar =
+			i < processedContent.length - 1 ? processedContent[i + 1] : ''
+		const prevChar = i > 0 ? processedContent[i - 1] : ''
+
+		// Handle strings
 		if (
 			(char === '"' || char === "'") &&
-			(i === 0 || content[i - 1] !== '\\')
+			prevChar !== '\\' &&
+			!inLineComment &&
+			!inBlockComment
 		) {
 			inString = !inString
-			buffer += char
-			continue
 		}
 
-		if (inString) {
-			buffer += char
-		} else {
-			if (char === '{' || char === '[') {
-				buffer += char
+		if (!inString) {
+			// Handle line comments
+			if (
+				char === '/' &&
+				nextChar === '/' &&
+				!inLineComment &&
+				!inBlockComment
+			) {
+				inLineComment = true
+				currentComment = '//'
+				i++ // Skip next '/'
+				continue
+			}
 
-				// Check if this is an empty object/array
-				let j = i + 1
-				while (j < content.length && /\s/.test(content[j])) j++
-
-				const closingChar = char === '{' ? '}' : ']'
-				if (j < content.length && content[j] === closingChar) {
-					// Empty object/array
-					buffer += closingChar
-					i = j
+			if (inLineComment) {
+				if (char === '\n') {
+					inLineComment = false
+					pendingComments.push(currentComment.trim())
+					currentComment = ''
 				} else {
-					// Not empty, add newline and indent
-					result += buffer + '\n'
-					indentLevel++
-					buffer = ' '.repeat(indentLevel * 2)
+					currentComment += char
 				}
-			} else if (char === '}' || char === ']') {
-				if (buffer.trim()) {
-					result += buffer + '\n'
+				continue
+			}
+
+			// Handle block comments
+			if (char === '/' && nextChar === '*' && !inBlockComment) {
+				inBlockComment = true
+				currentComment = '/*'
+				i++ // Skip next '*'
+				continue
+			}
+
+			if (inBlockComment) {
+				if (char === '*' && nextChar === '/') {
+					currentComment += '*/'
+					inBlockComment = false
+					pendingComments.push(currentComment.trim())
+					currentComment = ''
+					i++ // Skip next '/'
+					continue
+				} else {
+					currentComment += char
 				}
-				indentLevel = Math.max(0, indentLevel - 1)
-				buffer = ' '.repeat(indentLevel * 2) + char
-			} else if (char === ',') {
-				buffer += char
-				result += buffer + '\n'
-				buffer = ' '.repeat(indentLevel * 2)
-			} else if (char === ':') {
-				buffer += ': '
-				// Skip extra spaces
-				while (i + 1 < content.length && content[i + 1] === ' ') i++
-			} else if (char === '\n') {
-				if (buffer.trim()) {
-					result += buffer + '\n'
-					buffer = ' '.repeat(indentLevel * 2)
+				continue
+			}
+
+			// Handle stage boundaries
+			if (char === '{' && braceCount === 0) {
+				braceCount++
+				currentStage = '{'
+			} else if (braceCount > 0) {
+				if (char === '{') braceCount++
+				else if (char === '}') braceCount--
+
+				currentStage += char
+
+				// End of stage
+				if (braceCount === 0) {
+					// Skip whitespace and check for comma
+					let j = i + 1
+					while (
+						j < processedContent.length &&
+						/\s/.test(processedContent[j])
+					)
+						j++
+
+					// Include the comma if present
+					if (
+						j < processedContent.length &&
+						processedContent[j] === ','
+					) {
+						currentStage += ','
+						i = j // Move past the comma
+					}
+
+					// Store the stage with its comments
+					stages.push({
+						stage: currentStage.trim(),
+						comments: [...pendingComments], // Clone the pending comments
+					})
+
+					// Reset for next stage
+					currentStage = ''
+					pendingComments = []
 				}
-			} else {
-				buffer += char
+			} else if (!/\s/.test(char) && char !== ',') {
+				// Non-whitespace outside of stage and not a comma - probably part of a comment
+				currentStage += char
+			}
+		} else {
+			// In a string
+			if (braceCount > 0) {
+				currentStage += char
 			}
 		}
 	}
 
-	if (buffer.trim()) {
-		result += buffer
+	// Add any remaining stage
+	if (currentStage.trim()) {
+		stages.push({
+			stage: currentStage.trim(),
+			comments: pendingComments,
+		})
 	}
 
-	return result
+	return stages
+}
+
+// Format an individual stage
+const formatStage = (stageStr: string): string => {
+	try {
+		// Remove trailing comma if present
+		stageStr = stageStr.replace(/,\s*$/, '')
+
+		// Handle empty or malformed stages
+		if (!stageStr.startsWith('{') || !stageStr.endsWith('}')) {
+			return stageStr
+		}
+
+		// Extract the stage operator ($match, $lookup, etc.)
+		const operatorMatch = stageStr.match(/^\{\s*(\$\w+)\s*:/)
+		if (!operatorMatch) return stageStr
+
+		const operator = operatorMatch[1]
+		const colonIndex = stageStr.indexOf(':')
+		const valueStart = colonIndex + 1
+		const valueEnd = stageStr.length - 1
+		const valueStr = stageStr.substring(valueStart, valueEnd).trim()
+
+		// Format the stage value based on its type
+		const formattedValue = formatStageValue(valueStr)
+
+		// Determine trailing comments if any
+		const trailingCommentMatch = valueStr.match(/(.+?)(\s*\/\/\s*.+)$/)
+		const trailingComment = trailingCommentMatch
+			? trailingCommentMatch[2]
+			: ''
+
+		// Construct the formatted stage
+		return `{\n    ${operator}: ${formattedValue}${trailingComment}\n  }`
+	} catch (error) {
+		console.error('Error formatting stage:', error)
+		return stageStr
+	}
+}
+
+// Format the value portion of a stage
+const formatStageValue = (valueStr: string): string => {
+	try {
+		valueStr = valueStr.trim()
+
+		// Handle simple values (not objects or arrays)
+		if (!valueStr.startsWith('{') && !valueStr.startsWith('[')) {
+			return valueStr
+		}
+
+		// Handle empty objects/arrays
+		if (valueStr === '{}' || valueStr === '[]') {
+			return valueStr
+		}
+
+		// Format objects
+		if (valueStr.startsWith('{') && valueStr.endsWith('}')) {
+			const innerContent = valueStr
+				.substring(1, valueStr.length - 1)
+				.trim()
+			if (!innerContent) return '{}'
+
+			// Parse and format the key-value pairs
+			const pairs = parseKeyValuePairs(innerContent)
+			const formattedPairs = pairs.map(({ key, value, comment }) => {
+				// Format the value recursively
+				const formattedValue = formatValueWithIndentation(value, 6)
+
+				// Add the comment if present
+				return comment
+					? `${key}: ${formattedValue}, ${comment}`
+					: `${key}: ${formattedValue}`
+			})
+
+			return `{\n      ${formattedPairs.join(',\n      ')}\n    }`
+		}
+
+		// Format arrays
+		if (valueStr.startsWith('[') && valueStr.endsWith(']')) {
+			const innerContent = valueStr
+				.substring(1, valueStr.length - 1)
+				.trim()
+			if (!innerContent) return '[]'
+
+			// Parse and format array items
+			const items = parseArrayItems(innerContent)
+
+			// For simple arrays, keep on one line
+			if (
+				items.length <= 3 &&
+				!items.some(
+					(item) =>
+						(item.includes('{') && item.includes('}')) ||
+						(item.includes('[') && item.includes(']'))
+				)
+			) {
+				return `[${items.join(', ')}]`
+			}
+
+			// For complex arrays, format with newlines
+			const formattedItems = items.map((item) =>
+				formatValueWithIndentation(item, 6)
+			)
+			return `[\n      ${formattedItems.join(',\n      ')}\n    ]`
+		}
+
+		return valueStr
+	} catch (error) {
+		console.error('Error formatting stage value:', error)
+		return valueStr
+	}
+}
+
+// Parse key-value pairs from an object string, preserving comments
+const parseKeyValuePairs = (
+	content: string
+): { key: string; value: string; comment: string }[] => {
+	const pairs: { key: string; value: string; comment: string }[] = []
+	let currentPair = ''
+	let inString = false
+	let braceCount = 0
+	let bracketCount = 0
+	let inComment = false
+
+	// Process content character by character
+	for (let i = 0; i < content.length; i++) {
+		const char = content[i]
+		const nextChar = i < content.length - 1 ? content[i + 1] : ''
+		const prevChar = i > 0 ? content[i - 1] : ''
+
+		// Handle strings
+		if ((char === '"' || char === "'") && prevChar !== '\\' && !inComment) {
+			inString = !inString
+		}
+
+		// Handle comments
+		if (!inString && char === '/' && nextChar === '/') {
+			inComment = true
+		}
+
+		if (inComment && char === '\n') {
+			inComment = false
+		}
+
+		// Track nesting of braces and brackets
+		if (!inString && !inComment) {
+			if (char === '{') braceCount++
+			else if (char === '}') braceCount--
+			else if (char === '[') bracketCount++
+			else if (char === ']') bracketCount--
+
+			// Split on commas at the top level
+			if (char === ',' && braceCount === 0 && bracketCount === 0) {
+				processPair(currentPair.trim(), pairs)
+				currentPair = ''
+				continue
+			}
+		}
+
+		currentPair += char
+	}
+
+	// Process the last pair if any
+	if (currentPair.trim()) {
+		processPair(currentPair.trim(), pairs)
+	}
+
+	return pairs
+}
+
+// Process an individual key-value pair
+const processPair = (
+	pair: string,
+	pairs: { key: string; value: string; comment: string }[]
+) => {
+	// Check for inline comments
+	const commentMatch = pair.match(/^(.*?)(\s*\/\/\s*.+)$/)
+	const pairContent = commentMatch ? commentMatch[1].trim() : pair
+	const comment = commentMatch ? commentMatch[2] : ''
+
+	// Find the colon separator
+	let colonIndex = -1
+	let inString = false
+
+	for (let i = 0; i < pairContent.length; i++) {
+		const char = pairContent[i]
+		const prevChar = i > 0 ? pairContent[i - 1] : ''
+
+		if ((char === '"' || char === "'") && prevChar !== '\\') {
+			inString = !inString
+		}
+
+		if (char === ':' && !inString) {
+			colonIndex = i
+			break
+		}
+	}
+
+	if (colonIndex === -1) {
+		// No valid key-value separator found
+		pairs.push({ key: pairContent, value: '', comment })
+		return
+	}
+
+	const key = pairContent.substring(0, colonIndex).trim()
+	const value = pairContent.substring(colonIndex + 1).trim()
+
+	pairs.push({ key, value, comment })
+}
+
+// Parse array items, respecting nesting and strings
+const parseArrayItems = (content: string): string[] => {
+	const items: string[] = []
+	let currentItem = ''
+	let inString = false
+	let braceCount = 0
+	let bracketCount = 0
+	let inComment = false
+
+	// Process content character by character
+	for (let i = 0; i < content.length; i++) {
+		const char = content[i]
+		const nextChar = i < content.length - 1 ? content[i + 1] : ''
+		const prevChar = i > 0 ? content[i - 1] : ''
+
+		// Handle strings
+		if ((char === '"' || char === "'") && prevChar !== '\\' && !inComment) {
+			inString = !inString
+		}
+
+		// Handle comments
+		if (!inString && char === '/' && nextChar === '/') {
+			inComment = true
+		}
+
+		if (inComment && char === '\n') {
+			inComment = false
+		}
+
+		// Track nesting
+		if (!inString && !inComment) {
+			if (char === '{') braceCount++
+			else if (char === '}') braceCount--
+			else if (char === '[') bracketCount++
+			else if (char === ']') bracketCount--
+
+			// Split on commas at the top level
+			if (char === ',' && braceCount === 0 && bracketCount === 0) {
+				items.push(currentItem.trim())
+				currentItem = ''
+				continue
+			}
+		}
+
+		currentItem += char
+	}
+
+	// Add the last item
+	if (currentItem.trim()) {
+		items.push(currentItem.trim())
+	}
+
+	return items
+}
+
+// Format a value with specific indentation
+const formatValueWithIndentation = (
+	value: string,
+	indentLevel: number
+): string => {
+	const indent = ' '.repeat(indentLevel)
+	value = value.trim()
+
+	// Simple values
+	if (!value.includes('{') && !value.includes('[')) {
+		return value
+	}
+
+	// Objects
+	if (value.startsWith('{') && value.endsWith('}')) {
+		const innerContent = value.substring(1, value.length - 1).trim()
+		if (!innerContent) return '{}'
+
+		const pairs = parseKeyValuePairs(innerContent)
+		const formattedPairs = pairs.map(({ key, value, comment }) => {
+			const formattedValue = formatValueWithIndentation(
+				value,
+				indentLevel + 2
+			)
+			return comment
+				? `${key}: ${formattedValue}, ${comment}`
+				: `${key}: ${formattedValue}`
+		})
+
+		const innerIndent = ' '.repeat(indentLevel - 2)
+		return `{\n${indent}${formattedPairs.join(',\n' + indent)}\n${innerIndent}}`
+	}
+
+	// Arrays
+	if (value.startsWith('[') && value.endsWith(']')) {
+		const innerContent = value.substring(1, value.length - 1).trim()
+		if (!innerContent) return '[]'
+
+		const items = parseArrayItems(innerContent)
+
+		// Simple array - keep on one line
+		if (
+			items.length <= 3 &&
+			!items.some(
+				(item) =>
+					(item.includes('{') && item.includes('}')) ||
+					(item.includes('[') && item.includes(']'))
+			)
+		) {
+			return `[${items.join(', ')}]`
+		}
+
+		// Complex array with nested structures
+		const formattedItems = items.map((item) =>
+			formatValueWithIndentation(item, indentLevel + 2)
+		)
+		const innerIndent = ' '.repeat(indentLevel - 2)
+		return `[\n${indent}${formattedItems.join(',\n' + indent)}\n${innerIndent}]`
+	}
+
+	return value
 }
 
 export default formatMongoDBQuery
