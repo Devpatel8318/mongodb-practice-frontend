@@ -1,4 +1,4 @@
 import SortDownArrow from './SortDownArrow'
-import SortUpArrow from './SortUpArrow.tsx'
+import SortUpArrow from './SortUpArrow'
 
 export { SortDownArrow, SortUpArrow }

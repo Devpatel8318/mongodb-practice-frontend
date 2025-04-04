@@ -1,44 +1,70 @@
 import { useEffect, useRef } from 'src/deps'
-import MonacoEditor, { loader, Monaco, useMonaco } from '@monaco-editor/react'
+import MonacoEditor, { loader, useMonaco } from '@monaco-editor/react'
 import * as monaco from 'monaco-editor'
-import { mongodbCompletion } from './editorConfig/mongodbCompletion'
-import mongodbLanguage from './editorConfig/mongodbLanguage'
-import mongodbDocumentSemantic from './editorConfig/mongodbDocumentSemantic'
-import mongodbLanguageConfiguration from './editorConfig/mongodbLanguageConfiguration'
-import { mongodbCustomLightTheme } from './editorConfig/mongodbCustomTheme'
-import formatMongoDBQuery from './editorConfig/mongodbFormatter'
+import { mongodbCompletion } from './mongodbLanguageSupport/mongodbCompletion'
+import mongodbLanguage from './mongodbLanguageSupport/mongodbLanguage'
+import mongodbDocumentSemantic from './mongodbLanguageSupport/mongodbDocumentSemantic'
+import mongodbLanguageConfiguration from './mongodbLanguageSupport/mongodbLanguageConfiguration'
+import { mongodbCustomLightTheme } from './mongodbLanguageSupport/mongodbCustomTheme'
+import formatMongoDBQuery from './mongodbLanguageSupport/mongodbFormatter'
 
 loader.config({ monaco })
 
-interface EditorComponentProps {
-	onQueryChange?: (query: string) => void
+interface MongodbCodeEditorProps {
+	onQueryChange: (query: string) => void
+	initialValue: string
+	focusOnMount?: boolean
+	handleCursorPositionChange: (position: monaco.Position) => void
+	cursorPosition: monaco.Position | -1
 }
 
-const defaultValue = `db.orders.aggregate( [
-   // Stage 1: Filter pizza order documents by date range
-   {
-      $match:
-      {
-         "date": { $gte: new ISODate( "2020-01-30" ), $lt: new ISODate( "2022-01-30" ) }
-      }
-   },
-   // Stage 2: Group remaining documents by date and calculate results
-   {
-      $group:
-      {
-         _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
-         totalOrderValue: { $sum: { $multiply: [ "$price", "$quantity" ] } },
-         averageOrderQuantity: { $avg: "$quantity" }
-      }
-   },
-   // Stage 3: Sort documents by totalOrderValue in descending order
-   {
-      $sort: { totalOrderValue: -1 }
-   }
- ] )
-`
+const mongodbEditorOptions: monaco.editor.IStandaloneEditorConstructionOptions =
+	{
+		padding: {
+			top: 10,
+		},
+		fontSize: 14,
+		fontWeight: '200', // not working
+		wordWrap: 'on',
+		lineHeight: 20,
+		fontFamily: 'Source Code Pro',
+		minimap: { enabled: false },
+		readOnly: false,
+		scrollbar: {
+			vertical: 'hidden',
+			horizontal: 'hidden',
+		},
+		wrappingIndent: 'same',
+		glyphMargin: false,
+		renderLineHighlight: 'none',
+		overviewRulerBorder: false,
+		folding: true,
+		rulers: [],
+		roundedSelection: true,
+		cursorBlinking: 'blink',
+		cursorSmoothCaretAnimation: 'on',
+		guides: {
+			highlightActiveIndentation: true,
+			indentation: true,
+			highlightActiveBracketPair: true,
+			bracketPairsHorizontal: 'active',
+		},
+		overviewRulerLanes: 0,
+		lineNumbersMinChars: 3,
+		lineDecorationsWidth: 1,
+		renderWhitespace: 'none',
+		stickyScroll: {
+			enabled: false,
+		},
+	}
 
-const EditorComponent: React.FC<EditorComponentProps> = ({ onQueryChange }) => {
+const MongodbCodeEditor = ({
+	onQueryChange,
+	initialValue,
+	focusOnMount,
+	handleCursorPositionChange,
+	cursorPosition,
+}: MongodbCodeEditorProps) => {
 	const monacoNew = useMonaco()
 	const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
 	const disposablesRef = useRef<monaco.IDisposable[]>([])
@@ -117,17 +143,29 @@ const EditorComponent: React.FC<EditorComponentProps> = ({ onQueryChange }) => {
 	}, [monacoNew]) // Only run the effect when Monaco editor instance is available
 
 	const handleEditorChange = (value: string | undefined) => {
-		if (onQueryChange && value !== undefined) {
+		if (value !== undefined) {
 			onQueryChange(value)
 		}
 	}
 
-	// Function to initialize the editor when Monaco has mounted
-	const handleEditorMount = (
-		editor: monaco.editor.IStandaloneCodeEditor,
-		_monaco: Monaco
-	) => {
+	const handleEditorMount = (editor: monaco.editor.IStandaloneCodeEditor) => {
 		editorRef.current = editor
+
+		if (cursorPosition !== -1) {
+			editor.setPosition(cursorPosition)
+			editor.focus()
+		}
+
+		if (focusOnMount) {
+			editor.focus()
+		}
+
+		editor.onDidChangeCursorPosition(() => {
+			const position = editor.getPosition()
+			if (position) {
+				handleCursorPositionChange(position)
+			}
+		})
 
 		if (onQueryChange) {
 			onQueryChange(editor.getValue())
@@ -138,50 +176,13 @@ const EditorComponent: React.FC<EditorComponentProps> = ({ onQueryChange }) => {
 		<MonacoEditor
 			height="1500px"
 			defaultLanguage="mongodb"
-			defaultValue={defaultValue}
+			defaultValue={initialValue}
 			onChange={handleEditorChange}
 			onMount={handleEditorMount}
 			theme="mongodbCustomTheme"
-			options={{
-				minimap: { enabled: false },
-				readOnly: false,
-				scrollbar: {
-					vertical: 'hidden',
-					horizontal: 'hidden',
-				},
-				wordWrap: 'on',
-				wrappingIndent: 'same',
-				fontFamily: 'Source Code Pro',
-				fontSize: 14,
-				lineHeight: 20,
-				glyphMargin: false,
-				renderLineHighlight: 'none',
-				overviewRulerBorder: false,
-				folding: true,
-				rulers: [],
-				roundedSelection: true,
-				cursorBlinking: 'blink',
-				cursorSmoothCaretAnimation: 'on',
-				padding: {
-					top: 10,
-				},
-				fontWeight: '200',
-				guides: {
-					highlightActiveIndentation: true,
-					indentation: true,
-					highlightActiveBracketPair: true,
-					bracketPairsHorizontal: 'active',
-				},
-				overviewRulerLanes: 0,
-				lineNumbersMinChars: 3,
-				lineDecorationsWidth: 1,
-				renderWhitespace: 'none',
-				stickyScroll: {
-					enabled: false,
-				},
-			}}
+			options={mongodbEditorOptions}
 		/>
 	)
 }
 
-export default EditorComponent
+export default MongodbCodeEditor

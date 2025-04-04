@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react'
+import React, { useRef, useState, useCallback, useEffect } from 'react'
 import {
 	ImperativePanelHandle,
 	Panel,
@@ -130,10 +130,25 @@ const ResizableLayout: React.FC = () => {
 		section: SectionName,
 		isCollapsed: boolean
 	) => {
-		setCollapsedSections((prev) => ({
-			...prev,
-			[section]: isCollapsed,
-		}))
+		setCollapsedSections((prev) => {
+			const newState = {
+				...prev,
+				[section]: isCollapsed,
+			}
+
+			const isNewStateSameAsOld = Object.entries(newState).find(
+				([k, v]) => v === prev[k as SectionName]
+			)
+
+			if (isNewStateSameAsOld) {
+				return prev
+			}
+
+			return {
+				...prev,
+				[section]: isCollapsed,
+			}
+		})
 	}
 
 	if (maximizedSection) {

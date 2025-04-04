@@ -4,15 +4,10 @@ import Icons from 'src/assets/svg'
 import { useAppSelector } from 'src/Store'
 import useOnClickOutside from 'src/hooks/useOnClickOutside'
 import { logoutActionDispatcher } from 'src/features/auth/auth.action'
-import { useCallback } from 'react'
+import { memo, useCallback } from 'react'
 
-interface MainLayoutProps {
-	children: React.ReactNode
-}
-
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+const Header = () => {
 	const filterRef = useRef<HTMLDivElement | null>(null)
-
 	const [showDropDown, setShowDropDown] = useState(false)
 	const [isProfileImageUrlError, setIsProfileImageUrlError] = useState(false)
 
@@ -39,7 +34,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
 	const { profilePictureUrl } = useAppSelector((state) => state.user)
 
-	const Header = () => (
+	return (
 		<header className="sticky top-0 z-40 flex w-full flex-wrap border-b border-gray-300 bg-white text-sm md:flex-nowrap md:justify-start">
 			<nav className="mx-auto flex w-full max-w-[85rem] basis-full items-center justify-between px-4 sm:px-6 lg:px-8">
 				<div className="me-5">
@@ -109,10 +104,18 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 			</nav>
 		</header>
 	)
+}
 
+const MemoizedHeader = memo(Header) // Memoized Header
+
+interface MainLayoutProps {
+	children: React.ReactNode
+}
+
+const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 	return (
 		<div className="flex min-h-screen w-full flex-col">
-			<Header />
+			<MemoizedHeader />
 			<div className="flex grow bg-gray-100 p-2">
 				<div className="grow rounded-md">{children}</div>
 			</div>

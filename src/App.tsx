@@ -15,6 +15,11 @@ export default defineConfig({
     },
   },
 });
+
+
+// TODO: remove syntax highlighter as it is takes too much time to render
+
+
 */
 
 import { useEffect, useState, Toaster } from 'src/deps'

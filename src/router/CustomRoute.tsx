@@ -7,8 +7,8 @@ export interface RouteObjectType {
 	component: React.ComponentType
 }
 
-const CustomRoute = (routes: RouteObjectType[]): JSX.Element[] =>
-	routes.map((route) => {
+const CustomRoute = (routes: RouteObjectType[]): JSX.Element[] => {
+	return routes.map((route) => {
 		const Component = route.component
 
 		return (
@@ -26,5 +26,6 @@ const CustomRoute = (routes: RouteObjectType[]): JSX.Element[] =>
 			/>
 		)
 	})
+}
 
 export default CustomRoute

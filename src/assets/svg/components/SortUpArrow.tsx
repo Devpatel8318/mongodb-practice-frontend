@@ -1,3 +1,5 @@
+import { memo } from 'react'
+
 const SortUpArrow = ({ color = '#000000' }) => {
 	return (
 		<svg
@@ -19,4 +21,4 @@ const SortUpArrow = ({ color = '#000000' }) => {
 	)
 }
 
-export default SortUpArrow
+export default memo(SortUpArrow)

@@ -1,4 +1,4 @@
-import { useState, Dispatch } from 'react'
+import { useState, Dispatch, memo } from 'react'
 import Icons from 'src/assets/svg'
 import { cn } from 'src/utils/cn'
 import QuestionDescription from './QuestionDescription'
@@ -128,4 +128,4 @@ const QuestionPanel = ({
 	)
 }
 
-export default QuestionPanel
+export default memo(QuestionPanel)

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Icons from 'src/assets/svg'
 
 const SubmissionPanel = ({
@@ -48,4 +49,4 @@ const SubmissionPanel = ({
 	)
 }
 
-export default SubmissionPanel
+export default memo(SubmissionPanel)
