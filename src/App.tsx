@@ -19,6 +19,8 @@ export default defineConfig({
 
 // TODO: remove syntax highlighter as it is takes too much time to render
 
+// TODO: add "yarn type-check" in pre-commit hook
+
 
 */
 
@@ -49,16 +51,14 @@ const App = () => {
 
 	return (
 		<GoogleOAuthProvider clientId={clientId}>
-			<div>
-				<Toaster
-					toastOptions={{
-						duration: 5000,
-						success: { duration: 1000 },
-						error: { duration: 2000 },
-					}}
-				/>
-				<Routers />
-			</div>
+			<Toaster
+				toastOptions={{
+					duration: 5000,
+					success: { duration: 1000 },
+					error: { duration: 2000 },
+				}}
+			/>
+			<Routers />
 		</GoogleOAuthProvider>
 	)
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react'
+import React, { useRef, useState, useCallback } from 'react'
 import {
 	ImperativePanelHandle,
 	Panel,
@@ -91,7 +91,7 @@ const RightCollapsedBar = ({
 
 type CollapsedSections = Record<SectionName, boolean>
 
-const ResizableLayout: React.FC = () => {
+const ProblemPracticePage: React.FC = () => {
 	const [maximizedSection, setMaximizedSection] =
 		useState<SectionName | null>(null)
 	const [collapsedSections, setCollapsedSections] =
@@ -136,11 +136,11 @@ const ResizableLayout: React.FC = () => {
 				[section]: isCollapsed,
 			}
 
-			const isNewStateSameAsOld = Object.entries(newState).find(
-				([k, v]) => v === prev[k as SectionName]
+			const isAnyValueDifferent = Object.entries(newState).find(
+				([k, v]) => v !== prev[k as SectionName]
 			)
 
-			if (isNewStateSameAsOld) {
+			if (!isAnyValueDifferent?.length) {
 				return prev
 			}
 
@@ -259,4 +259,4 @@ const ResizableLayout: React.FC = () => {
 	)
 }
 
-export default ResizableLayout
+export default ProblemPracticePage

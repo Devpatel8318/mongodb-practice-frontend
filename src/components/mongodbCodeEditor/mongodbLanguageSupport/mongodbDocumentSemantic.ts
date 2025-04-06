@@ -107,6 +107,7 @@ export const mongodbDocumentSemantic = {
 		return { data: new Uint32Array(data), resultId: undefined }
 	},
 
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	releaseDocumentSemanticTokens: () => {},
 }
 

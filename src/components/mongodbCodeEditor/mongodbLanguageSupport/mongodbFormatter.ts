@@ -367,10 +367,7 @@ const formatStage = (stageStr: string): string => {
 }
 
 // Format the value portion of a stage
-const formatStageValue = (
-	valueStr: string,
-	isRoot: boolean = false
-): string => {
+const formatStageValue = (valueStr: string, isRoot = false): string => {
 	try {
 		valueStr = valueStr.trim()
 

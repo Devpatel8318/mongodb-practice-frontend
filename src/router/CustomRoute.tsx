@@ -10,7 +10,6 @@ export interface RouteObjectType {
 const CustomRoute = (routes: RouteObjectType[]): JSX.Element[] => {
 	return routes.map((route) => {
 		const Component = route.component
-
 		return (
 			<Route
 				path={route.path}

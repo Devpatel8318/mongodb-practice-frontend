@@ -1,6 +1,13 @@
-import SyntaxHighlighter from 'react-syntax-highlighter'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 import Icons from 'src/assets/svg'
+
+const JsonView = ({ children }: { children: React.ReactNode }) => {
+	return (
+		<pre className="rounded-md bg-gray-100 p-2 text-xs font-thin">
+			{children}
+		</pre>
+	)
+}
 
 const getStatusIcon = (status: Question['status']) => {
 	const icons = {
@@ -92,23 +99,11 @@ const QuestionDescription = () => {
 				</div>
 				<div className="mb-1">
 					<span className="text-sm">Users Collection (users)</span>
-					<SyntaxHighlighter
-						className="rounded-md bg-gray-100 p-2 text-sm font-normal"
-						language="json"
-						useInlineStyles={false}
-					>
-						{usersCollectionData}
-					</SyntaxHighlighter>
+					<JsonView>{usersCollectionData}</JsonView>
 				</div>
 				<div>
 					<span className="text-sm">Orders Collection (orders)</span>
-					<SyntaxHighlighter
-						className="rounded-md bg-gray-100 p-2 text-sm font-normal"
-						language="json"
-						useInlineStyles={false}
-					>
-						{ordersCollectionData}
-					</SyntaxHighlighter>
+					<JsonView>{ordersCollectionData}</JsonView>
 				</div>
 			</div>
 
@@ -122,13 +117,8 @@ const QuestionDescription = () => {
 						more than 5 orders, including their _id, name, and
 						email.
 					</span>
-					<SyntaxHighlighter
-						className="w-fit rounded-md bg-gray-100 p-2 text-sm font-normal"
-						language="json"
-						useInlineStyles={false}
-					>
-						{exampleResponseData}
-					</SyntaxHighlighter>
+
+					<JsonView>{exampleResponseData}</JsonView>
 				</div>
 			</div>
 

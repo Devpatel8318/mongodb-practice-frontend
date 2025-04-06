@@ -34,7 +34,7 @@ export { Cookies }
 
 export { ReactDOM }
 
-export { Helmet } from 'react-helmet'
+export { Helmet } from 'react-helmet-async'
 
 export {
 	combineReducers,

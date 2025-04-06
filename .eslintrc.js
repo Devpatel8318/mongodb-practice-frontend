@@ -74,5 +74,6 @@ module.exports = {
 				returnStyle: 'unchanged',
 			},
 		],
+		'@typescript-eslint/no-empty-function': 'warn',
 	},
 }
