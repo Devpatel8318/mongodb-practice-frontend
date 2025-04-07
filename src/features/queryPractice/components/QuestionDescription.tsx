@@ -3,7 +3,7 @@ import Icons from 'src/assets/svg'
 
 const JsonView = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<pre className="rounded-md bg-gray-100 p-2 text-xs font-thin">
+		<pre className="w-fit rounded-md bg-gray-100 p-2 text-xs font-thin">
 			{children}
 		</pre>
 	)
@@ -71,7 +71,7 @@ const QuestionDescription = () => {
 	}
 
 	return (
-		<>
+		<div className="min-w-96">
 			<h2 className="mb-5 text-2xl font-semibold">
 				Find Users with More than 5 Orders
 			</h2>
@@ -93,7 +93,7 @@ const QuestionDescription = () => {
 				find all users who have placed more than 5 orders.
 			</div>
 
-			<div className="mb-8 w-fit">
+			<div className="mb-8">
 				<div className="mb-1 text-sm font-semibold">
 					Database Schema
 				</div>
@@ -122,7 +122,7 @@ const QuestionDescription = () => {
 				</div>
 			</div>
 
-			<div className="w-fit">
+			<div>
 				<div className="mb-1 text-sm font-semibold">Constraints</div>
 				<ul style={{ listStyleType: 'disc' }} className="pl-4">
 					<li className="mb-1 text-sm">
@@ -140,7 +140,7 @@ const QuestionDescription = () => {
 			</div>
 
 			{/* Add more content as needed */}
-		</>
+		</div>
 	)
 }
 

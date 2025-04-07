@@ -17,7 +17,7 @@ const NavButtons = ({ navItem, setNavItem }: NavButtonsProps) => {
 	const inactiveButtonStyle = 'opacity-50'
 
 	return (
-		<div className="flex items-center">
+		<div className="flex items-center overflow-auto">
 			<button
 				onClick={() => setNavItem('description')}
 				className={cn(
@@ -97,7 +97,7 @@ const QuestionPanel = ({
 	const [navItem, setNavItem] = useState<NavItem>('description')
 
 	const Header = () => (
-		<div className="flex items-center justify-between bg-gray-50 p-2">
+		<div className="absolute inset-x-0 top-0 z-10 flex h-10 items-center justify-between bg-gray-50 p-2">
 			<NavButtons navItem={navItem} setNavItem={setNavItem} />
 			<LayoutButtons
 				isMaximized={isMaximized}
@@ -121,9 +121,11 @@ const QuestionPanel = ({
 	}
 
 	return (
-		<div className="flex h-[calc(100vh-60px)] flex-col">
+		<div className="relative h-[calc(100vh-60px)]">
 			<Header />
-			<div className="flex-1 overflow-auto p-4">{renderContent()}</div>
+			<div className="absolute inset-x-0 bottom-0 top-10 overflow-auto p-4">
+				{renderContent()}
+			</div>
 		</div>
 	)
 }
