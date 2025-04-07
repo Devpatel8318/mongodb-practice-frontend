@@ -1,10 +1,16 @@
 import { createSlice } from 'src/deps'
 import { appDispatcher } from 'src/Store'
 import * as monaco from 'monaco-editor'
+import { API_STATUS_TYPE } from 'src/utils/callApi'
+import { ReducerErrorObject } from 'src/Types/global'
 
 export interface ProblemPracticePageStateType {
 	code: string
 	cursorPosition: monaco.Position | -1
+	status: API_STATUS_TYPE
+	error: null | ReducerErrorObject
+	loading: boolean
+	success: null | boolean
 }
 
 const tempDefaultValue = `db.orders.aggregate([
@@ -98,6 +104,10 @@ const tempDefaultValue = `db.orders.aggregate([
 export const initialState: ProblemPracticePageStateType = {
 	code: tempDefaultValue,
 	cursorPosition: -1,
+	status: null,
+	error: null,
+	loading: false,
+	success: null,
 }
 
 const problemPracticePageSlice = createSlice({

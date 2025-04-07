@@ -56,6 +56,36 @@ const CodeEditorPanel = ({
 		onMaximize()
 	}
 
+	const Header = () => (
+		<div className="flex items-center justify-between bg-gray-50 p-2">
+			<div className="text-sm">Code Editor</div>
+			<div className="flex gap-2">
+				{!isMaximized && (
+					<button
+						onClick={handleToggle}
+						aria-label={isCollapsed ? 'Expand' : 'Collapse'}
+					>
+						{isCollapsed ? (
+							<Icons.Images24.DownArrowPagination />
+						) : (
+							<Icons.Images24.UpArrowPagination />
+						)}
+					</button>
+				)}
+				<button
+					onClick={handleMaximize}
+					aria-label={isMaximized ? 'Minimize' : 'Maximize'}
+				>
+					{isMaximized ? (
+						<Icons.Images24.Minimize />
+					) : (
+						<Icons.Images24.Maximize />
+					)}
+				</button>
+			</div>
+		</div>
+	)
+
 	useEffect(() => {
 		return () => {
 			syncLocalDataToRedux()
@@ -64,36 +94,7 @@ const CodeEditorPanel = ({
 
 	return (
 		<div className="">
-			{/* Custom code editor header */}
-			<div className="flex items-center justify-between bg-gray-50 p-2">
-				<div className="text-sm">Code Editor</div>
-				<div className="flex gap-2">
-					{!isMaximized && (
-						<button
-							onClick={handleToggle}
-							aria-label={isCollapsed ? 'Expand' : 'Collapse'}
-						>
-							{isCollapsed ? (
-								<Icons.Images24.DownArrowPagination />
-							) : (
-								<Icons.Images24.UpArrowPagination />
-							)}
-						</button>
-					)}
-					<button
-						onClick={handleMaximize}
-						aria-label={isMaximized ? 'Minimize' : 'Maximize'}
-					>
-						{isMaximized ? (
-							<Icons.Images24.Minimize />
-						) : (
-							<Icons.Images24.Maximize />
-						)}
-					</button>
-				</div>
-			</div>
-
-			{/* Content area */}
+			<Header />
 			<div className="grow">
 				<MongodbCodeEditor
 					initialValue={localCodeRef.current}

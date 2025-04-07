@@ -71,7 +71,7 @@ const QuestionDescription = () => {
 	}
 
 	return (
-		<div className="min-w-96">
+		<div className="min-w-80">
 			<h2 className="mb-5 text-2xl font-semibold">
 				Find Users with More than 5 Orders
 			</h2>
