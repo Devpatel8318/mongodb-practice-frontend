@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import Icons from 'src/assets/svg'
 import Button from 'src/features/auth/components/Button'
-import store, { useAppSelector } from 'src/Store'
+import { useAppSelector } from 'src/Store'
 import showToast from 'src/utils/showToast'
 import { submitAnswerActionDispatcher } from '../problemPracticePage.actions'
 
