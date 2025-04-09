@@ -7,7 +7,6 @@ export interface UserStateType {
 	status: API_STATUS_TYPE
 	error: null | ReducerErrorObject
 	loading: boolean
-	success: null | boolean
 	profilePictureUrl?: null | string
 	email?: null | string
 }
@@ -16,7 +15,6 @@ const initialState: UserStateType = {
 	status: null,
 	error: null,
 	loading: false,
-	success: null,
 	profilePictureUrl: null,
 	email: null,
 }
@@ -32,14 +30,12 @@ const userSlice = createSlice({
 					status: API_STATUS.PENDING,
 					error: null,
 					loading: true,
-					success: null,
 				})
 			})
 			.addCase(userSettingAction.fulfilled, (state, { payload }) => {
 				Object.assign(state, {
 					status: API_STATUS.SUCCESS,
 					loading: false,
-					success: true,
 					error: null,
 					isUserLoggedIn: true,
 					profilePictureUrl: payload.data?.profilePictureUrl,
@@ -51,7 +47,6 @@ const userSlice = createSlice({
 					status: API_STATUS.REJECTED,
 					error: action.payload,
 					loading: false,
-					success: false,
 					isUserLoggedIn: false,
 				})
 			})

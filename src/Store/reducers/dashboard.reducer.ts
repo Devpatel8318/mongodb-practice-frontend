@@ -22,7 +22,6 @@ export interface QuestionsStateType {
 	}
 	error: null | FieldError[]
 	loading: boolean
-	success: null | boolean
 }
 
 const initialState: QuestionsStateType = {
@@ -30,7 +29,6 @@ const initialState: QuestionsStateType = {
 	data: null,
 	error: null,
 	loading: false,
-	success: null,
 }
 
 const questionsSlice = createSlice({
@@ -45,14 +43,12 @@ const questionsSlice = createSlice({
 					data: [],
 					error: null,
 					loading: true,
-					success: null,
 				})
 			})
 			.addCase(getAllQuestionsAction.fulfilled, (state, { payload }) => {
 				Object.assign(state, {
 					status: API_STATUS.SUCCESS,
 					loading: false,
-					success: payload.success,
 					data: payload.data,
 					error: null,
 				})
@@ -66,7 +62,6 @@ const questionsSlice = createSlice({
 						reasons: payload?.reasons,
 					},
 					loading: false,
-					success: false,
 				})
 			})
 	},

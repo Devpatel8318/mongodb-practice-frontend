@@ -14,7 +14,6 @@ import { SerializedError } from '@reduxjs/toolkit'
 
 export interface AuthStateType {
 	status: API_STATUS_TYPE
-	success: null | boolean
 	error: null | ReducerErrorObject
 	loading: boolean
 	isUserLoggedIn: boolean
@@ -23,7 +22,6 @@ export interface AuthStateType {
 
 export const initialState: AuthStateType = {
 	status: null,
-	success: null,
 	error: null,
 	loading: false,
 	isUserLoggedIn: false,
@@ -34,7 +32,6 @@ const handlePending = (state: AuthStateType) => {
 	Object.assign(state, {
 		status: API_STATUS.PENDING,
 		loading: true,
-		success: null,
 		error: null,
 		doNotShowAlert: null,
 	})
@@ -48,7 +45,6 @@ const handleFulfilled = (
 	Object.assign(state, {
 		status: API_STATUS.SUCCESS,
 		loading: false,
-		success: true,
 		error: null,
 		isUserLoggedIn: true,
 	})
@@ -63,7 +59,6 @@ const handleRejected = (
 	Object.assign(state, {
 		status: API_STATUS.REJECTED,
 		loading: false,
-		success: false,
 		error: {
 			message: action.payload?.message,
 			reasons: action.payload?.reasons,
@@ -111,7 +106,6 @@ const authSlice = createSlice({
 				Object.assign(state, {
 					status: API_STATUS.SUCCESS,
 					loading: false,
-					success: payload.success,
 					error: null,
 					isUserLoggedIn: true,
 				})
@@ -122,7 +116,6 @@ const authSlice = createSlice({
 				Object.assign(state, {
 					status: API_STATUS.REJECTED,
 					loading: false,
-					success: false,
 					error: {
 						message: payload?.message,
 						reasons: payload?.reasons,
@@ -138,7 +131,6 @@ const authSlice = createSlice({
 				Object.assign(state, {
 					status: API_STATUS.SUCCESS,
 					loading: false,
-					success: true,
 					error: null,
 					isUserLoggedIn: false,
 				})
