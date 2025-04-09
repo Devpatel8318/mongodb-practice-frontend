@@ -14,9 +14,8 @@ export const submitAnswerAction = createAsyncThunk<
 >('problemPracticePage/submit', async (payload, { rejectWithValue }) => {
 	const { questionId, answer } = payload
 	try {
-		return await callApi('/question/submit', 'POST', {
-			questionId,
-			answer,
+		return await callApi(`/answer/submit/${questionId}`, 'POST', {
+			answerQuery: answer,
 		})
 	} catch (e) {
 		return rejectWithValue(e as ErrorResponse)

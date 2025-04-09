@@ -29,6 +29,9 @@ import { useEffect, useState, Toaster } from 'src/deps'
 import Routers from 'src/router'
 import { loginUserDispatcher } from './Store/reducers/auth.reducer'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import { socket } from './socket'
+import { BACKEND_URL } from './utils/config'
+import callApi from './utils/callApi'
 
 const App = () => {
 	// * this state is required because without this in initial render, private route will get
@@ -39,6 +42,20 @@ const App = () => {
 		const isLoggedIn = localStorage.getItem('isUserLoggedIn') === 'true'
 		if (isLoggedIn) {
 			loginUserDispatcher()
+			socket.on('connect', () => console.log('connected to socket'))
+			socket.on('pickup', async (data) => {
+				console.log(data)
+				const { questionId, question, answer } = data
+
+				const url = `${BACKEND_URL}/answer/retrieve`
+
+				const response = await callApi(url, 'POST', {
+					questionId,
+					question,
+					answer,
+				})
+				console.log({ first: response })
+			})
 		}
 		setInitialized(true)
 	}, [])

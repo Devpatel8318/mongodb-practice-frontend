@@ -39,7 +39,7 @@ module.exports = {
 	],
 	rules: {
 		'@typescript-eslint/no-unused-vars': [
-			'warn',
+			'error',
 			{
 				argsIgnorePattern: '^_',
 				varsIgnorePattern: '^_',
@@ -49,7 +49,7 @@ module.exports = {
 		'import/prefer-default-export': 'off',
 		'max-len': 'off',
 		'react/function-component-definition': [
-			'warn',
+			'error',
 			{
 				namedComponents: 'arrow-function',
 				unnamedComponents: 'arrow-function',
@@ -67,13 +67,13 @@ module.exports = {
 		'react/react-in-jsx-scope': 'off',
 		'react/jsx-uses-react': 'off',
 		'react/no-unescaped-entities': 'off',
-		'react-hooks/exhaustive-deps': 'warn', // ✅ Ensures useEffect dependencies are checked
+		'react-hooks/exhaustive-deps': 'error', // ✅ Ensures useEffect dependencies are checked
 		'prefer-arrow-functions/prefer-arrow-functions': [
-			'warn',
+			'error',
 			{
 				returnStyle: 'unchanged',
 			},
 		],
-		'@typescript-eslint/no-empty-function': 'warn',
+		'@typescript-eslint/no-empty-function': 'error',
 	},
 }
