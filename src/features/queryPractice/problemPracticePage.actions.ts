@@ -3,8 +3,6 @@ import { appDispatcher } from 'src/Store'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
 
-export { updateCodeDispatcher } from './../../Store/reducers/problemPracticePage.reducer'
-
 export const submitAnswerAction = createAsyncThunk<
 	SuccessResponse<{ idk: object }>,
 	{ questionId: number; answer: string },

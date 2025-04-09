@@ -1,10 +1,8 @@
 // CodeEditorPanel.jsx
-import { memo, useEffect, useRef } from 'react'
-import * as monaco from 'monaco-editor'
-import { useAppSelector } from 'src/Store'
+import { memo, useContext } from 'react'
 import Icons from 'src/assets/svg'
-import { updateCodeDispatcher } from '../problemPracticePage.actions'
 import MongodbCodeEditor from 'src/components/mongodbCodeEditor/MongodbCodeEditor'
+import { CodeContext } from 'src/contexts/codeContext/CodeContext'
 
 const CodeEditorPanel = ({
 	isMaximized,
@@ -17,42 +15,14 @@ const CodeEditorPanel = ({
 	onToggle: () => void
 	onMaximize: () => void
 }) => {
-	const { code, cursorPosition } = useAppSelector(
-		(store) => store.problemPracticePage
-	)
-
-	const localCodeRef = useRef<string>(code || '')
-	const handleLocalCodeChange = (newCode: string) => {
-		localCodeRef.current = newCode
-	}
-
-	const localCursorPosition = useRef<monaco.Position | -1>(cursorPosition)
-	const handleCursorPositionChange = (position: monaco.Position) => {
-		localCursorPosition.current = position
-	}
-
-	useEffect(() => {
-		if (code !== localCodeRef.current) {
-			handleLocalCodeChange(code || '')
-		}
-		if (cursorPosition !== localCursorPosition.current) {
-			localCursorPosition.current = cursorPosition
-		}
-		// only want to update the local code and cursorPosition when the code or cursorPosition from the store changes
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [code, cursorPosition])
-
-	const syncLocalDataToRedux = () => {
-		updateCodeDispatcher(localCodeRef.current, localCursorPosition.current)
-	}
+	const { code, setCode, cursorPosition, setCursorPosition } =
+		useContext(CodeContext)
 
 	const handleToggle = () => {
-		syncLocalDataToRedux()
 		onToggle()
 	}
 
 	const handleMaximize = () => {
-		syncLocalDataToRedux()
 		onMaximize()
 	}
 
@@ -86,21 +56,17 @@ const CodeEditorPanel = ({
 		</div>
 	)
 
-	useEffect(() => {
-		return () => {
-			syncLocalDataToRedux()
-		}
-	}, [])
-
 	return (
 		<div className="">
 			<Header />
 			<div className="grow">
 				<MongodbCodeEditor
-					initialValue={localCodeRef.current}
-					onQueryChange={handleLocalCodeChange}
+					initialValue={code}
+					onQueryChange={(newCode) => setCode(newCode)}
 					focusOnMount={isMaximized}
-					handleCursorPositionChange={handleCursorPositionChange}
+					handleCursorPositionChange={(newPosition) =>
+						setCursorPosition(newPosition)
+					}
 					cursorPosition={cursorPosition}
 				/>
 			</div>

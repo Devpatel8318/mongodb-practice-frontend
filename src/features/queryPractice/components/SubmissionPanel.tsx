@@ -1,9 +1,9 @@
-import { memo } from 'react'
+import { memo, useContext } from 'react'
 import Icons from 'src/assets/svg'
 import Button from 'src/features/auth/components/Button'
-import { useAppSelector } from 'src/Store'
 import showToast from 'src/utils/showToast'
 import { submitAnswerActionDispatcher } from '../problemPracticePage.actions'
+import { CodeContext } from 'src/contexts/codeContext/CodeContext'
 
 const SubmissionPanel = ({
 	isMaximized,
@@ -16,7 +16,7 @@ const SubmissionPanel = ({
 	onToggle: () => void
 	onMaximize: () => void
 }) => {
-	const { code } = useAppSelector((store) => store.problemPracticePage)
+	const { code } = useContext(CodeContext)
 
 	const validate = (): string | false => {
 		if (!code) return 'code editor can not be empty'

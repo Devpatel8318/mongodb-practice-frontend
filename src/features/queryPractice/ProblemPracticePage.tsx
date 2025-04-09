@@ -10,6 +10,7 @@ import QuestionPanel from './components/QuestionPanel'
 import CodeEditorPanel from './components/CodeEditorPanel'
 import SubmissionPanel from './components/SubmissionPanel'
 import { SECTION_CONFIGS, SectionName } from './helper/sectionConfig'
+import { CodeProvider } from 'src/contexts/codeContext/CodeProvider'
 
 const RenderMaximizedSection = ({
 	maximizedSection,
@@ -151,111 +152,152 @@ const ProblemPracticePage: React.FC = () => {
 		})
 	}
 
-	if (maximizedSection) {
-		return (
-			<RenderMaximizedSection
-				maximizedSection={maximizedSection}
-				toggleSection={toggleSection}
-				maximizeSection={maximizeSection}
-			/>
-		)
-	}
-
 	return (
-		<div className="flex h-full bg-gray-100">
-			<PanelGroup direction="horizontal" className="h-full rounded-lg">
-				{/* Question Description */}
-				<Panel
-					defaultSize={SECTION_CONFIGS.question.defaultSize}
-					minSize={SECTION_CONFIGS.question.minSize}
-					collapsible={true}
-					ref={panelRefs.question}
-					onCollapse={() => handlePanelStateChange('question', true)}
-					onExpand={() => handlePanelStateChange('question', false)}
-					className="rounded-lg bg-white"
-				>
-					{!collapsedSections.question && (
-						<QuestionPanel
-							isMaximized={false}
-							onToggle={() => toggleSection('question')}
-							onMaximize={() => maximizeSection('question')}
+		<CodeProvider>
+			{maximizedSection ? (
+				<RenderMaximizedSection
+					maximizedSection={maximizedSection}
+					toggleSection={toggleSection}
+					maximizeSection={maximizeSection}
+				/>
+			) : (
+				<div className="flex h-full bg-gray-100">
+					<PanelGroup
+						direction="horizontal"
+						className="h-full rounded-lg"
+					>
+						{/* Question Description */}
+						<Panel
+							defaultSize={SECTION_CONFIGS.question.defaultSize}
+							minSize={SECTION_CONFIGS.question.minSize}
+							collapsible={true}
+							ref={panelRefs.question}
+							onCollapse={() =>
+								handlePanelStateChange('question', true)
+							}
+							onExpand={() =>
+								handlePanelStateChange('question', false)
+							}
+							className="rounded-lg bg-white"
+						>
+							{!collapsedSections.question && (
+								<QuestionPanel
+									isMaximized={false}
+									onToggle={() => toggleSection('question')}
+									onMaximize={() =>
+										maximizeSection('question')
+									}
+								/>
+							)}
+						</Panel>
+
+						<LeftCollapsedBar
+							collapsedSections={collapsedSections}
 						/>
-					)}
-				</Panel>
+						<PanelResizeHandle className="w-1.5 rounded-full bg-gray-100 transition-colors hover:bg-gray-200" />
 
-				<LeftCollapsedBar collapsedSections={collapsedSections} />
-				<PanelResizeHandle className="w-1.5 rounded-full bg-gray-100 transition-colors hover:bg-gray-200" />
-
-				{/* Right Section */}
-				<Panel
-					minSize={SECTION_CONFIGS.rightSection.minSize}
-					collapsible={true}
-					ref={panelRefs.rightSection}
-					onCollapse={() =>
-						handlePanelStateChange('rightSection', true)
-					}
-					onExpand={() =>
-						handlePanelStateChange('rightSection', false)
-					}
-				>
-					<PanelGroup direction="vertical">
-						{/* Code Editor Panel */}
+						{/* Right Section */}
 						<Panel
-							className="rounded-lg bg-white"
-							defaultSize={SECTION_CONFIGS.codeEditor.defaultSize}
-							minSize={SECTION_CONFIGS.codeEditor.minSize}
-							collapsedSize={
-								SECTION_CONFIGS.codeEditor.collapsedSize
-							}
+							minSize={SECTION_CONFIGS.rightSection.minSize}
 							collapsible={true}
-							ref={panelRefs.codeEditor}
+							ref={panelRefs.rightSection}
 							onCollapse={() =>
-								handlePanelStateChange('codeEditor', true)
+								handlePanelStateChange('rightSection', true)
 							}
 							onExpand={() =>
-								handlePanelStateChange('codeEditor', false)
+								handlePanelStateChange('rightSection', false)
 							}
 						>
-							<CodeEditorPanel
-								isMaximized={false}
-								isCollapsed={collapsedSections.codeEditor}
-								onToggle={() => toggleSection('codeEditor')}
-								onMaximize={() => maximizeSection('codeEditor')}
-							/>
+							<PanelGroup direction="vertical">
+								{/* Code Editor Panel */}
+								<Panel
+									className="rounded-lg bg-white"
+									defaultSize={
+										SECTION_CONFIGS.codeEditor.defaultSize
+									}
+									minSize={SECTION_CONFIGS.codeEditor.minSize}
+									collapsedSize={
+										SECTION_CONFIGS.codeEditor.collapsedSize
+									}
+									collapsible={true}
+									ref={panelRefs.codeEditor}
+									onCollapse={() =>
+										handlePanelStateChange(
+											'codeEditor',
+											true
+										)
+									}
+									onExpand={() =>
+										handlePanelStateChange(
+											'codeEditor',
+											false
+										)
+									}
+								>
+									<CodeEditorPanel
+										isMaximized={false}
+										isCollapsed={
+											collapsedSections.codeEditor
+										}
+										onToggle={() =>
+											toggleSection('codeEditor')
+										}
+										onMaximize={() =>
+											maximizeSection('codeEditor')
+										}
+									/>
+								</Panel>
+
+								<PanelResizeHandle className="h-1.5 rounded-full bg-gray-100 transition-colors hover:bg-gray-200" />
+
+								{/* Submission Panel */}
+								<Panel
+									className="rounded-lg bg-white"
+									defaultSize={
+										SECTION_CONFIGS.submission.defaultSize
+									}
+									minSize={SECTION_CONFIGS.submission.minSize}
+									collapsible={true}
+									collapsedSize={
+										SECTION_CONFIGS.submission.collapsedSize
+									}
+									ref={panelRefs.submission}
+									onCollapse={() =>
+										handlePanelStateChange(
+											'submission',
+											true
+										)
+									}
+									onExpand={() =>
+										handlePanelStateChange(
+											'submission',
+											false
+										)
+									}
+								>
+									<SubmissionPanel
+										isMaximized={false}
+										isCollapsed={
+											collapsedSections.submission
+										}
+										onToggle={() =>
+											toggleSection('submission')
+										}
+										onMaximize={() =>
+											maximizeSection('submission')
+										}
+									/>
+								</Panel>
+							</PanelGroup>
 						</Panel>
 
-						<PanelResizeHandle className="h-1.5 rounded-full bg-gray-100 transition-colors hover:bg-gray-200" />
-
-						{/* Submission Panel */}
-						<Panel
-							className="rounded-lg bg-white"
-							defaultSize={SECTION_CONFIGS.submission.defaultSize}
-							minSize={SECTION_CONFIGS.submission.minSize}
-							collapsible={true}
-							collapsedSize={
-								SECTION_CONFIGS.submission.collapsedSize
-							}
-							ref={panelRefs.submission}
-							onCollapse={() =>
-								handlePanelStateChange('submission', true)
-							}
-							onExpand={() =>
-								handlePanelStateChange('submission', false)
-							}
-						>
-							<SubmissionPanel
-								isMaximized={false}
-								isCollapsed={collapsedSections.submission}
-								onToggle={() => toggleSection('submission')}
-								onMaximize={() => maximizeSection('submission')}
-							/>
-						</Panel>
+						<RightCollapsedBar
+							collapsedSections={collapsedSections}
+						/>
 					</PanelGroup>
-				</Panel>
-
-				<RightCollapsedBar collapsedSections={collapsedSections} />
-			</PanelGroup>
-		</div>
+				</div>
+			)}
+		</CodeProvider>
 	)
 }
 
