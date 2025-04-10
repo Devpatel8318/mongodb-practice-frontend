@@ -26,7 +26,7 @@ export const getAllQuestionsAction = createAsyncThunk<
 		searchQuery = '',
 	} = payload
 
-	let url = `/answer/list?page=${page}&limit=${limit}`
+	let url = `/question/list?page=${page}&limit=${limit}`
 	if (filterQuery) {
 		url += `&${filterQuery}`
 	}

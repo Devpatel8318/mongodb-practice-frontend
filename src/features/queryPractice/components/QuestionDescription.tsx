@@ -48,15 +48,6 @@ const ordersCollectionData = `{
   "date": "2024-03-30T10:15:00Z"
 }`
 
-// const exampleResponseData = `[
-//   {
-//     "_id": ObjectId("60a6743efb1a2c3d4e56789a"),
-//     "name": "John Doe",
-//     "email": "john.doe@example.com"
-//   }
-// ]
-// `
-
 const QuestionDescription = () => {
 	const item = {
 		difficulty: 1,
@@ -100,21 +91,6 @@ const QuestionDescription = () => {
 				</div>
 			</div>
 
-			{/* <div className="mb-8">
-				<div className="mb-1 text-sm font-semibold">
-					Expected Output
-				</div>
-				<div className="mb-1">
-					<span className="text-sm">
-						Your query should return a list of users who have placed
-						more than 5 orders, including their _id, name, and
-						email.
-					</span>
-
-					<JsonView>{exampleResponseData}</JsonView>
-				</div>
-			</div> */}
-
 			<div>
 				<div className="mb-1 text-sm font-semibold">Constraints</div>
 				<ul style={{ listStyleType: 'disc' }} className="pl-4">
@@ -131,8 +107,6 @@ const QuestionDescription = () => {
 					</li>
 				</ul>
 			</div>
-
-			{/* Add more content as needed */}
 		</div>
 	)
 }
