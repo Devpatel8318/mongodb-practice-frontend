@@ -1,23 +1,26 @@
 import { createSlice } from 'src/deps'
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
 import { ReducerErrorObject } from 'src/Types/global'
-import {
-	evaluateAnswerAction,
-	submitAnswerAction,
-} from 'src/features/queryPractice/problemPracticePage.actions'
+import { fetchQuestionDetailAction } from 'src/features/queryPractice/problemPracticePage.actions'
+import { appDispatcher } from 'src/Store'
+import { Question } from './dashboard.reducer'
 
-export interface EvaluateResultResponse {
+export interface QuestionDetail {
 	questionId: number
-	correct: boolean
-	result: object
+	question: string
+	description: string
+	difficulty: Question['difficulty']
+	status: Question['status']
+	difficultyLabel: Question['difficultyLabel']
+	dataBaseSchema: { title: string; schema: object }[]
 }
 
 export interface ProblemPracticePageStateType {
 	status: API_STATUS_TYPE
 	loading: boolean
 	error: null | ReducerErrorObject
-	data: null | EvaluateResultResponse
-	submissionFlowLoading: boolean
+	data: null | QuestionDetail
+	selectedQuestionId: null | number
 }
 
 export const initialState: ProblemPracticePageStateType = {
@@ -25,42 +28,20 @@ export const initialState: ProblemPracticePageStateType = {
 	loading: false,
 	error: null,
 	data: null,
-	submissionFlowLoading: false,
+	selectedQuestionId: null,
 }
 
 const problemPracticePageSlice = createSlice({
 	name: 'problemPracticePage',
 	initialState,
-	reducers: {},
+	reducers: {
+		setSelectedQuestionId: (state, { payload }) => {
+			state.selectedQuestionId = payload
+		},
+	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(submitAnswerAction.pending, (state) => {
-				Object.assign(state, {
-					status: API_STATUS.PENDING,
-					loading: true,
-					error: null,
-					data: null,
-					submissionFlowLoading: true,
-				})
-			})
-			.addCase(submitAnswerAction.fulfilled, (state, { payload }) => {
-				Object.assign(state, {
-					status: API_STATUS.SUCCESS,
-					loading: false,
-					error: null,
-					data: payload.data,
-				})
-			})
-			.addCase(submitAnswerAction.rejected, (state, action) => {
-				Object.assign(state, {
-					status: API_STATUS.REJECTED,
-					error: action.payload,
-					loading: false,
-					data: null,
-					submissionFlowLoading: false,
-				})
-			})
-			.addCase(evaluateAnswerAction.pending, (state) => {
+			.addCase(fetchQuestionDetailAction.pending, (state) => {
 				Object.assign(state, {
 					status: API_STATUS.PENDING,
 					loading: true,
@@ -68,25 +49,32 @@ const problemPracticePageSlice = createSlice({
 					data: null,
 				})
 			})
-			.addCase(evaluateAnswerAction.fulfilled, (state, { payload }) => {
-				Object.assign(state, {
-					status: API_STATUS.SUCCESS,
-					loading: false,
-					error: null,
-					data: payload.data,
-					submissionFlowLoading: false,
-				})
-			})
-			.addCase(evaluateAnswerAction.rejected, (state, action) => {
+			.addCase(
+				fetchQuestionDetailAction.fulfilled,
+				(state, { payload }) => {
+					Object.assign(state, {
+						status: API_STATUS.SUCCESS,
+						loading: false,
+						error: null,
+						data: payload.data,
+					})
+				}
+			)
+			.addCase(fetchQuestionDetailAction.rejected, (state, action) => {
 				Object.assign(state, {
 					status: API_STATUS.REJECTED,
 					error: action.payload,
 					loading: false,
 					data: null,
-					submissionFlowLoading: false,
 				})
 			})
 	},
 })
+
+const { setSelectedQuestionId } = problemPracticePageSlice.actions
+
+export const setSelectedQuestionIdDispatcher = (questionId: number) => {
+	appDispatcher(setSelectedQuestionId(questionId))
+}
 
 export default problemPracticePageSlice.reducer

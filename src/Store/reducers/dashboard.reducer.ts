@@ -9,7 +9,7 @@ export type Question = {
 	question: string
 	answer: string
 	questionId: number
-	difficulty: number
+	difficulty: 1 | 5 | 10
 	difficultyLabel: 'Easy' | 'Medium' | 'Hard'
 	status: 'TODO' | 'SOLVED' | 'ATTEMPTED'
 }

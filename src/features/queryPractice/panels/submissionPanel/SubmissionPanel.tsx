@@ -1,11 +1,15 @@
-import { memo, useContext } from 'react'
+import { memo, useContext, useEffect } from 'react'
 import Icons from 'src/assets/svg'
 import Button from 'src/features/auth/components/Button'
 import showToast from 'src/utils/showToast'
-import { submitAnswerActionDispatcher } from '../problemPracticePage.actions'
+
 import { CodeContext } from 'src/contexts/codeContext/CodeContext'
 import { useAppSelector } from 'src/Store'
 import JsonView from 'src/components/jsonView/JsonView'
+import { submitAnswerActionDispatcher } from './submission.actions'
+import { API_STATUS } from 'src/utils/callApi'
+import useIsFirstRender from 'src/hooks/useIsFirstRender'
+import { useNavigate } from 'react-router-dom'
 
 const SubmissionPanel = ({
 	isMaximized,
@@ -19,8 +23,17 @@ const SubmissionPanel = ({
 	onMaximize: () => void
 }) => {
 	const { code } = useContext(CodeContext)
+	const isFirstRender = useIsFirstRender()
+	const navigate = useNavigate()
 
-	const { submissionFlowLoading, data } = useAppSelector(
+	const {
+		submissionFlowLoading,
+		data,
+		status,
+		error: submissionError,
+	} = useAppSelector((store) => store.submission)
+
+	const { selectedQuestionId } = useAppSelector(
 		(store) => store.problemPracticePage
 	)
 
@@ -35,7 +48,16 @@ const SubmissionPanel = ({
 
 		if (validatorResponse) return showToast('error', validatorResponse)
 
-		submitAnswerActionDispatcher({ questionId: 1, answer: code })
+		if (!selectedQuestionId) {
+			console.error('selectedQuestionId not found', selectedQuestionId)
+			showToast('error', 'Something went wrong')
+			return navigate('/')
+		}
+
+		submitAnswerActionDispatcher({
+			questionId: selectedQuestionId,
+			answer: code,
+		})
 	}
 
 	const Header = () => (
@@ -82,7 +104,8 @@ const SubmissionPanel = ({
 		const {
 			// questionId, // TODO: check if user is currently solving this question, it that's the case, then show the result
 			correct,
-			result,
+			expected,
+			output,
 		} = data
 
 		let className = ''
@@ -101,17 +124,41 @@ const SubmissionPanel = ({
 					</div>
 				</div>
 				<div className="mt-2">
-					result:
-					<JsonView>{result}</JsonView>
+					Output:
+					<JsonView>{output}</JsonView>
 				</div>
+				{!correct && (
+					<div className="mt-2">
+						Expected:
+						<JsonView>{expected}</JsonView>
+					</div>
+				)}
 			</div>
 		)
 	}
 
+	// Handle error for both submission and evaluation apis
+	useEffect(() => {
+		if (
+			isFirstRender ||
+			(status !== API_STATUS.REJECTED && !submissionError)
+		) {
+			return
+		}
+
+		const defaultErrorMessage = 'Something went wrong'
+		const firstErrorReason = submissionError?.reasons?.[0]
+		const message = firstErrorReason?.message || defaultErrorMessage
+		showToast('error', message)
+
+		// only show error only when status has changed
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [status])
+
 	return (
 		<div className="flex h-full flex-col">
 			<Header />
-			<div className="grow p-4 text-sm">
+			<div className="mb-2 grow overflow-auto p-4 text-sm">
 				{submissionFlowLoading ? 'loading...' : <Content />}
 			</div>
 		</div>

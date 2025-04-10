@@ -2,6 +2,7 @@ import { useNavigate } from 'src/deps'
 import Icons from 'src/assets/svg'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
+import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/problemPracticePage.reducer'
 
 const getStatusIcon = (status: Question['status']) => {
 	const icons = {
@@ -24,11 +25,14 @@ const getDifficultyColor = (difficulty: Question['difficulty']) => {
 const TableRow = ({ item }: { item: Question }) => {
 	const navigate = useNavigate()
 
+	const handleClick = () => {
+		const questionId = item.questionId
+		setSelectedQuestionIdDispatcher(questionId)
+		navigate(`/problems/${questionId}`)
+	}
+
 	return (
-		<tr
-			onClick={() => navigate(`/problems/${item.questionId}`)}
-			className="cursor-pointer hover:bg-gray-100"
-		>
+		<tr onClick={handleClick} className="cursor-pointer hover:bg-gray-100">
 			<td className="h-px w-2/12 whitespace-nowrap px-6 py-3">
 				<span className="flex items-center gap-1 text-sm font-medium text-gray-500">
 					{getStatusIcon(item.status)}

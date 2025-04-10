@@ -4,6 +4,7 @@ import Logout from 'src/features/auth/Logout'
 import Signup from 'src/features/auth/Signup'
 import ForgetPassword from 'src/features/auth/ForgetPassword'
 import ProblemPracticePage from 'src/features/queryPractice/ProblemPracticePage'
+import Temp from 'src/features/Temp/Temp'
 
 export interface RouteObjectType {
 	path: string
@@ -27,6 +28,7 @@ export const privateRoutes: RouteObjectType[] = [
 	),
 	createRouteObject('/problems/:questionId', 'Problem', ProblemPracticePage),
 	createRouteObject('/logout', 'Logout', Logout),
+	createRouteObject('/temp', 'Temp', Temp),
 ]
 
 export const publicRoutes: RouteObjectType[] = [

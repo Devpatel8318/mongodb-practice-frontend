@@ -30,7 +30,7 @@ import Routers from 'src/router'
 import { loginUserDispatcher } from './Store/reducers/auth.reducer'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { socket } from './socket'
-import { evaluateAnswerDispatcher } from './features/queryPractice/problemPracticePage.actions'
+import { evaluateAnswerDispatcher } from './features/queryPractice/panels/submissionPanel/submission.actions'
 
 const App = () => {
 	// * this state is required because without this in initial render, private route will get

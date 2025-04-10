@@ -6,13 +6,19 @@ import {
 	PanelResizeHandle,
 } from 'react-resizable-panels'
 import { cn } from 'src/utils/cn'
-import QuestionPanel from './components/QuestionPanel'
-import CodeEditorPanel from './components/CodeEditorPanel'
-import SubmissionPanel from './components/SubmissionPanel'
+import QuestionPanel from './panels/questionDescriptionPanel/QuestionPanel'
+import CodeEditorPanel from './panels/codeEditorPanel/CodeEditorPanel'
+import SubmissionPanel from './panels/submissionPanel/SubmissionPanel'
 import { SECTION_CONFIGS, SectionName } from './helper/sectionConfig'
 import { CodeProvider } from 'src/contexts/codeContext/CodeProvider'
 import { useAppSelector } from 'src/Store'
 import showToast from 'src/utils/showToast'
+import { useNavigate, useParams } from 'react-router-dom'
+import { fetchQuestionDetailActionDispatcher } from './problemPracticePage.actions'
+import useIsFirstRender from 'src/hooks/useIsFirstRender'
+import { API_STATUS } from 'src/utils/callApi'
+import getErrorMessageAndField from 'src/utils/getErrorMessageAndField'
+import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/problemPracticePage.reducer'
 
 const RenderMaximizedSection = ({
 	maximizedSection,
@@ -105,6 +111,11 @@ const ProblemPracticePage: React.FC = () => {
 			rightSection: false,
 		})
 
+	const isFirstRender = useIsFirstRender()
+	const params = useParams()
+	const navigate = useNavigate()
+	const { questionId } = params
+
 	// Create refs for all panels
 	const panelRefs = {
 		question: useRef<ImperativePanelHandle>(null),
@@ -113,7 +124,11 @@ const ProblemPracticePage: React.FC = () => {
 		rightSection: useRef<ImperativePanelHandle>(null),
 	}
 
-	const { error } = useAppSelector((store) => store.problemPracticePage)
+	const {
+		error: problemPracticePageError,
+		status,
+		selectedQuestionId,
+	} = useAppSelector((store) => store.problemPracticePage)
 
 	const toggleSection = useCallback((section: SectionName) => {
 		const panelRef = panelRefs[section].current
@@ -156,16 +171,32 @@ const ProblemPracticePage: React.FC = () => {
 		})
 	}
 
-	// Handle error for both submission and evaluation apis
 	useEffect(() => {
-		if (!error) return
+		if (questionId) {
+			// when page is refreshed, redux will be empty so, if params contains questionId then set this to redux
+			if (!selectedQuestionId) {
+				setSelectedQuestionIdDispatcher(+questionId)
+			}
+			fetchQuestionDetailActionDispatcher(+questionId)
+		} else {
+			// something went wrong
+			navigate('/')
+		}
+	}, [questionId, navigate, selectedQuestionId])
 
-		const defaultErrorMessage = 'Something went wrong'
-		const firstErrorReason = error?.reasons?.[0]
-		const message = firstErrorReason?.message || defaultErrorMessage
+	useEffect(() => {
+		if (
+			isFirstRender ||
+			(status !== API_STATUS.REJECTED && !problemPracticePageError)
+		) {
+			return
+		}
+
+		const { message } = getErrorMessageAndField(problemPracticePageError)
 
 		showToast('error', message)
-	}, [error])
+		navigate('/')
+	}, [status, navigate, isFirstRender, problemPracticePageError])
 
 	return (
 		<CodeProvider>

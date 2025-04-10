@@ -8,7 +8,7 @@ const JsonView = memo(
 				: JSON.stringify(children, null, 4)
 
 		return (
-			<pre className="w-fit rounded-md bg-gray-100 p-2 text-xs font-thin">
+			<pre className="w-fit rounded-md bg-gray-100 p-2 pr-3 text-xs font-thin">
 				{data}
 			</pre>
 		)

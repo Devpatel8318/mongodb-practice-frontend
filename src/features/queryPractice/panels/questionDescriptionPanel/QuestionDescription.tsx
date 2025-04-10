@@ -1,3 +1,4 @@
+import { useAppSelector } from 'src/Store'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 import Icons from 'src/assets/svg'
 import JsonView from 'src/components/jsonView/JsonView'
@@ -29,69 +30,57 @@ const getStatusIcon = (status: Question['status']) => {
 const getDifficultyColor = (difficulty: Question['difficulty']) => {
 	const colors: Record<number, string> = {
 		1: 'text-teal-500',
-		5: 'text-yellow-500',
+		5: 'text-orange-500',
 		10: 'text-red-500',
 	}
 	return colors[difficulty] || ''
 }
 
-const usersCollectionData = `{
-  "_id": ObjectId("60a6743efb1a2c3d4e56789a"),
-  "name": "John Doe",
-  "email": "john.doe@example.com"
-}`
-
-const ordersCollectionData = `{
-  "_id": ObjectId("60a6743efb1a2c3d4e56789b"),
-  "userId": ObjectId("60a6743efb1a2c3d4e56789a"),
-  "amount": 120.5,
-  "date": "2024-03-30T10:15:00Z"
-}`
-
 const QuestionDescription = () => {
-	const item = {
-		difficulty: 1,
-		difficultyLabel: 'Easy',
-	}
+	const {
+		question,
+		description,
+		status,
+		difficulty,
+		difficultyLabel,
+		dataBaseSchema,
+	} = useAppSelector((store) => store.problemPracticePage.data) || {}
 
-	return (
-		<div className="min-w-80">
-			<h2 className="mb-5 text-2xl font-semibold">
-				Find Users with More than 5 Orders
-			</h2>
-			<div className="mb-5 flex items-center gap-3">
-				<span className="flex gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs">
-					{getStatusIcon('ATTEMPTED')}
-				</span>
-
-				<span
-					className={`rounded-full bg-gray-100 px-2 py-1 text-xs ${getDifficultyColor(item.difficulty)}`}
-				>
-					{item.difficultyLabel}
-				</span>
-			</div>
-
-			<div className="mb-8 text-sm">
-				You are given a users collection and an orders collection in a
-				MongoDB database. Your task is to write an aggregation query to
-				find all users who have placed more than 5 orders.
-			</div>
-
+	const Schema = () => {
+		return (
 			<div className="mb-8">
 				<div className="mb-1 text-sm font-semibold">
 					Database Schema
 				</div>
-				<div className="mb-2">
-					<span className="text-sm">Users Collection (users)</span>
-					<JsonView>{usersCollectionData}</JsonView>
-				</div>
-				<div>
-					<span className="text-sm">Orders Collection (orders)</span>
-					<JsonView>{ordersCollectionData}</JsonView>
+				<div className="flex flex-col gap-2">
+					{dataBaseSchema?.map((item, index) => (
+						<div key={index}>
+							<span className="text-sm">{item.title}</span>
+							<JsonView>{item.schema}</JsonView>
+						</div>
+					))}
 				</div>
 			</div>
+		)
+	}
 
-			<div>
+	return (
+		<div className="min-w-80">
+			<h2 className="mb-5 text-2xl font-semibold">{question}</h2>
+			<div className="mb-5 flex items-center gap-3">
+				<span className="flex gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs">
+					{getStatusIcon(status || 'TODO')}
+				</span>
+
+				<span
+					className={`rounded-full bg-gray-100 px-2 py-1 text-xs ${getDifficultyColor(difficulty || 1)}`}
+				>
+					{difficultyLabel}
+				</span>
+			</div>
+			<div className="mb-8 text-sm">{description}</div>
+			<Schema />
+			{/* <div>
 				<div className="mb-1 text-sm font-semibold">Constraints</div>
 				<ul style={{ listStyleType: 'disc' }} className="pl-4">
 					<li className="mb-1 text-sm">
@@ -106,7 +95,7 @@ const QuestionDescription = () => {
 						The orders collection may contain thousands of records.
 					</li>
 				</ul>
-			</div>
+			</div> */}
 		</div>
 	)
 }
