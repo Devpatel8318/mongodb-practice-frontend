@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react'
+import React, { useRef, useState, useCallback, useEffect } from 'react'
 import {
 	ImperativePanelHandle,
 	Panel,
@@ -11,6 +11,8 @@ import CodeEditorPanel from './components/CodeEditorPanel'
 import SubmissionPanel from './components/SubmissionPanel'
 import { SECTION_CONFIGS, SectionName } from './helper/sectionConfig'
 import { CodeProvider } from 'src/contexts/codeContext/CodeProvider'
+import { useAppSelector } from 'src/Store'
+import showToast from 'src/utils/showToast'
 
 const RenderMaximizedSection = ({
 	maximizedSection,
@@ -111,6 +113,8 @@ const ProblemPracticePage: React.FC = () => {
 		rightSection: useRef<ImperativePanelHandle>(null),
 	}
 
+	const { error } = useAppSelector((store) => store.problemPracticePage)
+
 	const toggleSection = useCallback((section: SectionName) => {
 		const panelRef = panelRefs[section].current
 		if (!panelRef) return
@@ -151,6 +155,17 @@ const ProblemPracticePage: React.FC = () => {
 			}
 		})
 	}
+
+	// Handle error for both submission and evaluation apis
+	useEffect(() => {
+		if (!error) return
+
+		const defaultErrorMessage = 'Something went wrong'
+		const firstErrorReason = error?.reasons?.[0]
+		const message = firstErrorReason?.message || defaultErrorMessage
+
+		showToast('error', message)
+	}, [error])
 
 	return (
 		<CodeProvider>

@@ -4,6 +4,8 @@ import Button from 'src/features/auth/components/Button'
 import showToast from 'src/utils/showToast'
 import { submitAnswerActionDispatcher } from '../problemPracticePage.actions'
 import { CodeContext } from 'src/contexts/codeContext/CodeContext'
+import { useAppSelector } from 'src/Store'
+import JsonView from 'src/components/jsonView/JsonView'
 
 const SubmissionPanel = ({
 	isMaximized,
@@ -17,6 +19,10 @@ const SubmissionPanel = ({
 	onMaximize: () => void
 }) => {
 	const { code } = useContext(CodeContext)
+
+	const { submissionFlowLoading, data } = useAppSelector(
+		(store) => store.problemPracticePage
+	)
 
 	const validate = (): string | false => {
 		if (!code) return 'code editor can not be empty'
@@ -70,11 +76,43 @@ const SubmissionPanel = ({
 		</div>
 	)
 
+	const Content = () => {
+		if (!data) return <div></div>
+
+		const {
+			// questionId, // TODO: check if user is currently solving this question, it that's the case, then show the result
+			correct,
+			result,
+		} = data
+
+		let className = ''
+
+		if (correct) {
+			className = 'text-green-500'
+		} else {
+			className = 'text-red-500'
+		}
+
+		return (
+			<div>
+				<div className="flex items-center gap-2 text-lg">
+					<div className={className}>
+						{correct ? 'Correct' : 'Incorrect'}
+					</div>
+				</div>
+				<div className="mt-2">
+					result:
+					<JsonView>{result}</JsonView>
+				</div>
+			</div>
+		)
+	}
+
 	return (
 		<div className="flex h-full flex-col">
 			<Header />
 			<div className="grow p-4 text-sm">
-				Here goes output after submitting
+				{submissionFlowLoading ? 'loading...' : <Content />}
 			</div>
 		</div>
 	)

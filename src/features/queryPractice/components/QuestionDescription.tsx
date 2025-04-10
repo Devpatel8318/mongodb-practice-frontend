@@ -1,13 +1,6 @@
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 import Icons from 'src/assets/svg'
-
-const JsonView = ({ children }: { children: React.ReactNode }) => {
-	return (
-		<pre className="w-fit rounded-md bg-gray-100 p-2 text-xs font-thin">
-			{children}
-		</pre>
-	)
-}
+import JsonView from 'src/components/jsonView/JsonView'
 
 const getStatusIcon = (status: Question['status']) => {
 	const icons = {
@@ -55,14 +48,14 @@ const ordersCollectionData = `{
   "date": "2024-03-30T10:15:00Z"
 }`
 
-const exampleResponseData = `[
-  {
-    "_id": ObjectId("60a6743efb1a2c3d4e56789a"),
-    "name": "John Doe",
-    "email": "john.doe@example.com"
-  }
-]
-`
+// const exampleResponseData = `[
+//   {
+//     "_id": ObjectId("60a6743efb1a2c3d4e56789a"),
+//     "name": "John Doe",
+//     "email": "john.doe@example.com"
+//   }
+// ]
+// `
 
 const QuestionDescription = () => {
 	const item = {
@@ -97,7 +90,7 @@ const QuestionDescription = () => {
 				<div className="mb-1 text-sm font-semibold">
 					Database Schema
 				</div>
-				<div className="mb-1">
+				<div className="mb-2">
 					<span className="text-sm">Users Collection (users)</span>
 					<JsonView>{usersCollectionData}</JsonView>
 				</div>
@@ -107,7 +100,7 @@ const QuestionDescription = () => {
 				</div>
 			</div>
 
-			<div className="mb-8">
+			{/* <div className="mb-8">
 				<div className="mb-1 text-sm font-semibold">
 					Expected Output
 				</div>
@@ -120,7 +113,7 @@ const QuestionDescription = () => {
 
 					<JsonView>{exampleResponseData}</JsonView>
 				</div>
-			</div>
+			</div> */}
 
 			<div>
 				<div className="mb-1 text-sm font-semibold">Constraints</div>

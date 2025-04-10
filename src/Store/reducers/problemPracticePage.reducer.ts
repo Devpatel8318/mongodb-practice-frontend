@@ -6,12 +6,18 @@ import {
 	submitAnswerAction,
 } from 'src/features/queryPractice/problemPracticePage.actions'
 
+export interface EvaluateResultResponse {
+	questionId: number
+	correct: boolean
+	result: object
+}
+
 export interface ProblemPracticePageStateType {
 	status: API_STATUS_TYPE
 	loading: boolean
 	error: null | ReducerErrorObject
-	data: null | object
-	submissionLoading: boolean
+	data: null | EvaluateResultResponse
+	submissionFlowLoading: boolean
 }
 
 export const initialState: ProblemPracticePageStateType = {
@@ -19,7 +25,7 @@ export const initialState: ProblemPracticePageStateType = {
 	loading: false,
 	error: null,
 	data: null,
-	submissionLoading: false,
+	submissionFlowLoading: false,
 }
 
 const problemPracticePageSlice = createSlice({
@@ -34,7 +40,7 @@ const problemPracticePageSlice = createSlice({
 					loading: true,
 					error: null,
 					data: null,
-					submissionLoading: true,
+					submissionFlowLoading: true,
 				})
 			})
 			.addCase(submitAnswerAction.fulfilled, (state, { payload }) => {
@@ -51,7 +57,7 @@ const problemPracticePageSlice = createSlice({
 					error: action.payload,
 					loading: false,
 					data: null,
-					submissionLoading: false,
+					submissionFlowLoading: false,
 				})
 			})
 			.addCase(evaluateAnswerAction.pending, (state) => {
@@ -68,7 +74,7 @@ const problemPracticePageSlice = createSlice({
 					loading: false,
 					error: null,
 					data: payload.data,
-					submissionLoading: false,
+					submissionFlowLoading: false,
 				})
 			})
 			.addCase(evaluateAnswerAction.rejected, (state, action) => {
@@ -77,7 +83,7 @@ const problemPracticePageSlice = createSlice({
 					error: action.payload,
 					loading: false,
 					data: null,
-					submissionLoading: false,
+					submissionFlowLoading: false,
 				})
 			})
 	},

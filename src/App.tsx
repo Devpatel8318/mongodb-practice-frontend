@@ -30,8 +30,7 @@ import Routers from 'src/router'
 import { loginUserDispatcher } from './Store/reducers/auth.reducer'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { socket } from './socket'
-import { BACKEND_URL } from './utils/config'
-import callApi from './utils/callApi'
+import { evaluateAnswerDispatcher } from './features/queryPractice/problemPracticePage.actions'
 
 const App = () => {
 	// * this state is required because without this in initial render, private route will get
@@ -44,17 +43,14 @@ const App = () => {
 			loginUserDispatcher()
 			socket.on('connect', () => console.log('connected to socket'))
 			socket.on('pickup', async (data) => {
-				console.log(data)
+				console.log('pickupData', data)
 				const { questionId, question, answer } = data
 
-				const url = `${BACKEND_URL}/answer/retrieve`
-
-				const response = await callApi(url, 'POST', {
+				evaluateAnswerDispatcher({
 					questionId,
 					question,
 					answer,
 				})
-				console.log({ first: response })
 			})
 		}
 		setInitialized(true)
