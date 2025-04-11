@@ -2,7 +2,7 @@ import { useEffect, useNavigate } from 'src/deps'
 import { useAppSelector } from 'src/Store'
 import { API_STATUS } from 'src/utils/callApi'
 
-import { logoutActionDispatcher } from './auth.action'
+import { logoutActionDispatcher } from './auth.dispatcher'
 
 const Logout = () => {
 	const navigate = useNavigate()

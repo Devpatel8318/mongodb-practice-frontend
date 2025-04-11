@@ -5,7 +5,7 @@ import { emailValidator } from 'src/utils/emailValidator'
 import { passwordValidator } from 'src/utils/passwordValidator'
 import showToast from 'src/utils/showToast'
 
-import { signUpActionDispatcher } from './auth.action'
+import { signUpActionDispatcher } from './auth.dispatcher'
 import AuthCard from './components/AuthCard'
 import Button from './components/Button'
 import OAuthButton from './components/OAuthButton'

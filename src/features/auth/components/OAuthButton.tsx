@@ -1,7 +1,7 @@
 import { useGoogleLogin, useGoogleOneTapLogin } from '@react-oauth/google'
 import { React } from 'src/deps'
 
-import { oauthGoogleActionDispatcher } from '../auth.action'
+import { oauthGoogleActionDispatcher } from '../auth.dispatcher'
 
 const OAuthButton: React.FC = () => {
 	const responseGoogle = async (authResult: {

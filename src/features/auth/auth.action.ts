@@ -1,5 +1,4 @@
 import { createAsyncThunk } from 'src/deps'
-import { appDispatcher } from 'src/Store'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
 
@@ -22,10 +21,6 @@ export const oauthGoogleAction = createAsyncThunk<
 	}
 })
 
-export const oauthGoogleActionDispatcher = (payload: GoogleAuthPayload) => {
-	appDispatcher(oauthGoogleAction(payload))
-}
-
 export const signInAction = createAsyncThunk<
 	SuccessResponse,
 	{ email: string; password: string },
@@ -43,13 +38,6 @@ export const signInAction = createAsyncThunk<
 		return rejectWithValue(e as ErrorResponse)
 	}
 })
-
-export const signInActionDispatcher = (payload: {
-	email: string
-	password: string
-}) => {
-	appDispatcher(signInAction(payload))
-}
 
 export const signUpAction = createAsyncThunk<
 	SuccessResponse,
@@ -69,13 +57,6 @@ export const signUpAction = createAsyncThunk<
 	}
 })
 
-export const signUpActionDispatcher = (payload: {
-	email: string
-	password: string
-}) => {
-	appDispatcher(signUpAction(payload))
-}
-
 export const refreshAction = createAsyncThunk<
 	SuccessResponse,
 	{ doNotShowAlert: boolean },
@@ -89,14 +70,6 @@ export const refreshAction = createAsyncThunk<
 		return rejectWithValue(e as ErrorResponse)
 	}
 })
-
-export const refreshActionDispatcher = ({
-	doNotShowAlert,
-}: {
-	doNotShowAlert: boolean
-}) => {
-	appDispatcher(refreshAction({ doNotShowAlert }))
-}
 
 // this will be used when we need to clear access-token, refresh-token and localStorage
 export const logoutAction = createAsyncThunk<
@@ -112,7 +85,3 @@ export const logoutAction = createAsyncThunk<
 		return rejectWithValue(e as ErrorResponse)
 	}
 })
-
-export const logoutActionDispatcher = () => {
-	appDispatcher(logoutAction())
-}

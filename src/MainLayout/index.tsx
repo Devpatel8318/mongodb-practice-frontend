@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 import Icons from 'src/assets/svg'
 import { Link, React, useRef, useState } from 'src/deps'
-import { logoutActionDispatcher } from 'src/features/auth/auth.action'
+import { logoutActionDispatcher } from 'src/features/auth/auth.dispatcher'
 import useOnClickOutside from 'src/hooks/useOnClickOutside'
 import { useAppSelector } from 'src/Store'
 

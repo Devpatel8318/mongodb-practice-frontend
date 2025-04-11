@@ -1,5 +1,5 @@
 import { Navigate, Outlet, React, useEffect, useLocation } from 'src/deps'
-import { refreshActionDispatcher } from 'src/features/auth/auth.action'
+import { refreshActionDispatcher } from 'src/features/auth/auth.dispatcher'
 import MainLayout from 'src/MainLayout'
 import { useAppSelector } from 'src/Store'
 import { userSettingActionDispatcher } from 'src/Store/globalActions/user.action'
