@@ -50,7 +50,8 @@
     "react-resizable-panels": "^2.1.7",
     "react-router-dom": "^6.24.1",
     "react-scripts": "5.0.1",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

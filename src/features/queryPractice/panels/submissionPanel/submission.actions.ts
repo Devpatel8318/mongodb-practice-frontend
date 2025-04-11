@@ -12,15 +12,16 @@ export const submitAnswerAction = createAsyncThunk<
 		output?: object
 		pending?: boolean
 	}>,
-	{ questionId: number; answer: string },
+	{ questionId: number; answer: string; socketId: string },
 	{
 		rejectValue: ErrorResponse
 	}
 >('problemPracticePage/submit', async (payload, { rejectWithValue }) => {
-	const { questionId, answer } = payload
+	const { questionId, answer, socketId } = payload
 	try {
 		return await callApi(`/answer/submit/${questionId}`, 'POST', {
 			answerQuery: answer,
+			socketId,
 		})
 	} catch (e) {
 		return rejectWithValue(e as ErrorResponse)
@@ -30,6 +31,7 @@ export const submitAnswerAction = createAsyncThunk<
 export const submitAnswerActionDispatcher = (payload: {
 	questionId: number
 	answer: string
+	socketId: string
 }) => {
 	appDispatcher(submitAnswerAction(payload))
 }

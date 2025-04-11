@@ -36,6 +36,7 @@ const SubmissionPanel = ({
 	const { selectedQuestionId } = useAppSelector(
 		(store) => store.problemPracticePage
 	)
+	const { socketId } = useAppSelector((store) => store.socket)
 
 	const validate = (): string | false => {
 		if (!code) return 'code editor can not be empty'
@@ -57,6 +58,7 @@ const SubmissionPanel = ({
 		submitAnswerActionDispatcher({
 			questionId: selectedQuestionId,
 			answer: code,
+			socketId,
 		})
 	}
 
@@ -101,12 +103,12 @@ const SubmissionPanel = ({
 	const Content = () => {
 		if (!data) return <div></div>
 
-		const {
-			// questionId, // TODO: check if user is currently solving this question, it that's the case, then show the result
-			correct,
-			expected,
-			output,
-		} = data
+		const { questionId, correct, expected, output } = data
+
+		// if socket is for questionId which user is not currently solving then show nothing
+		if (questionId !== selectedQuestionId) {
+			return <div></div>
+		}
 
 		let className = ''
 
