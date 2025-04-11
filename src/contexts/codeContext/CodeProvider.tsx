@@ -2,11 +2,7 @@ import { useState } from 'react'
 import { CodeContext, CustomCursorPosition } from './CodeContext'
 
 // TODO: change to "// Start coding here..."
-const defaultValue = `db.posts.findOne(
-  {
-    title: "Post 202"
-  }
-)
+const defaultValue = `db.posts.find({})
  `
 export const CodeProvider = ({ children }: { children: React.ReactNode }) => {
 	const [code, setCode] = useState(defaultValue)
