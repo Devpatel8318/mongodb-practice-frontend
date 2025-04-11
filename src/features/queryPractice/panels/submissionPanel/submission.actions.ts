@@ -38,16 +38,22 @@ export const submitAnswerActionDispatcher = (payload: {
 
 export const evaluateAnswerAction = createAsyncThunk<
 	SuccessResponse<EvaluateResultResponse>,
-	{ questionId: number; question: string; answer: string },
+	{
+		questionId: number
+		question: string
+		answer: string
+		submissionId: string
+	},
 	{
 		rejectValue: ErrorResponse
 	}
 >('problemPracticePage/evaluate', async (payload, { rejectWithValue }) => {
-	const { questionId, question, answer } = payload
+	const { questionId, question, answer, submissionId } = payload
 	try {
 		return await callApi(`/answer/evaluate/${questionId}`, 'POST', {
 			question,
 			answer,
+			submissionId,
 		})
 	} catch (e) {
 		return rejectWithValue(e as ErrorResponse)
@@ -58,6 +64,7 @@ export const evaluateAnswerDispatcher = (payload: {
 	questionId: number
 	question: string
 	answer: string
+	submissionId: string
 }) => {
 	appDispatcher(evaluateAnswerAction(payload))
 }

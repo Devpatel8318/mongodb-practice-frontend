@@ -77,8 +77,6 @@ const SubmissionPanel = ({
 		const { questionId, correct, expected, output } = data
 
 		// if socket is for questionId which user is not currently solving then show nothing
-		console.log(questionId, selectedQuestionId)
-
 		if (questionId !== selectedQuestionId) {
 			return <div></div>
 		}

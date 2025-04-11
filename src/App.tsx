@@ -52,12 +52,13 @@ const App = () => {
 
 			socket.on('pickup', async (data) => {
 				console.log('pickupData', data)
-				const { questionId, question, answer } = data
+				const { questionId, question, answer, submissionId } = data
 
 				evaluateAnswerDispatcher({
 					questionId,
 					question,
 					answer,
+					submissionId,
 				})
 			})
 		}
