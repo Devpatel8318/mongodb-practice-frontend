@@ -1,10 +1,12 @@
-import { ReactDOM, Provider } from 'src/deps'
 import './index.css'
-import store from './Store'
-import App from './App'
-import { HelmetProvider } from 'react-helmet-async'
+
 import { ErrorBoundary } from 'react-error-boundary'
+import { HelmetProvider } from 'react-helmet-async'
+import { Provider, ReactDOM } from 'src/deps'
+
+import App from './App'
 import ErrorFallback from './features/fallbackPages/ErrorFallback'
+import store from './Store'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const helmetContext = {}

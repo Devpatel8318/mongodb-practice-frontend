@@ -1,3 +1,4 @@
+import { SerializedError } from '@reduxjs/toolkit'
 import { createSlice } from 'src/deps'
 import {
 	logoutAction,
@@ -6,11 +7,10 @@ import {
 	signInAction,
 	signUpAction,
 } from 'src/features/auth/auth.action'
-import { ReducerErrorObject, ErrorResponse } from 'src/Types/global'
-import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
 import { appDispatcher } from 'src/Store'
+import { ErrorResponse, ReducerErrorObject } from 'src/Types/global'
+import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
 import showToast from 'src/utils/showToast'
-import { SerializedError } from '@reduxjs/toolkit'
 
 export interface AuthStateType {
 	status: API_STATUS_TYPE

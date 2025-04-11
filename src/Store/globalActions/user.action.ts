@@ -1,7 +1,7 @@
 import { createAsyncThunk } from 'src/deps'
+import { appDispatcher } from 'src/Store'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
-import { appDispatcher } from 'src/Store'
 
 export const userSettingAction = createAsyncThunk<
 	SuccessResponse<{ email: string; profilePictureUrl: string }>,

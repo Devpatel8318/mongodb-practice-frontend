@@ -1,4 +1,4 @@
-import { React, Link } from 'src/deps'
+import { Link, React } from 'src/deps'
 
 const NotFound: React.FC = () => {
 	return (

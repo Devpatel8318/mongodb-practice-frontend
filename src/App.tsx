@@ -23,14 +23,14 @@ export default defineConfig({
 
 */
 
-import { useEffect, useState, Toaster } from 'src/deps'
-
-import Routers from 'src/router'
-import { loginUserDispatcher } from './Store/reducers/auth.reducer'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { socket } from './socket/socket'
+import { Toaster, useEffect, useState } from 'src/deps'
+import Routers from 'src/router'
+
 import { evaluateAnswerDispatcher } from './features/queryPractice/panels/submissionPanel/submission.actions'
+import { socket } from './socket/socket'
 import { setSocketIdDispatcher } from './socket/socket.action'
+import { loginUserDispatcher } from './Store/reducers/auth.reducer'
 
 const App = () => {
 	// * this state is required because without this in initial render, private route will get

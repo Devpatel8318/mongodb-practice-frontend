@@ -1,5 +1,5 @@
 import React, { JSX } from 'react'
-import { Route, Helmet } from 'src/deps'
+import { Helmet, Route } from 'src/deps'
 
 export interface RouteObjectType {
 	path: string

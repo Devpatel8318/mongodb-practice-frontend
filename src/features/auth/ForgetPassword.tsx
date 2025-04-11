@@ -1,10 +1,10 @@
-import { React, useState, Link } from 'src/deps'
-
+import { Link, React, useState } from 'src/deps'
 import { useAppSelector } from 'src/Store'
 import { emailValidator } from 'src/utils/emailValidator'
+
+import AuthCard from './components/AuthCard'
 import Button from './components/Button'
 import TextInput from './components/TextInput'
-import AuthCard from './components/AuthCard'
 
 const ForgetPassword = () => {
 	const [email, setEmail] = useState('')

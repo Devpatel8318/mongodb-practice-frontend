@@ -1,8 +1,8 @@
-import { useNavigate } from 'src/deps'
 import Icons from 'src/assets/svg'
+import { useNavigate } from 'src/deps'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
-import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
 import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/problemPracticePage.reducer'
+import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
 
 const getStatusIcon = (status: Question['status']) => {
 	const icons = {

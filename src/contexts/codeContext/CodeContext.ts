@@ -1,5 +1,5 @@
-import { createContext } from 'react'
 import * as monaco from 'monaco-editor'
+import { createContext } from 'react'
 
 export type CustomCursorPosition = monaco.Position | -1
 

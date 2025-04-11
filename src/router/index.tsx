@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'src/deps'
-
-import PrivateRoute from './PrivateRoute'
 import NotFound from 'src/features/fallbackPages/NotFound'
-import PublicRoute from './PublicRoute'
+
 import CustomRoute from './CustomRoute'
+import PrivateRoute from './PrivateRoute'
+import PublicRoute from './PublicRoute'
 import { privateRoutes, publicRoutes } from './routes'
 
 const AppRoutes = () => (

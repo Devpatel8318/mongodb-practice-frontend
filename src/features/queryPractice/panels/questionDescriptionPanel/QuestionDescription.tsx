@@ -1,7 +1,7 @@
-import { useAppSelector } from 'src/Store'
-import { Question } from 'src/Store/reducers/dashboard.reducer'
 import Icons from 'src/assets/svg'
 import JsonView from 'src/components/jsonView/JsonView'
+import { useAppSelector } from 'src/Store'
+import { Question } from 'src/Store/reducers/dashboard.reducer'
 
 const getStatusIcon = (status: Question['status']) => {
 	const icons = {

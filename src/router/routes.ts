@@ -1,8 +1,8 @@
-import Dashboard from 'src/features/dashboard/Dashboard'
+import ForgetPassword from 'src/features/auth/ForgetPassword'
 import Login from 'src/features/auth/Login'
 import Logout from 'src/features/auth/Logout'
 import Signup from 'src/features/auth/Signup'
-import ForgetPassword from 'src/features/auth/ForgetPassword'
+import Dashboard from 'src/features/dashboard/Dashboard'
 import ProblemPracticePage from 'src/features/queryPractice/ProblemPracticePage'
 import Temp from 'src/features/Temp/Temp'
 

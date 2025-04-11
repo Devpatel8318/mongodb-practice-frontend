@@ -1,9 +1,9 @@
 import React, {
+	useCallback,
+	useContext,
+	useEffect,
 	useRef,
 	useState,
-	useCallback,
-	useEffect,
-	useContext,
 } from 'react'
 import {
 	ImperativePanelHandle,
@@ -11,22 +11,23 @@ import {
 	PanelGroup,
 	PanelResizeHandle,
 } from 'react-resizable-panels'
-import { cn } from 'src/utils/cn'
-import QuestionPanel from './panels/questionDescriptionPanel/QuestionPanel'
-import CodeEditorPanel from './panels/codeEditorPanel/CodeEditorPanel'
-import SubmissionPanel from './panels/submissionPanel/SubmissionPanel'
-import { SECTION_CONFIGS, SectionName } from './helper/sectionConfig'
-import { CodeProvider } from 'src/contexts/codeContext/CodeProvider'
-import { useAppSelector } from 'src/Store'
-import showToast from 'src/utils/showToast'
 import { useNavigate, useParams } from 'react-router-dom'
-import { fetchQuestionDetailActionDispatcher } from './problemPracticePage.actions'
-import useIsFirstRender from 'src/hooks/useIsFirstRender'
-import { API_STATUS } from 'src/utils/callApi'
-import getErrorMessageAndField from 'src/utils/getErrorMessageAndField'
-import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/problemPracticePage.reducer'
 import { CodeContext } from 'src/contexts/codeContext/CodeContext'
+import { CodeProvider } from 'src/contexts/codeContext/CodeProvider'
+import useIsFirstRender from 'src/hooks/useIsFirstRender'
+import { useAppSelector } from 'src/Store'
+import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/problemPracticePage.reducer'
+import { API_STATUS } from 'src/utils/callApi'
+import { cn } from 'src/utils/cn'
+import getErrorMessageAndField from 'src/utils/getErrorMessageAndField'
+import showToast from 'src/utils/showToast'
+
+import { SECTION_CONFIGS, SectionName } from './helper/sectionConfig'
+import CodeEditorPanel from './panels/codeEditorPanel/CodeEditorPanel'
+import QuestionPanel from './panels/questionDescriptionPanel/QuestionPanel'
 import { submitAnswerActionDispatcher } from './panels/submissionPanel/submission.actions'
+import SubmissionPanel from './panels/submissionPanel/SubmissionPanel'
+import { fetchQuestionDetailActionDispatcher } from './problemPracticePage.actions'
 
 const RenderMaximizedSection = ({
 	maximizedSection,

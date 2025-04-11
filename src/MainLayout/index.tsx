@@ -1,10 +1,9 @@
-import { React, Link, useRef, useState } from 'src/deps'
-
-import Icons from 'src/assets/svg'
-import { useAppSelector } from 'src/Store'
-import useOnClickOutside from 'src/hooks/useOnClickOutside'
-import { logoutActionDispatcher } from 'src/features/auth/auth.action'
 import { memo, useCallback } from 'react'
+import Icons from 'src/assets/svg'
+import { Link, React, useRef, useState } from 'src/deps'
+import { logoutActionDispatcher } from 'src/features/auth/auth.action'
+import useOnClickOutside from 'src/hooks/useOnClickOutside'
+import { useAppSelector } from 'src/Store'
 
 const Header = () => {
 	const filterRef = useRef<HTMLDivElement | null>(null)

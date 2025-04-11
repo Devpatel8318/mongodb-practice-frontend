@@ -10,6 +10,7 @@ module.exports = {
 		'plugin:react/recommended',
 		'plugin:react-hooks/recommended',
 		'plugin:tailwindcss/recommended',
+		'plugin:prettier/recommended',
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
@@ -24,6 +25,8 @@ module.exports = {
 		'react',
 		'react-hooks',
 		'prefer-arrow-functions',
+		'import',
+		'simple-import-sort',
 	],
 	settings: {
 		react: {
@@ -75,5 +78,9 @@ module.exports = {
 			},
 		],
 		'@typescript-eslint/no-empty-function': 'error',
+		'sort-imports': 'off',
+		'import/order': 'off',
+		'simple-import-sort/imports': 'error',
+		'simple-import-sort/exports': 'error',
 	},
 }

@@ -1,5 +1,4 @@
-import { React, Navigate, Outlet } from 'src/deps'
-
+import { Navigate, Outlet, React } from 'src/deps'
 import { useAppSelector } from 'src/Store'
 
 const PrivateRoute: React.FC = () => {

@@ -1,12 +1,11 @@
 import { memo, useEffect } from 'react'
 import Icons from 'src/assets/svg'
-import Button from 'src/features/auth/components/Button'
-import showToast from 'src/utils/showToast'
-
-import { useAppSelector } from 'src/Store'
 import JsonView from 'src/components/jsonView/JsonView'
-import { API_STATUS } from 'src/utils/callApi'
+import Button from 'src/features/auth/components/Button'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
+import { useAppSelector } from 'src/Store'
+import { API_STATUS } from 'src/utils/callApi'
+import showToast from 'src/utils/showToast'
 
 const SubmissionPanel = ({
 	isMaximized,

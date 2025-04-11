@@ -1,10 +1,10 @@
 import { createSlice } from 'src/deps'
-import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
-import { ReducerErrorObject } from 'src/Types/global'
 import {
 	evaluateAnswerAction,
 	submitAnswerAction,
 } from 'src/features/queryPractice/panels/submissionPanel/submission.actions'
+import { ReducerErrorObject } from 'src/Types/global'
+import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
 
 export interface EvaluateResultResponse {
 	questionId: number

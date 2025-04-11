@@ -1,6 +1,7 @@
 import { createSlice } from 'src/deps'
 import { ReducerErrorObject } from 'src/Types/global'
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
+
 import { userSettingAction } from '../globalActions/user.action'
 
 export interface UserStateType {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export type useLocalStorageSetValue<T> = (
 	valueOrFn: T | ((prev: T) => T)

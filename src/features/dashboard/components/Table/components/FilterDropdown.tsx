@@ -1,8 +1,8 @@
-import { React, useRef } from 'src/deps'
-
 import Icons from 'src/assets/svg'
+import { React, useRef } from 'src/deps'
 import Button from 'src/features/auth/components/Button'
 import useOnClickOutside from 'src/hooks/useOnClickOutside'
+
 import { Filters } from './ActiveFilters'
 
 type FilterDropdownProps = {

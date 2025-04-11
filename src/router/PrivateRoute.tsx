@@ -1,8 +1,7 @@
-import { React, useEffect, Navigate, Outlet, useLocation } from 'src/deps'
-
+import { Navigate, Outlet, React, useEffect, useLocation } from 'src/deps'
+import { refreshActionDispatcher } from 'src/features/auth/auth.action'
 import MainLayout from 'src/MainLayout'
 import { useAppSelector } from 'src/Store'
-import { refreshActionDispatcher } from 'src/features/auth/auth.action'
 import { userSettingActionDispatcher } from 'src/Store/globalActions/user.action'
 
 const PrivateRoute: React.FC = () => {

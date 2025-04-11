@@ -1,12 +1,12 @@
 import { memo } from 'react'
 
-import { ReactComponent as SearchIcon } from './searchIcon.svg'
-import { ReactComponent as CloseIcon } from './closeIcon.svg'
 import { ReactComponent as AttemptedIcon } from './attemptedIcon.svg'
-import { ReactComponent as TodoIcon } from './todoIcon.svg'
-import { ReactComponent as TickIcon } from './tickIcon.svg'
+import { ReactComponent as CloseIcon } from './closeIcon.svg'
 import { ReactComponent as LogoutIcon } from './logoutIcon.svg'
 import { ReactComponent as ProfileIcon } from './profileIcon.svg'
+import { ReactComponent as SearchIcon } from './searchIcon.svg'
+import { ReactComponent as TickIcon } from './tickIcon.svg'
+import { ReactComponent as TodoIcon } from './todoIcon.svg'
 
 export const Search = memo(SearchIcon)
 export const Close = memo(CloseIcon)

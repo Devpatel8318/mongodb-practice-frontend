@@ -1,6 +1,7 @@
 import React from 'react'
-import { useLocalStorageSetValue } from 'src/hooks/useLocalStorage'
 import Icons from 'src/assets/svg'
+import { useLocalStorageSetValue } from 'src/hooks/useLocalStorage'
+
 import { Sort } from '../QuestionsListTable'
 
 const tableHeaderData = [

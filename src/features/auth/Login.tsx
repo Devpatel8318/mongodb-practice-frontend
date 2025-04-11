@@ -1,15 +1,15 @@
-import { React, useState, Link, useEffect } from 'src/deps'
-
-import { signInActionDispatcher } from './auth.action'
+import { Link, React, useEffect, useState } from 'src/deps'
 import { useAppSelector } from 'src/Store'
+import { API_STATUS } from 'src/utils/callApi'
 import { emailValidator } from 'src/utils/emailValidator'
 import { passwordValidator } from 'src/utils/passwordValidator'
+import showToast from 'src/utils/showToast'
+
+import { signInActionDispatcher } from './auth.action'
+import AuthCard from './components/AuthCard'
+import Button from './components/Button'
 import OAuthButton from './components/OAuthButton'
 import TextInput from './components/TextInput'
-import Button from './components/Button'
-import AuthCard from './components/AuthCard'
-import { API_STATUS } from 'src/utils/callApi'
-import showToast from 'src/utils/showToast'
 
 const Login = () => {
 	const [formData, setFormData] = useState({ email: '', password: '' })

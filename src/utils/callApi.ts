@@ -5,8 +5,8 @@ import {
 	CancelToken,
 	CancelTokenSource,
 } from 'src/deps'
-
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
+
 import axiosInstance from './axiosInstance'
 
 export type API_STATUS_TYPE = 'success' | 'pending' | 'rejected' | null

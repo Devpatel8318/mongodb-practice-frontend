@@ -1,7 +1,7 @@
 import { axios } from 'src/deps'
+import { logoutUserDispatcher } from 'src/Store/reducers/auth.reducer'
 
 import { BACKEND_URL } from './config'
-import { logoutUserDispatcher } from 'src/Store/reducers/auth.reducer'
 
 let isRefreshing = false
 let refreshQueue: (() => void)[] = []

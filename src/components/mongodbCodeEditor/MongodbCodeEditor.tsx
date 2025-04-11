@@ -1,12 +1,13 @@
-import { useEffect, useRef } from 'src/deps'
 import MonacoEditor, { loader, useMonaco } from '@monaco-editor/react'
 import * as monaco from 'monaco-editor'
+import { useEffect, useRef } from 'src/deps'
+
 import { mongodbCompletion } from './mongodbLanguageSupport/mongodbCompletion'
-import mongodbLanguage from './mongodbLanguageSupport/mongodbLanguage'
-import mongodbDocumentSemantic from './mongodbLanguageSupport/mongodbDocumentSemantic'
-import mongodbLanguageConfiguration from './mongodbLanguageSupport/mongodbLanguageConfiguration'
 import { mongodbCustomLightTheme } from './mongodbLanguageSupport/mongodbCustomTheme'
+import mongodbDocumentSemantic from './mongodbLanguageSupport/mongodbDocumentSemantic'
 import formatMongoDBQuery from './mongodbLanguageSupport/mongodbFormatter'
+import mongodbLanguage from './mongodbLanguageSupport/mongodbLanguage'
+import mongodbLanguageConfiguration from './mongodbLanguageSupport/mongodbLanguageConfiguration'
 
 loader.config({ monaco })
 

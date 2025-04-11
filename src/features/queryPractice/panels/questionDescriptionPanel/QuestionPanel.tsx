@@ -1,8 +1,9 @@
-import { useState, Dispatch, memo } from 'react'
+import { Dispatch, memo, useState } from 'react'
 import Icons from 'src/assets/svg'
-import { cn } from 'src/utils/cn'
-import QuestionDescription from './QuestionDescription'
 import { useAppSelector } from 'src/Store'
+import { cn } from 'src/utils/cn'
+
+import QuestionDescription from './QuestionDescription'
 
 type NavItem = 'description' | 'submissions' | 'solutions'
 

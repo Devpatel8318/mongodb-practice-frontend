@@ -1,4 +1,4 @@
-import { useEffect, RefObject } from 'src/deps'
+import { RefObject, useEffect } from 'src/deps'
 
 const useOnClickOutside = <T,>(
 	ref: RefObject<T | null>,

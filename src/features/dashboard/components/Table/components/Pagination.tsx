@@ -1,12 +1,12 @@
+import Icons from 'src/assets/svg'
 import { useEffect, useMemo, useRef, useState } from 'src/deps'
-
 import Button from 'src/features/auth/components/Button'
+import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import useOnClickOutside from 'src/hooks/useOnClickOutside'
 import { useAppSelector } from 'src/Store'
 import debounce from 'src/utils/debounce'
+
 import { getAllQuestionsActionDispatcher } from '../../../dashboard.action'
-import Icons from 'src/assets/svg'
-import useIsFirstRender from 'src/hooks/useIsFirstRender'
 
 const ItemsPerPageDropdown = ({
 	itemsPerPageOptions,

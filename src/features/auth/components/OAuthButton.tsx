@@ -1,5 +1,6 @@
-import { React } from 'src/deps'
 import { useGoogleLogin, useGoogleOneTapLogin } from '@react-oauth/google'
+import { React } from 'src/deps'
+
 import { oauthGoogleActionDispatcher } from '../auth.action'
 
 const OAuthButton: React.FC = () => {

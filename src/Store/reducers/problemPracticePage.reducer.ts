@@ -1,8 +1,9 @@
 import { createSlice } from 'src/deps'
-import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
-import { ReducerErrorObject } from 'src/Types/global'
 import { fetchQuestionDetailAction } from 'src/features/queryPractice/problemPracticePage.actions'
 import { appDispatcher } from 'src/Store'
+import { ReducerErrorObject } from 'src/Types/global'
+import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
+
 import { Question } from './dashboard.reducer'
 
 export interface QuestionDetail {

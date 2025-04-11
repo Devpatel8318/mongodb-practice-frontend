@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'src/deps'
+import { useEffect, useRef } from 'src/deps'
 
 const useIsFirstRender = () => {
 	const isFirstRender = useRef(true)

@@ -1,4 +1,5 @@
 import * as monaco from 'monaco-editor'
+
 import mongodbSnippets from './mongodbSnippets.json'
 
 interface Snippet {
