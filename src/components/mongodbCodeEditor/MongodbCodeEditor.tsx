@@ -66,7 +66,7 @@ const MongodbCodeEditor = ({
 	focusOnMount,
 	handleCursorPositionChange,
 	cursorPosition,
-	handleOptionCommandEnterClick,
+	// handleOptionCommandEnterClick,
 }: MongodbCodeEditorProps) => {
 	const monacoNew = useMonaco()
 	const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
@@ -174,14 +174,14 @@ const MongodbCodeEditor = ({
 			onQueryChange(editor.getValue())
 		}
 
-		editor.addCommand(
-			monaco.KeyMod.Alt | monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter,
-			() => {
-				if (handleOptionCommandEnterClick) {
-					handleOptionCommandEnterClick()
-				}
-			}
-		)
+		// editor.addCommand(
+		// 	monaco.KeyMod.Alt | monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter,
+		// 	() => {
+		// 		if (handleOptionCommandEnterClick) {
+		// 			handleOptionCommandEnterClick()
+		// 		}
+		// 	}
+		// )
 	}
 
 	return (

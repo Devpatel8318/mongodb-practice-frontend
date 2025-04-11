@@ -10,13 +10,13 @@ const CodeEditorPanel = ({
 	isCollapsed,
 	onToggle,
 	onMaximize,
-	handleSubmit,
+	// handleSubmit,
 }: {
 	isMaximized: boolean
 	isCollapsed?: boolean
 	onToggle: () => void
 	onMaximize: () => void
-	handleSubmit: () => void
+	// handleSubmit: () => void
 }) => {
 	const { code, setCode, cursorPosition, setCursorPosition } =
 		useContext(CodeContext)
@@ -82,7 +82,7 @@ const CodeEditorPanel = ({
 						setCursorPosition(newPosition)
 					}
 					cursorPosition={cursorPosition}
-					handleOptionCommandEnterClick={handleSubmit}
+					// handleOptionCommandEnterClick={handleSubmit}
 				/>
 			</div>
 		</div>

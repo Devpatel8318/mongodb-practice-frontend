@@ -53,7 +53,7 @@ const RenderMaximizedSection = ({
 				isMaximized={true}
 				onToggle={() => toggleSection('codeEditor')}
 				onMaximize={() => maximizeSection('codeEditor')}
-				handleSubmit={handleSubmit}
+				// handleSubmit={handleSubmit}
 			/>
 		)}
 		{maximizedSection === 'submission' && (
@@ -355,7 +355,6 @@ const ProblemPracticeContent: React.FC = () => {
 									}
 								>
 									<CodeEditorPanel
-										handleSubmit={handleSubmit}
 										isMaximized={false}
 										isCollapsed={
 											collapsedSections.codeEditor
@@ -366,6 +365,7 @@ const ProblemPracticeContent: React.FC = () => {
 										onMaximize={() =>
 											maximizeSection('codeEditor')
 										}
+										// handleSubmit={handleSubmit}
 									/>
 								</Panel>
 
