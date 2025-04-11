@@ -118,8 +118,9 @@ const QuestionPanel = ({
 			case 'submissions':
 				return <div>Submissions content goes here</div>
 
-			case 'solutions':
-				return <div>Solutions content goes here</div>
+			// not sure whether to add this or not
+			// case 'solutions':
+			// 	return <div>Solutions content goes here</div>
 
 			default:
 				return null

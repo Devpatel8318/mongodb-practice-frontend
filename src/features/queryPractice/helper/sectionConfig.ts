@@ -27,6 +27,7 @@ SECTION_CONFIGS.submission = {
 
 SECTION_CONFIGS.rightSection = {
 	minSize: 15,
+	defaultSize: 100 - (SECTION_CONFIGS.question.defaultSize || 0),
 }
 
 export { SECTION_CONFIGS, type SectionName }

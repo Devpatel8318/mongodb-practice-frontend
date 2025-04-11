@@ -16,6 +16,7 @@ interface MongodbCodeEditorProps {
 	focusOnMount?: boolean
 	handleCursorPositionChange: (position: monaco.Position) => void
 	cursorPosition: monaco.Position | -1
+	handleOptionCommandEnterClick?: () => void
 }
 
 const mongodbEditorOptions: monaco.editor.IStandaloneEditorConstructionOptions =
@@ -64,6 +65,7 @@ const MongodbCodeEditor = ({
 	focusOnMount,
 	handleCursorPositionChange,
 	cursorPosition,
+	handleOptionCommandEnterClick,
 }: MongodbCodeEditorProps) => {
 	const monacoNew = useMonaco()
 	const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
@@ -170,6 +172,15 @@ const MongodbCodeEditor = ({
 		if (onQueryChange) {
 			onQueryChange(editor.getValue())
 		}
+
+		editor.addCommand(
+			monaco.KeyMod.Alt | monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter,
+			() => {
+				if (handleOptionCommandEnterClick) {
+					handleOptionCommandEnterClick()
+				}
+			}
+		)
 	}
 
 	return (

@@ -1,4 +1,10 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react'
+import React, {
+	useRef,
+	useState,
+	useCallback,
+	useEffect,
+	useContext,
+} from 'react'
 import {
 	ImperativePanelHandle,
 	Panel,
@@ -19,15 +25,19 @@ import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import { API_STATUS } from 'src/utils/callApi'
 import getErrorMessageAndField from 'src/utils/getErrorMessageAndField'
 import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/problemPracticePage.reducer'
+import { CodeContext } from 'src/contexts/codeContext/CodeContext'
+import { submitAnswerActionDispatcher } from './panels/submissionPanel/submission.actions'
 
 const RenderMaximizedSection = ({
 	maximizedSection,
 	toggleSection,
 	maximizeSection,
+	handleSubmit,
 }: {
 	maximizedSection: SectionName
 	toggleSection: (section: SectionName) => void
 	maximizeSection: (section: SectionName) => void
+	handleSubmit: () => void
 }) => (
 	<div className="size-full bg-white">
 		{maximizedSection === 'question' && (
@@ -42,6 +52,7 @@ const RenderMaximizedSection = ({
 				isMaximized={true}
 				onToggle={() => toggleSection('codeEditor')}
 				onMaximize={() => maximizeSection('codeEditor')}
+				handleSubmit={handleSubmit}
 			/>
 		)}
 		{maximizedSection === 'submission' && (
@@ -49,6 +60,7 @@ const RenderMaximizedSection = ({
 				isMaximized={true}
 				onToggle={() => toggleSection('submission')}
 				onMaximize={() => maximizeSection('submission')}
+				handleSubmit={handleSubmit}
 			/>
 		)}
 	</div>
@@ -171,6 +183,68 @@ const ProblemPracticePage: React.FC = () => {
 		})
 	}
 
+	const { code } = useContext(CodeContext)
+	const { socketId } = useAppSelector((store) => store.socket)
+
+	const validate = (): string | false => {
+		if (!code) return 'code editor can not be empty'
+
+		return false
+	}
+
+	const handleSubmit = () => {
+		const validatorResponse = validate()
+
+		if (validatorResponse) return showToast('error', validatorResponse)
+
+		if (!selectedQuestionId) {
+			console.error('selectedQuestionId not found', selectedQuestionId)
+			showToast('error', 'Something went wrong')
+			return navigate('/')
+		}
+
+		submitAnswerActionDispatcher({
+			questionId: selectedQuestionId,
+			answer: code,
+			socketId,
+		})
+	}
+
+	// Add keyboard shortcut support
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
+			const isCommand = isMac ? event.metaKey : event.ctrlKey
+
+			if (isCommand && event.key === '[') {
+				event.preventDefault()
+				if (panelRefs.question.current?.isCollapsed()) {
+					panelRefs.question.current?.resize(
+						SECTION_CONFIGS['question'].defaultSize ?? 0
+					)
+				} else {
+					panelRefs.question.current?.collapse()
+				}
+			} else if (isCommand && event.key === ']') {
+				event.preventDefault()
+				if (panelRefs.rightSection.current?.isCollapsed()) {
+					panelRefs.rightSection.current?.resize(
+						SECTION_CONFIGS['rightSection'].defaultSize ?? 0
+					)
+				} else {
+					panelRefs.rightSection.current?.collapse()
+				}
+			}
+		}
+
+		window.addEventListener('keydown', handleKeyDown)
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
 	useEffect(() => {
 		if (questionId) {
 			// when page is refreshed, redux will be empty so, if params contains questionId then set this to redux
@@ -205,6 +279,7 @@ const ProblemPracticePage: React.FC = () => {
 					maximizedSection={maximizedSection}
 					toggleSection={toggleSection}
 					maximizeSection={maximizeSection}
+					handleSubmit={handleSubmit}
 				/>
 			) : (
 				<div className="flex h-full bg-gray-100">
@@ -281,6 +356,7 @@ const ProblemPracticePage: React.FC = () => {
 									}
 								>
 									<CodeEditorPanel
+										handleSubmit={handleSubmit}
 										isMaximized={false}
 										isCollapsed={
 											collapsedSections.codeEditor
@@ -322,6 +398,7 @@ const ProblemPracticePage: React.FC = () => {
 									}
 								>
 									<SubmissionPanel
+										handleSubmit={handleSubmit}
 										isMaximized={false}
 										isCollapsed={
 											collapsedSections.submission
