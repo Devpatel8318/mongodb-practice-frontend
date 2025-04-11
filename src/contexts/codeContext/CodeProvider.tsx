@@ -2,10 +2,9 @@ import { useState } from 'react'
 
 import { CodeContext, CustomCursorPosition } from './CodeContext'
 
-// TODO: change to "// Start coding here..."
-const defaultValue = 'db.'
+export const codeEditorDefaultValue = '// Start coding here...'
 export const CodeProvider = ({ children }: { children: React.ReactNode }) => {
-	const [code, setCode] = useState(defaultValue)
+	const [code, setCode] = useState(codeEditorDefaultValue)
 	const [cursorPosition, setCursorPosition] =
 		useState<CustomCursorPosition>(-1)
 

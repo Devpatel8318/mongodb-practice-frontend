@@ -13,7 +13,7 @@ loader.config({ monaco })
 
 interface MongodbCodeEditorProps {
 	onQueryChange: (query: string) => void
-	initialValue: string
+	value: string
 	focusOnMount?: boolean
 	handleCursorPositionChange: (position: monaco.Position) => void
 	cursorPosition: monaco.Position | -1
@@ -62,7 +62,7 @@ const mongodbEditorOptions: monaco.editor.IStandaloneEditorConstructionOptions =
 
 const MongodbCodeEditor = ({
 	onQueryChange,
-	initialValue,
+	value,
 	focusOnMount,
 	handleCursorPositionChange,
 	cursorPosition,
@@ -188,7 +188,7 @@ const MongodbCodeEditor = ({
 		<MonacoEditor
 			height="1500px"
 			defaultLanguage="mongodb"
-			defaultValue={initialValue}
+			value={value}
 			onChange={handleEditorChange}
 			onMount={handleEditorMount}
 			theme="mongodbCustomTheme"
