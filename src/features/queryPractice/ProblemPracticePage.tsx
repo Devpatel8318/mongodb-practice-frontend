@@ -109,11 +109,9 @@ const RightCollapsedBar = ({
 	</div>
 )
 
-//**************************************************** Export
-
 type CollapsedSections = Record<SectionName, boolean>
 
-const ProblemPracticePage: React.FC = () => {
+const ProblemPracticeContent: React.FC = () => {
 	const [maximizedSection, setMaximizedSection] =
 		useState<SectionName | null>(null)
 	const [collapsedSections, setCollapsedSections] =
@@ -274,7 +272,7 @@ const ProblemPracticePage: React.FC = () => {
 	}, [status, navigate, isFirstRender, problemPracticePageError])
 
 	return (
-		<CodeProvider>
+		<>
 			{maximizedSection ? (
 				<RenderMaximizedSection
 					maximizedSection={maximizedSection}
@@ -421,6 +419,14 @@ const ProblemPracticePage: React.FC = () => {
 					</PanelGroup>
 				</div>
 			)}
+		</>
+	)
+}
+
+const ProblemPracticePage = () => {
+	return (
+		<CodeProvider>
+			<ProblemPracticeContent />
 		</CodeProvider>
 	)
 }
