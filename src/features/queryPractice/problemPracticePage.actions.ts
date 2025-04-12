@@ -20,7 +20,24 @@ export const fetchQuestionDetailAction = createAsyncThunk<
 		}
 	}
 )
-
 export const fetchQuestionDetailActionDispatcher = (questionId: number) => {
 	appDispatcher(fetchQuestionDetailAction(questionId))
+}
+
+export const toggleBookmarkAction = createAsyncThunk<
+	SuccessResponse<{ questionId: number; isBookmarked: boolean }>,
+	number,
+	{
+		rejectValue: ErrorResponse
+	}
+>('problemPracticePage/bookmark', async (questionId, { rejectWithValue }) => {
+	try {
+		return await callApi(`/question/bookmark/${questionId}`, 'GET')
+	} catch (e) {
+		return rejectWithValue(e as ErrorResponse)
+	}
+})
+
+export const toggleBookmarkActionDispatcher = (questionId: number) => {
+	appDispatcher(toggleBookmarkAction(questionId))
 }

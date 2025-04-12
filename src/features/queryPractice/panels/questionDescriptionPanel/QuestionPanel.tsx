@@ -1,8 +1,8 @@
 import { Dispatch, memo, useState } from 'react'
-import Icons from 'src/assets/svg'
 import { useAppSelector } from 'src/Store'
 import { cn } from 'src/utils/cn'
 
+import LayoutButtons from './LayoutButtons'
 import QuestionDescription from './QuestionDescription'
 
 type NavItem = 'description' | 'submissions' | 'solutions'
@@ -58,34 +58,6 @@ const NavButtons = ({ navItem, setNavItem }: NavButtonsProps) => {
 		</div>
 	)
 }
-
-const LayoutButtons = ({
-	onToggle,
-	isMaximized,
-	onMaximize,
-}: {
-	isMaximized: boolean
-	onToggle: () => void
-	onMaximize: () => void
-}) => (
-	<div className="flex gap-2">
-		{!isMaximized && (
-			<button onClick={onToggle} aria-label="Collapse">
-				<Icons.Images24.LeftArrowPagination />
-			</button>
-		)}
-		<button
-			onClick={onMaximize}
-			aria-label={isMaximized ? 'Minimize' : 'Maximize'}
-		>
-			{isMaximized ? (
-				<Icons.Images24.Minimize />
-			) : (
-				<Icons.Images24.Maximize />
-			)}
-		</button>
-	</div>
-)
 
 const QuestionPanel = ({
 	isMaximized,

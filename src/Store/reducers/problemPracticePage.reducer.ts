@@ -1,5 +1,8 @@
 import { createSlice } from 'src/deps'
-import { fetchQuestionDetailAction } from 'src/features/queryPractice/problemPracticePage.actions'
+import {
+	fetchQuestionDetailAction,
+	toggleBookmarkAction,
+} from 'src/features/queryPractice/problemPracticePage.actions'
 import { appDispatcher } from 'src/Store'
 import { ReducerErrorObject } from 'src/Types/global'
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
@@ -14,6 +17,7 @@ export interface QuestionDetail {
 	status: Question['status']
 	difficultyLabel: Question['difficultyLabel']
 	dataBaseSchema: { title: string; schema: object }[]
+	isBookmarked: boolean
 }
 
 export interface ProblemPracticePageStateType {
@@ -67,6 +71,36 @@ const problemPracticePageSlice = createSlice({
 					error: action.payload,
 					loading: false,
 					data: null,
+				})
+			})
+			.addCase(toggleBookmarkAction.pending, (state) => {
+				Object.assign(state, {
+					// status: API_STATUS.PENDING,
+					// loading: true,
+					// error: null,
+					// data: null,
+				})
+			})
+			.addCase(toggleBookmarkAction.fulfilled, (state, { payload }) => {
+				Object.assign(state, {
+					// status: API_STATUS.SUCCESS,
+					// loading: false,
+					// error: null,
+					...(state.selectedQuestionId ===
+						payload.data?.questionId && {
+						data: {
+							...state.data,
+							isBookmarked: payload.data?.isBookmarked,
+						},
+					}),
+				})
+			})
+			.addCase(toggleBookmarkAction.rejected, (state) => {
+				Object.assign(state, {
+					// status: API_STATUS.REJECTED,
+					// error: action.payload,
+					// loading: false,
+					// data: null,
 				})
 			})
 	},

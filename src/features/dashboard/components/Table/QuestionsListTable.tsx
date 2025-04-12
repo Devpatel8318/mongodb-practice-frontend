@@ -38,6 +38,7 @@ const QuestionsListTable = () => {
 
 	const [sort, setSort] = useLocalStorage<Sort>('questions-sort', {})
 	const [search, setSearch] = useState('')
+	const [showOnlyBookmarked, setShowOnlyBookmarked] = useState(false)
 	const [openFilter, setOpenFilter] = useState<string | null>(null)
 
 	const isFirstRender = useIsFirstRender()
@@ -70,13 +71,22 @@ const QuestionsListTable = () => {
 
 	const debouncedFetchQuestions = useMemo(
 		() =>
-			debounce(400, ({ filterQuery, sortQuery, searchQuery }) => {
-				getAllQuestionsActionDispatcher({
+			debounce(
+				400,
+				({
 					filterQuery,
 					sortQuery,
 					searchQuery,
-				})
-			}),
+					showOnlyBookmarked,
+				}) => {
+					getAllQuestionsActionDispatcher({
+						filterQuery,
+						sortQuery,
+						searchQuery,
+						showOnlyBookmarked,
+					})
+				}
+			),
 		[]
 	)
 
@@ -87,7 +97,12 @@ const QuestionsListTable = () => {
 		const sortQuery = formatSortQuery(sort)
 		const searchQuery = search ? `search=${search}` : ''
 
-		debouncedFetchQuestions({ filterQuery, sortQuery, searchQuery })
+		debouncedFetchQuestions({
+			filterQuery,
+			sortQuery,
+			searchQuery,
+			showOnlyBookmarked,
+		})
 
 		return () => {
 			debouncedFetchQuestions.cancel()
@@ -97,7 +112,7 @@ const QuestionsListTable = () => {
 	useEffect(
 		fetchQuestions,
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[filters, sort, search]
+		[filters, sort, search, showOnlyBookmarked]
 	)
 
 	const { loading, data } = useAppSelector((store) => store.dashboard)
@@ -124,6 +139,36 @@ const QuestionsListTable = () => {
 						setOpenFilter={setOpenFilter}
 					/>
 					<Searchbar search={search} setSearch={setSearch} />
+					<div className="flex items-center gap-x-3">
+						<label className="text-sm text-gray-500">All</label>
+
+						<label className="relative inline-block h-6 w-11 cursor-pointer">
+							<input
+								type="checkbox"
+								checked={showOnlyBookmarked}
+								onChange={(e) =>
+									setShowOnlyBookmarked(e.target.checked)
+								}
+								className="sr-only"
+							/>
+							<span
+								className={`absolute inset-0 rounded-full transition-colors duration-200 ease-in-out ${
+									showOnlyBookmarked
+										? 'bg-blue-600'
+										: 'bg-gray-200'
+								}`}
+							></span>
+							<span
+								className={`absolute start-0.5 top-1/2 size-5 -translate-y-1/2 rounded-full bg-white transition-transform duration-200 ease-in-out ${
+									showOnlyBookmarked ? 'translate-x-full' : ''
+								}`}
+							></span>
+						</label>
+
+						<label className="text-sm text-gray-500">
+							Bookmarked
+						</label>
+					</div>
 				</div>
 				<ActiveFilters
 					filters={filters}

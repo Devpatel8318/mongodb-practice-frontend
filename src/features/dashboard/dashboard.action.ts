@@ -12,6 +12,7 @@ export const getAllQuestionsAction = createAsyncThunk<
 		filterQuery?: string
 		sortQuery?: string
 		searchQuery?: string
+		showOnlyBookmarked?: boolean
 	},
 	{
 		rejectValue: ErrorResponse
@@ -23,6 +24,7 @@ export const getAllQuestionsAction = createAsyncThunk<
 		filterQuery = '',
 		sortQuery = '',
 		searchQuery = '',
+		showOnlyBookmarked = false,
 	} = payload
 
 	let url = `/question/list?page=${page}&limit=${limit}`
@@ -36,6 +38,10 @@ export const getAllQuestionsAction = createAsyncThunk<
 
 	if (searchQuery) {
 		url += `&${searchQuery}`
+	}
+
+	if (showOnlyBookmarked) {
+		url += `&onlyBookmarked=true`
 	}
 
 	try {
@@ -56,12 +62,14 @@ export const getAllQuestionsActionDispatcher = ({
 	filterQuery,
 	sortQuery,
 	searchQuery,
+	showOnlyBookmarked,
 }: {
 	page?: number
 	limit?: number
 	filterQuery?: string
 	sortQuery?: string
 	searchQuery?: string
+	showOnlyBookmarked?: boolean
 }) => {
 	appDispatcher(
 		getAllQuestionsAction({
@@ -70,6 +78,7 @@ export const getAllQuestionsActionDispatcher = ({
 			filterQuery,
 			sortQuery,
 			searchQuery,
+			showOnlyBookmarked,
 		})
 	)
 }

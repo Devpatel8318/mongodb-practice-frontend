@@ -20,7 +20,7 @@ export default defineConfig({
 
 // TODO: add "yarn type-check" in pre-commit hook
 //TODO: add key binding for monaco editor submit
-
+// TODO: socket is called multiple times, need to check
 
 */
 
