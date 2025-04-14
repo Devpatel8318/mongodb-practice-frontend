@@ -1,5 +1,6 @@
 import Icons from 'src/assets/svg'
 import JsonView from 'src/components/jsonView/JsonView'
+import Loader from 'src/components/Loader/Loader'
 import { useAppSelector } from 'src/Store'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 
@@ -46,6 +47,8 @@ const QuestionDescription = () => {
 		dataBaseSchema,
 	} = useAppSelector((store) => store.problemPracticePage.data) || {}
 
+	const { loading } = useAppSelector((state) => state.problemPracticePage)
+
 	const Schema = () => {
 		return (
 			<div className="mb-8">
@@ -62,6 +65,10 @@ const QuestionDescription = () => {
 				</div>
 			</div>
 		)
+	}
+
+	if (loading) {
+		return <Loader />
 	}
 
 	return (
