@@ -45,9 +45,9 @@ const QuestionDescription = () => {
 		difficulty,
 		difficultyLabel,
 		dataBaseSchema,
-	} = useAppSelector((store) => store.problemPracticePage.data) || {}
+	} = useAppSelector((store) => store.questionPanel.data) || {}
 
-	const { loading } = useAppSelector((state) => state.problemPracticePage)
+	const { loading } = useAppSelector((state) => state.questionPanel)
 
 	const Schema = () => {
 		return (

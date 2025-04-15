@@ -14,14 +14,14 @@ export interface EvaluateResultResponse {
 	pending?: boolean
 }
 
-export interface ProblemPracticePageStateType {
+export interface SubmissionStateType {
 	status: API_STATUS_TYPE
 	error: null | ReducerErrorObject
 	data: null | EvaluateResultResponse
 	submissionFlowLoading: boolean
 }
 
-export const initialState: ProblemPracticePageStateType = {
+export const initialState: SubmissionStateType = {
 	status: null,
 	error: null,
 	data: null,

@@ -7,7 +7,7 @@ export type useLocalStorageSetValue<T> = (
 const useLocalStorage = <T,>(
 	key: string,
 	defaultValue: T
-): [T, useLocalStorageSetValue<T>] => {
+): [T, useLocalStorageSetValue<T>, () => void] => {
 	const [localStorageValue, setLocalStorageValue] = useState<T>(() => {
 		try {
 			const value = localStorage.getItem(key)
@@ -34,7 +34,15 @@ const useLocalStorage = <T,>(
 		)
 	}
 
-	return [localStorageValue, updateLocalStorage]
+	const removeLocalStorage = () => {
+		try {
+			localStorage.removeItem(key)
+		} catch (error) {
+			console.error(`Error removing localStorage key "${key}":`, error)
+		}
+	}
+
+	return [localStorageValue, updateLocalStorage, removeLocalStorage]
 }
 
 export default useLocalStorage

@@ -1,6 +1,6 @@
 import React, {
 	useCallback,
-	useContext,
+	// useContext,
 	useEffect,
 	useRef,
 	useState,
@@ -11,12 +11,10 @@ import {
 	PanelGroup,
 	PanelResizeHandle,
 } from 'react-resizable-panels'
-import { useNavigate, useParams } from 'react-router-dom'
-import { CodeContext } from 'src/contexts/codeContext/CodeContext'
+import { useNavigate } from 'react-router-dom'
 import { CodeProvider } from 'src/contexts/codeContext/CodeProvider'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import { useAppSelector } from 'src/Store'
-import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/problemPracticePage.reducer'
 import { API_STATUS } from 'src/utils/callApi'
 import { cn } from 'src/utils/cn'
 import getErrorMessageAndField from 'src/utils/getErrorMessageAndField'
@@ -24,21 +22,17 @@ import showToast from 'src/utils/showToast'
 
 import { SECTION_CONFIGS, SectionName } from './helper/sectionConfig'
 import CodeEditorPanel from './panels/codeEditorPanel/CodeEditorPanel'
-import QuestionPanel from './panels/questionDescriptionPanel/QuestionPanel'
-import { submitAnswerActionDispatcher } from './panels/submissionPanel/submission.actions'
+import QuestionPanel from './panels/questionPanel/QuestionPanel'
 import SubmissionPanel from './panels/submissionPanel/SubmissionPanel'
-import { fetchQuestionDetailActionDispatcher } from './problemPracticePage.actions'
 
 const RenderMaximizedSection = ({
 	maximizedSection,
 	toggleSection,
 	maximizeSection,
-	handleSubmit,
 }: {
 	maximizedSection: SectionName
 	toggleSection: (section: SectionName) => void
 	maximizeSection: (section: SectionName) => void
-	handleSubmit: () => void
 }) => (
 	<div className="size-full bg-white">
 		{maximizedSection === 'question' && (
@@ -61,7 +55,6 @@ const RenderMaximizedSection = ({
 				isMaximized={true}
 				onToggle={() => toggleSection('submission')}
 				onMaximize={() => maximizeSection('submission')}
-				handleSubmit={handleSubmit}
 			/>
 		)}
 	</div>
@@ -123,9 +116,7 @@ const ProblemPracticeContent: React.FC = () => {
 		})
 
 	const isFirstRender = useIsFirstRender()
-	const params = useParams()
 	const navigate = useNavigate()
-	const { questionId } = params
 
 	// Create refs for all panels
 	const panelRefs = {
@@ -135,11 +126,9 @@ const ProblemPracticeContent: React.FC = () => {
 		rightSection: useRef<ImperativePanelHandle>(null),
 	}
 
-	const {
-		error: problemPracticePageError,
-		status,
-		selectedQuestionId,
-	} = useAppSelector((store) => store.problemPracticePage)
+	const { error: questionPanelError, status } = useAppSelector(
+		(store) => store.questionPanel
+	)
 
 	const toggleSection = useCallback((section: SectionName) => {
 		const panelRef = panelRefs[section].current
@@ -182,33 +171,6 @@ const ProblemPracticeContent: React.FC = () => {
 		})
 	}
 
-	const { code } = useContext(CodeContext)
-	const { socketId } = useAppSelector((store) => store.socket)
-
-	const validate = (): string | false => {
-		if (!code) return 'code editor can not be empty'
-
-		return false
-	}
-
-	const handleSubmit = () => {
-		const validatorResponse = validate()
-
-		if (validatorResponse) return showToast('error', validatorResponse)
-
-		if (!selectedQuestionId) {
-			console.error('selectedQuestionId not found', selectedQuestionId)
-			showToast('error', 'Something went wrong')
-			return navigate('/')
-		}
-
-		submitAnswerActionDispatcher({
-			questionId: selectedQuestionId,
-			answer: code,
-			socketId,
-		})
-	}
-
 	// Add keyboard shortcut support
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
@@ -245,31 +207,18 @@ const ProblemPracticeContent: React.FC = () => {
 	}, [])
 
 	useEffect(() => {
-		if (questionId) {
-			// when page is refreshed, redux will be empty so, if params contains questionId then set this to redux
-			if (!selectedQuestionId) {
-				setSelectedQuestionIdDispatcher(+questionId)
-			}
-			fetchQuestionDetailActionDispatcher(+questionId)
-		} else {
-			// something went wrong
-			navigate('/')
-		}
-	}, [questionId, navigate, selectedQuestionId])
-
-	useEffect(() => {
 		if (
 			isFirstRender ||
-			(status !== API_STATUS.REJECTED && !problemPracticePageError)
+			(status !== API_STATUS.REJECTED && !questionPanelError)
 		) {
 			return
 		}
 
-		const { message } = getErrorMessageAndField(problemPracticePageError)
+		const { message } = getErrorMessageAndField(questionPanelError)
 
 		showToast('error', message)
 		navigate('/')
-	}, [status, navigate, isFirstRender, problemPracticePageError])
+	}, [status, navigate, isFirstRender, questionPanelError])
 
 	return (
 		<>
@@ -278,7 +227,7 @@ const ProblemPracticeContent: React.FC = () => {
 					maximizedSection={maximizedSection}
 					toggleSection={toggleSection}
 					maximizeSection={maximizeSection}
-					handleSubmit={handleSubmit}
+					// handleSubmit={handleSubmit}
 				/>
 			) : (
 				<div className="flex h-full bg-gray-100">
@@ -397,7 +346,6 @@ const ProblemPracticeContent: React.FC = () => {
 									}
 								>
 									<SubmissionPanel
-										handleSubmit={handleSubmit}
 										isMaximized={false}
 										isCollapsed={
 											collapsedSections.submission

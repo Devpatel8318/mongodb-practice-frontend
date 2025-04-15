@@ -1,8 +1,9 @@
 import { createSlice } from 'src/deps'
 import {
 	fetchQuestionDetailAction,
+	fetchSubmissionsAction,
 	toggleBookmarkAction,
-} from 'src/features/queryPractice/problemPracticePage.actions'
+} from 'src/features/queryPractice/panels/questionPanel/actions/questionPanel.actions'
 import { appDispatcher } from 'src/Store'
 import { ReducerErrorObject } from 'src/Types/global'
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
@@ -20,7 +21,7 @@ export interface QuestionDetail {
 	isBookmarked: boolean
 }
 
-export interface ProblemPracticePageStateType {
+export interface QuestionPanelStateType {
 	status: API_STATUS_TYPE
 	loading: boolean
 	error: null | ReducerErrorObject
@@ -28,7 +29,7 @@ export interface ProblemPracticePageStateType {
 	selectedQuestionId: null | number
 }
 
-export const initialState: ProblemPracticePageStateType = {
+export const questionPanelInitialState: QuestionPanelStateType = {
 	status: null,
 	loading: false,
 	error: null,
@@ -36,9 +37,9 @@ export const initialState: ProblemPracticePageStateType = {
 	selectedQuestionId: null,
 }
 
-const problemPracticePageSlice = createSlice({
-	name: 'problemPracticePage',
-	initialState,
+const questionPanelSlice = createSlice({
+	name: 'questionPanel',
+	initialState: questionPanelInitialState,
 	reducers: {
 		setSelectedQuestionId: (state, { payload }) => {
 			state.selectedQuestionId = payload
@@ -106,10 +107,70 @@ const problemPracticePageSlice = createSlice({
 	},
 })
 
-const { setSelectedQuestionId } = problemPracticePageSlice.actions
+const { setSelectedQuestionId } = questionPanelSlice.actions
 
 export const setSelectedQuestionIdDispatcher = (questionId: number) => {
 	appDispatcher(setSelectedQuestionId(questionId))
 }
 
-export default problemPracticePageSlice.reducer
+export const questionPanelReducer = questionPanelSlice.reducer
+
+// *********************** //
+
+export interface Submission {
+	submissionId: string
+	userId: number
+	questionId: number
+	query: string
+	status: 'CORRECT' | 'INCORRECT' | 'PENDING'
+	createdAt: number
+}
+
+export interface SubmissionsStateType {
+	status: API_STATUS_TYPE
+	loading: boolean
+	error: null | ReducerErrorObject
+	data: null | { questionId: number; list: Submission[] }
+}
+
+export const submissionsInitialState: SubmissionsStateType = {
+	status: null,
+	loading: false,
+	error: null,
+	data: null,
+}
+
+const submissionsSlice = createSlice({
+	name: 'submissions',
+	initialState: submissionsInitialState,
+	reducers: {},
+	extraReducers: (builder) => {
+		builder
+			.addCase(fetchSubmissionsAction.pending, (state) => {
+				Object.assign(state, {
+					status: API_STATUS.PENDING,
+					loading: true,
+					error: null,
+					data: null,
+				})
+			})
+			.addCase(fetchSubmissionsAction.fulfilled, (state, { payload }) => {
+				Object.assign(state, {
+					status: API_STATUS.SUCCESS,
+					loading: false,
+					error: null,
+					data: payload.data,
+				})
+			})
+			.addCase(fetchSubmissionsAction.rejected, (state, action) => {
+				Object.assign(state, {
+					status: API_STATUS.REJECTED,
+					error: action.payload,
+					loading: false,
+					data: null,
+				})
+			})
+	},
+})
+
+export const submissionsReducer = submissionsSlice.reducer

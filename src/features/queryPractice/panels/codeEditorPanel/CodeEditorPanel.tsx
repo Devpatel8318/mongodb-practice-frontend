@@ -2,6 +2,7 @@
 import { memo, useContext } from 'react'
 import Icons from 'src/assets/svg'
 import MongodbCodeEditor from 'src/components/mongodbCodeEditor/MongodbCodeEditor'
+import Timer from 'src/components/Timer/Timer'
 import { CodeContext } from 'src/contexts/codeContext/CodeContext'
 import { codeEditorDefaultValue } from 'src/contexts/codeContext/CodeProvider'
 
@@ -10,13 +11,11 @@ const CodeEditorPanel = ({
 	isCollapsed,
 	onToggle,
 	onMaximize,
-	// handleSubmit,
 }: {
 	isMaximized: boolean
 	isCollapsed?: boolean
 	onToggle: () => void
 	onMaximize: () => void
-	// handleSubmit: () => void
 }) => {
 	const { code, setCode, cursorPosition, setCursorPosition } =
 		useContext(CodeContext)
@@ -32,6 +31,7 @@ const CodeEditorPanel = ({
 	const Header = () => (
 		<div className="flex items-center justify-between bg-gray-50 p-2">
 			<div className="text-sm">Code Editor</div>
+			<Timer />
 			<div className="flex gap-2">
 				<button onClick={() => setCode(codeEditorDefaultValue)}>
 					<svg

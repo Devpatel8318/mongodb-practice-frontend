@@ -16,7 +16,7 @@ export const submitAnswerAction = createAsyncThunk<
 	{
 		rejectValue: ErrorResponse
 	}
->('problemPracticePage/submit', async (payload, { rejectWithValue }) => {
+>('questionPanel/submit', async (payload, { rejectWithValue }) => {
 	const { questionId, answer, socketId } = payload
 	try {
 		return await callApi(`/answer/submit/${questionId}`, 'POST', {
@@ -47,7 +47,7 @@ export const evaluateAnswerAction = createAsyncThunk<
 	{
 		rejectValue: ErrorResponse
 	}
->('problemPracticePage/evaluate', async (payload, { rejectWithValue }) => {
+>('questionPanel/evaluate', async (payload, { rejectWithValue }) => {
 	const { questionId, question, answer, submissionId } = payload
 	try {
 		return await callApi(`/answer/evaluate/${questionId}`, 'POST', {

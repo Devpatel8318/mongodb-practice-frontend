@@ -1,24 +1,26 @@
-import { memo, useEffect } from 'react'
+import { memo, useContext, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Icons from 'src/assets/svg'
 import JsonView from 'src/components/jsonView/JsonView'
+import { CodeContext } from 'src/contexts/codeContext/CodeContext'
 import Button from 'src/features/auth/components/Button'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import { useAppSelector } from 'src/Store'
 import { API_STATUS } from 'src/utils/callApi'
 import showToast from 'src/utils/showToast'
 
+import { submitAnswerActionDispatcher } from './submission.actions'
+
 const SubmissionPanel = ({
 	isMaximized,
 	isCollapsed,
 	onToggle,
 	onMaximize,
-	handleSubmit,
 }: {
 	isMaximized: boolean
 	isCollapsed?: boolean
 	onToggle: () => void
 	onMaximize: () => void
-	handleSubmit: () => void
 }) => {
 	const isFirstRender = useIsFirstRender()
 
@@ -30,8 +32,36 @@ const SubmissionPanel = ({
 	} = useAppSelector((store) => store.submission)
 
 	const { selectedQuestionId } = useAppSelector(
-		(store) => store.problemPracticePage
+		(store) => store.questionPanel
 	)
+
+	const navigate = useNavigate()
+	const { code } = useContext(CodeContext)
+	const { socketId } = useAppSelector((store) => store.socket)
+
+	const validate = (): string | false => {
+		if (!code) return 'code editor can not be empty'
+
+		return false
+	}
+
+	const handleSubmit = () => {
+		const validatorResponse = validate()
+
+		if (validatorResponse) return showToast('error', validatorResponse)
+
+		if (!selectedQuestionId) {
+			console.error('selectedQuestionId not found', selectedQuestionId)
+			showToast('error', 'Something went wrong')
+			return navigate('/')
+		}
+
+		submitAnswerActionDispatcher({
+			questionId: selectedQuestionId,
+			answer: code,
+			socketId,
+		})
+	}
 
 	const Header = () => (
 		<div className="flex items-center justify-between bg-gray-50 p-2">

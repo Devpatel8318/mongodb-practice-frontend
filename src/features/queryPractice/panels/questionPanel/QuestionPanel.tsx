@@ -1,6 +1,10 @@
-import { Dispatch, memo, useState } from 'react'
+import { Dispatch, memo, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useAppSelector } from 'src/Store'
+import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/questionPanel.reducer'
 import { cn } from 'src/utils/cn'
 
+import { fetchQuestionDetailActionDispatcher } from './actions/questionPanel.actions'
 import LayoutButtons from './LayoutButtons'
 import QuestionDescription from './QuestionDescription'
 import Submissions from './Submissions'
@@ -70,6 +74,10 @@ const QuestionPanel = ({
 }) => {
 	const [navItem, setNavItem] = useState<NavItem>('description')
 
+	const params = useParams()
+	const navigate = useNavigate()
+	const { questionId } = params
+
 	const Header = () => (
 		<div className="absolute inset-x-0 top-0 z-10 flex h-10 items-center justify-between bg-gray-50 p-2">
 			<NavButtons navItem={navItem} setNavItem={setNavItem} />
@@ -80,6 +88,23 @@ const QuestionPanel = ({
 			/>
 		</div>
 	)
+
+	const { selectedQuestionId } = useAppSelector(
+		(store) => store.questionPanel
+	)
+
+	useEffect(() => {
+		if (questionId) {
+			// when page is refreshed, redux will be empty so, if params contains questionId then set this to redux
+			if (!selectedQuestionId) {
+				setSelectedQuestionIdDispatcher(+questionId)
+			}
+			fetchQuestionDetailActionDispatcher(+questionId)
+		} else {
+			// something went wrong
+			navigate('/')
+		}
+	}, [questionId, navigate, selectedQuestionId])
 
 	const renderContent = () => {
 		switch (navItem) {

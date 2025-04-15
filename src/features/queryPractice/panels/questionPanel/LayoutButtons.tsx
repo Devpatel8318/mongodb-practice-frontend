@@ -1,7 +1,7 @@
 import Icons from 'src/assets/svg'
 import { useAppSelector } from 'src/Store'
 
-import { toggleBookmarkActionDispatcher } from '../../problemPracticePage.actions'
+import { toggleBookmarkActionDispatcher } from './actions/questionPanel.actions'
 
 const LayoutButtons = ({
 	onToggle,
@@ -12,7 +12,7 @@ const LayoutButtons = ({
 	onToggle: () => void
 	onMaximize: () => void
 }) => {
-	const { data } = useAppSelector((state) => state.problemPracticePage)
+	const { data } = useAppSelector((state) => state.questionPanel)
 
 	const { isBookmarked, questionId } = data || {}
 
