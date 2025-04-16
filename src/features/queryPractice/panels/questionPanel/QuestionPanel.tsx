@@ -9,7 +9,7 @@ import LayoutButtons from './LayoutButtons'
 import QuestionDescription from './QuestionDescription'
 import Submissions from './Submissions'
 
-type NavItem = 'description' | 'submissions' | 'solutions'
+type NavItem = 'description' | 'submissions' | 'solution'
 
 interface NavButtonsProps {
 	navItem: NavItem
@@ -49,15 +49,15 @@ const NavButtons = ({ navItem, setNavItem }: NavButtonsProps) => {
 			</button>
 			<div className="mx-4 h-5 border-r"></div>
 			<button
-				onClick={() => setNavItem('solutions')}
+				onClick={() => setNavItem('solution')}
 				className={cn(
 					baseButtonStyle,
-					navItem === 'solutions'
+					navItem === 'solution'
 						? activeButtonStyle
 						: inactiveButtonStyle
 				)}
 			>
-				Solutions
+				Solution
 			</button>
 		</div>
 	)
@@ -115,8 +115,8 @@ const QuestionPanel = ({
 				return <Submissions />
 
 			// not sure whether to add this or not
-			// case 'solutions':
-			// 	return <div>Solutions content goes here</div>
+			// case 'solution':
+			// 	return <div>Solution content goes here</div>
 
 			default:
 				return null
