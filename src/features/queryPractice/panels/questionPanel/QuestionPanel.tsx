@@ -7,6 +7,7 @@ import { cn } from 'src/utils/cn'
 import { fetchQuestionDetailActionDispatcher } from './actions/questionPanel.actions'
 import LayoutButtons from './LayoutButtons'
 import QuestionDescription from './QuestionDescription'
+import Solution from './Solution'
 import Submissions from './Submissions'
 
 type NavItem = 'description' | 'submissions' | 'solution'
@@ -114,9 +115,8 @@ const QuestionPanel = ({
 			case 'submissions':
 				return <Submissions />
 
-			// not sure whether to add this or not
-			// case 'solution':
-			// 	return <div>Solution content goes here</div>
+			case 'solution':
+				return <Solution />
 
 			default:
 				return null
@@ -126,7 +126,7 @@ const QuestionPanel = ({
 	return (
 		<div className="relative h-[calc(100vh-60px)]">
 			<Header />
-			<div className="absolute inset-x-0 bottom-0 top-10 overflow-auto p-4">
+			<div className="absolute inset-x-0 bottom-0 top-10 min-w-96 overflow-auto p-4">
 				{renderContent()}
 			</div>
 		</div>

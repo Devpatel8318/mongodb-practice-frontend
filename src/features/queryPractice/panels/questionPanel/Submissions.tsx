@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import Loader from 'src/components/Loader/Loader'
 import Card from 'src/features/dashboard/components/Table/components/Card'
 import { useAppSelector } from 'src/Store'
-import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
 
+// import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
 import { fetchSubmissionsActionDispatcher } from './actions/questionPanel.actions'
 
 const Submissions = () => {
@@ -13,11 +13,7 @@ const Submissions = () => {
 
 	const { data, loading } = useAppSelector((store) => store.submissions)
 
-	console.log('data', data)
-
 	useEffect(() => {
-		console.log('selectedQuestionId', selectedQuestionId)
-
 		if (selectedQuestionId === data?.questionId) {
 			return
 		}
@@ -34,7 +30,7 @@ const Submissions = () => {
 			{data && data.list.length ? (
 				<>
 					<div className="mb-4 flex items-center justify-between border-b px-4 py-2">
-						<div className="text-sm text-gray-500">Status</div>
+						{/* <div className="text-sm text-gray-500">Status</div> */}
 						<div className="text-sm font-medium">Query</div>
 						<div className="text-sm text-gray-500">
 							Submission Time
@@ -51,9 +47,9 @@ const Submissions = () => {
 										: ''
 							}`}
 						>
-							<div className="text-sm text-gray-500">
+							{/* <div className="text-sm text-gray-500">
 								{capitalizeFirstLetter(submission.status)}
-							</div>
+							</div> */}
 							<div className="text-sm font-medium">
 								{submission.query}
 							</div>

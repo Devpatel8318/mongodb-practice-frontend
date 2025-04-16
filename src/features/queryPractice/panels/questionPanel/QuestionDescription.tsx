@@ -72,7 +72,7 @@ const QuestionDescription = () => {
 	}
 
 	return (
-		<div className="min-w-80">
+		<>
 			<h2 className="mb-5 text-2xl font-semibold">{question}</h2>
 			<div className="mb-5 flex items-center gap-3">
 				<span className="flex gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs">
@@ -103,7 +103,7 @@ const QuestionDescription = () => {
 					</li>
 				</ul>
 			</div> */}
-		</div>
+		</>
 	)
 }
 
