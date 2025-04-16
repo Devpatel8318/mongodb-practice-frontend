@@ -1,34 +1,26 @@
 // CodeEditorPanel.jsx
-import { memo, useContext } from 'react'
+import * as monaco from 'monaco-editor'
+import { memo, useCallback, useContext } from 'react'
 import Icons from 'src/assets/svg'
 import MongodbCodeEditor from 'src/components/mongodbCodeEditor/MongodbCodeEditor'
 import Timer from 'src/components/Timer/Timer'
 import { CodeContext } from 'src/contexts/codeContext/CodeContext'
 import { codeEditorDefaultValue } from 'src/contexts/codeContext/CodeProvider'
 
-const CodeEditorPanel = ({
-	isMaximized,
-	isCollapsed,
-	onToggle,
-	onMaximize,
-}: {
-	isMaximized: boolean
-	isCollapsed?: boolean
-	onToggle: () => void
-	onMaximize: () => void
-}) => {
-	const { code, setCode, cursorPosition, setCursorPosition } =
-		useContext(CodeContext)
-
-	const handleToggle = () => {
-		onToggle()
-	}
-
-	const handleMaximize = () => {
-		onMaximize()
-	}
-
-	const Header = () => (
+const Header = memo(
+	({
+		setCode,
+		isMaximized,
+		handleMaximize,
+		handleToggle,
+		isCollapsed,
+	}: {
+		setCode: (value: string) => void
+		isMaximized: boolean
+		handleMaximize: () => void
+		handleToggle: () => void
+		isCollapsed: boolean
+	}) => (
 		<div className="flex items-center justify-between bg-gray-50 p-2">
 			<div className="text-sm">Code Editor</div>
 			<Timer />
@@ -69,20 +61,62 @@ const CodeEditorPanel = ({
 			</div>
 		</div>
 	)
+)
+
+Header.displayName = 'Header'
+
+const CodeEditorPanel = ({
+	isMaximized,
+	isCollapsed,
+	onToggle,
+	onMaximize,
+}: {
+	isMaximized: boolean
+	isCollapsed: boolean
+	onToggle: () => void
+	onMaximize: () => void
+}) => {
+	const { code, setCode, cursorPosition, setCursorPosition } =
+		useContext(CodeContext)
+
+	const handleMaximize = useCallback(() => {
+		onMaximize()
+	}, [onMaximize])
+
+	const handleToggle = useCallback(() => {
+		onToggle()
+	}, [onToggle])
+
+	const handleOnQueryChange = useCallback(
+		(newCode: string) => {
+			setCode(newCode)
+		},
+		[setCode]
+	)
+
+	const handleCursorPositionChange = useCallback(
+		(newPosition: monaco.Position) => {
+			setCursorPosition(newPosition)
+		},
+		[setCursorPosition]
+	)
 
 	return (
 		<div className="">
-			<Header />
+			<Header
+				setCode={setCode}
+				isMaximized={isMaximized}
+				handleMaximize={handleMaximize}
+				handleToggle={handleToggle}
+				isCollapsed={isCollapsed}
+			/>
 			<div className="grow">
 				<MongodbCodeEditor
 					value={code}
-					onQueryChange={(newCode) => setCode(newCode)}
+					onQueryChange={handleOnQueryChange}
 					focusOnMount={isMaximized}
-					handleCursorPositionChange={(newPosition) =>
-						setCursorPosition(newPosition)
-					}
+					handleCursorPositionChange={handleCursorPositionChange}
 					cursorPosition={cursorPosition}
-					// handleOptionCommandEnterClick={handleSubmit}
 				/>
 			</div>
 		</div>

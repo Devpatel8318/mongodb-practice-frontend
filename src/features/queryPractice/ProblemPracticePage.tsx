@@ -1,10 +1,4 @@
-import React, {
-	useCallback,
-	// useContext,
-	useEffect,
-	useRef,
-	useState,
-} from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
 	ImperativePanelHandle,
 	Panel,
@@ -14,95 +8,24 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { CodeProvider } from 'src/contexts/codeContext/CodeProvider'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
+import usePanelShortcuts from 'src/hooks/usePanelShortcuts'
 import { useAppSelector } from 'src/Store'
 import { API_STATUS } from 'src/utils/callApi'
-import { cn } from 'src/utils/cn'
 import getErrorMessageAndField from 'src/utils/getErrorMessageAndField'
 import showToast from 'src/utils/showToast'
 
+import LeftCollapsedBar from './components/LeftCollapsedBar'
+import RenderMaximizedSection from './components/RenderMaximizedSection'
+import RightCollapsedBar from './components/RightCollapsedBar'
 import { SECTION_CONFIGS, SectionName } from './helper/sectionConfig'
 import CodeEditorPanel from './panels/codeEditorPanel/CodeEditorPanel'
 import QuestionPanel from './panels/questionPanel/QuestionPanel'
 import SubmissionPanel from './panels/submissionPanel/SubmissionPanel'
 
-const RenderMaximizedSection = ({
-	maximizedSection,
-	toggleSection,
-	maximizeSection,
-}: {
-	maximizedSection: SectionName
-	toggleSection: (section: SectionName) => void
-	maximizeSection: (section: SectionName) => void
-}) => (
-	<div className="size-full bg-white">
-		{maximizedSection === 'question' && (
-			<QuestionPanel
-				isMaximized={true}
-				onToggle={() => toggleSection('question')}
-				onMaximize={() => maximizeSection('question')}
-			/>
-		)}
-		{maximizedSection === 'codeEditor' && (
-			<CodeEditorPanel
-				isMaximized={true}
-				onToggle={() => toggleSection('codeEditor')}
-				onMaximize={() => maximizeSection('codeEditor')}
-				// handleSubmit={handleSubmit}
-			/>
-		)}
-		{maximizedSection === 'submission' && (
-			<SubmissionPanel
-				isMaximized={true}
-				onToggle={() => toggleSection('submission')}
-				onMaximize={() => maximizeSection('submission')}
-			/>
-		)}
-	</div>
-)
-
-const LeftCollapsedBar = ({
-	collapsedSections,
-}: {
-	collapsedSections: CollapsedSections
-}) => (
-	<div className="">
-		<div
-			className={cn(
-				'flex h-full w-8 items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
-				!collapsedSections.question && 'hidden'
-			)}
-		>
-			<span className="-rotate-90">Content</span>
-		</div>
-	</div>
-)
-
-const RightCollapsedBar = ({
-	collapsedSections,
-}: {
-	collapsedSections: CollapsedSections
-}) => (
-	<div className="flex flex-col gap-2">
-		<div
-			className={cn(
-				'flex w-8 grow items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
-				!collapsedSections.rightSection && 'hidden'
-			)}
-		>
-			<span className="-rotate-90 text-nowrap">Code Editor</span>
-		</div>
-		<div
-			className={cn(
-				'flex w-8 grow items-center justify-center rounded-lg bg-white text-base font-normal tracking-wider',
-				!collapsedSections.rightSection && 'hidden'
-			)}
-		>
-			<span className="-rotate-90 text-nowrap">Submission</span>
-		</div>
-	</div>
-)
-
-type CollapsedSections = Record<SectionName, boolean>
+export type CollapsedSections = Record<SectionName, boolean>
+export type PanelRefs = {
+	[section in SectionName]: React.RefObject<ImperativePanelHandle>
+}
 
 const ProblemPracticeContent: React.FC = () => {
 	const [maximizedSection, setMaximizedSection] =
@@ -119,28 +42,38 @@ const ProblemPracticeContent: React.FC = () => {
 	const navigate = useNavigate()
 
 	// Create refs for all panels
-	const panelRefs = {
-		question: useRef<ImperativePanelHandle>(null),
-		codeEditor: useRef<ImperativePanelHandle>(null),
-		submission: useRef<ImperativePanelHandle>(null),
-		rightSection: useRef<ImperativePanelHandle>(null),
-	}
+	const questionRef = useRef<ImperativePanelHandle>(null)
+	const codeEditorRef = useRef<ImperativePanelHandle>(null)
+	const submissionRef = useRef<ImperativePanelHandle>(null)
+	const rightSectionRef = useRef<ImperativePanelHandle>(null)
+
+	const panelRefs: PanelRefs = useMemo(
+		() => ({
+			question: questionRef,
+			codeEditor: codeEditorRef,
+			submission: submissionRef,
+			rightSection: rightSectionRef,
+		}),
+		[]
+	)
 
 	const { error: questionPanelError, status } = useAppSelector(
 		(store) => store.questionPanel
 	)
 
-	const toggleSection = useCallback((section: SectionName) => {
-		const panelRef = panelRefs[section].current
-		if (!panelRef) return
+	const toggleSection = useCallback(
+		(section: SectionName) => {
+			const panelRef = panelRefs[section].current
+			if (!panelRef) return
 
-		if (panelRef.isCollapsed()) {
-			panelRef.resize(SECTION_CONFIGS[section].defaultSize ?? 0)
-		} else {
-			panelRef.collapse()
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+			if (panelRef.isCollapsed()) {
+				panelRef.resize(SECTION_CONFIGS[section].defaultSize ?? 0)
+			} else {
+				panelRef.collapse()
+			}
+		},
+		[panelRefs]
+	)
 
 	const maximizeSection = useCallback((section: SectionName) => {
 		setMaximizedSection((current) => (current === section ? null : section))
@@ -171,40 +104,26 @@ const ProblemPracticeContent: React.FC = () => {
 		})
 	}
 
-	// Add keyboard shortcut support
-	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0
-			const isCommand = isMac ? event.metaKey : event.ctrlKey
+	const createToggleHandler = useCallback(
+		(id: SectionName) => () => toggleSection(id),
+		[toggleSection]
+	)
 
-			if (isCommand && event.key === '[') {
-				event.preventDefault()
-				if (panelRefs.question.current?.isCollapsed()) {
-					panelRefs.question.current?.resize(
-						SECTION_CONFIGS['question'].defaultSize ?? 0
-					)
-				} else {
-					panelRefs.question.current?.collapse()
-				}
-			} else if (isCommand && event.key === ']') {
-				event.preventDefault()
-				if (panelRefs.rightSection.current?.isCollapsed()) {
-					panelRefs.rightSection.current?.resize(
-						SECTION_CONFIGS['rightSection'].defaultSize ?? 0
-					)
-				} else {
-					panelRefs.rightSection.current?.collapse()
-				}
-			}
-		}
+	const createMaximizeHandler = useCallback(
+		(id: SectionName) => () => maximizeSection(id),
+		[maximizeSection]
+	)
 
-		window.addEventListener('keydown', handleKeyDown)
+	// Handlers for each section
+	const handleToggleQuestion = createToggleHandler('question')
+	const handleToggleCodeEditor = createToggleHandler('codeEditor')
+	const handleToggleSubmission = createToggleHandler('submission')
 
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown)
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	const handleMaximizeQuestion = createMaximizeHandler('question')
+	const handleMaximizeCodeEditor = createMaximizeHandler('codeEditor')
+	const handleMaximizeSubmission = createMaximizeHandler('submission')
+
+	usePanelShortcuts(panelRefs)
 
 	useEffect(() => {
 		if (
@@ -252,10 +171,8 @@ const ProblemPracticeContent: React.FC = () => {
 							{!collapsedSections.question && (
 								<QuestionPanel
 									isMaximized={false}
-									onToggle={() => toggleSection('question')}
-									onMaximize={() =>
-										maximizeSection('question')
-									}
+									onToggle={handleToggleQuestion}
+									onMaximize={handleMaximizeQuestion}
 								/>
 							)}
 						</Panel>
@@ -308,13 +225,8 @@ const ProblemPracticeContent: React.FC = () => {
 										isCollapsed={
 											collapsedSections.codeEditor
 										}
-										onToggle={() =>
-											toggleSection('codeEditor')
-										}
-										onMaximize={() =>
-											maximizeSection('codeEditor')
-										}
-										// handleSubmit={handleSubmit}
+										onToggle={handleToggleCodeEditor}
+										onMaximize={handleMaximizeCodeEditor}
 									/>
 								</Panel>
 
@@ -350,12 +262,8 @@ const ProblemPracticeContent: React.FC = () => {
 										isCollapsed={
 											collapsedSections.submission
 										}
-										onToggle={() =>
-											toggleSection('submission')
-										}
-										onMaximize={() =>
-											maximizeSection('submission')
-										}
+										onToggle={handleToggleSubmission}
+										onMaximize={handleMaximizeSubmission}
 									/>
 								</Panel>
 							</PanelGroup>

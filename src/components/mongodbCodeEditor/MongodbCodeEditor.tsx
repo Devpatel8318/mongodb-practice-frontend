@@ -1,5 +1,6 @@
 import MonacoEditor, { loader, useMonaco } from '@monaco-editor/react'
 import * as monaco from 'monaco-editor'
+import { memo, useCallback } from 'react'
 import { useEffect, useRef } from 'src/deps'
 
 import { mongodbCompletion } from './mongodbLanguageSupport/mongodbCompletion'
@@ -145,44 +146,41 @@ const MongodbCodeEditor = ({
 		}
 	}, [monacoNew]) // Only run the effect when Monaco editor instance is available
 
-	const handleEditorChange = (value: string | undefined) => {
-		if (value !== undefined) {
-			onQueryChange(value)
-		}
-	}
-
-	const handleEditorMount = (editor: monaco.editor.IStandaloneCodeEditor) => {
-		editorRef.current = editor
-
-		if (cursorPosition !== -1) {
-			editor.setPosition(cursorPosition)
-			editor.focus()
-		}
-
-		if (focusOnMount) {
-			editor.focus()
-		}
-
-		editor.onDidChangeCursorPosition(() => {
-			const position = editor.getPosition()
-			if (position) {
-				handleCursorPositionChange(position)
+	const handleEditorChange = useCallback(
+		(newValue: string | undefined) => {
+			if (newValue !== undefined) {
+				onQueryChange(newValue)
 			}
-		})
+		},
+		[onQueryChange]
+	)
 
-		if (onQueryChange) {
+	const handleEditorMount = useCallback(
+		(editor: monaco.editor.IStandaloneCodeEditor) => {
+			editorRef.current = editor
+
+			if (cursorPosition !== -1) {
+				editor.setPosition(cursorPosition)
+			}
+
+			if (focusOnMount) {
+				editor.focus()
+			}
+
+			editor.onDidChangeCursorPosition(() => {
+				const position = editor.getPosition()
+				if (position) handleCursorPositionChange(position)
+			})
+
 			onQueryChange(editor.getValue())
-		}
-
-		// editor.addCommand(
-		// 	monaco.KeyMod.Alt | monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter,
-		// 	() => {
-		// 		if (handleOptionCommandEnterClick) {
-		// 			handleOptionCommandEnterClick()
-		// 		}
-		// 	}
-		// )
-	}
+		},
+		[
+			cursorPosition,
+			focusOnMount,
+			handleCursorPositionChange,
+			onQueryChange,
+		]
+	)
 
 	return (
 		<MonacoEditor
@@ -197,4 +195,4 @@ const MongodbCodeEditor = ({
 	)
 }
 
-export default MongodbCodeEditor
+export default memo(MongodbCodeEditor)
