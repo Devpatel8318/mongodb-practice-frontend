@@ -85,12 +85,12 @@ const SubmissionPanel = ({
 	}
 
 	const Header = () => (
-		<div className="flex items-center justify-between bg-gray-50 p-2">
+		<div className="flex items-center justify-between bg-gray-50 px-2 py-1">
 			<div className="text-sm">Submission</div>
 			<div>
 				<Button
 					variant="outlineGray"
-					size="sm"
+					size="xs"
 					label="Run"
 					dontShowFocusClasses={true}
 					onClick={handleRun}
