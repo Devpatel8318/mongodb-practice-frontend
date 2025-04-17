@@ -28,7 +28,10 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import { Toaster, useEffect, useState } from 'src/deps'
 import Routers from 'src/router'
 
-import { evaluateAnswerDispatcher } from './features/queryPractice/panels/submissionPanel/submission.actions'
+import {
+	evaluateAnswerDispatcher,
+	runOnlyRetrieveDataActionDispatcher,
+} from './features/queryPractice/panels/submissionPanel/submission.actions'
 import { socket } from './socket/socket'
 import { setSocketIdDispatcher } from './socket/socket.action'
 import { loginUserDispatcher } from './Store/reducers/auth.reducer'
@@ -52,14 +55,27 @@ const App = () => {
 
 			socket.on('pickup', async (data) => {
 				console.log('pickupData', data)
-				const { questionId, question, answer, submissionId } = data
-
-				evaluateAnswerDispatcher({
+				const {
 					questionId,
 					question,
 					answer,
 					submissionId,
-				})
+					isRunOnly,
+				} = data
+
+				if (isRunOnly) {
+					runOnlyRetrieveDataActionDispatcher({
+						questionId,
+						answer,
+					})
+				} else {
+					evaluateAnswerDispatcher({
+						questionId,
+						question,
+						answer,
+						submissionId,
+					})
+				}
 			})
 		}
 		setInitialized(true)

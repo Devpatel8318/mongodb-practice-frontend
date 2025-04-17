@@ -1,6 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { appDispatcher } from 'src/Store'
-import { EvaluateResultResponse } from 'src/Store/reducers/submission.reducer'
+import {
+	EvaluateResultResponse,
+	RunOnlyRetrieveDataResponse,
+} from 'src/Store/reducers/submission.reducer'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
 
@@ -36,6 +39,37 @@ export const submitAnswerActionDispatcher = (payload: {
 	appDispatcher(submitAnswerAction(payload))
 }
 
+export const runAnswerAction = createAsyncThunk<
+	SuccessResponse<{
+		questionId: number
+		output?: object
+		pending?: boolean
+	}>,
+	{ questionId: number; answer: string; socketId: string },
+	{
+		rejectValue: ErrorResponse
+	}
+>('questionPanel/run', async (payload, { rejectWithValue }) => {
+	const { questionId, answer, socketId } = payload
+	try {
+		return await callApi(`/answer/run/${questionId}`, 'POST', {
+			answerQuery: answer,
+			socketId,
+		})
+	} catch (e) {
+		return rejectWithValue(e as ErrorResponse)
+	}
+})
+
+export const runAnswerActionDispatcher = (payload: {
+	questionId: number
+	answer: string
+	socketId: string
+}) => {
+	console.log('selectedQuestionId', payload.questionId)
+	appDispatcher(runAnswerAction(payload))
+}
+
 export const evaluateAnswerAction = createAsyncThunk<
 	SuccessResponse<EvaluateResultResponse>,
 	{
@@ -67,4 +101,31 @@ export const evaluateAnswerDispatcher = (payload: {
 	submissionId: string
 }) => {
 	appDispatcher(evaluateAnswerAction(payload))
+}
+
+export const runOnlyRetrieveDataAction = createAsyncThunk<
+	SuccessResponse<RunOnlyRetrieveDataResponse>,
+	{
+		questionId: number
+		answer: string
+	},
+	{
+		rejectValue: ErrorResponse
+	}
+>('questionPanel/runonly', async (payload, { rejectWithValue }) => {
+	const { questionId, answer } = payload
+	try {
+		return await callApi(`/answer/runonly/retrieve/${questionId}`, 'POST', {
+			answer,
+		})
+	} catch (e) {
+		return rejectWithValue(e as ErrorResponse)
+	}
+})
+
+export const runOnlyRetrieveDataActionDispatcher = (payload: {
+	questionId: number
+	answer: string
+}) => {
+	appDispatcher(runOnlyRetrieveDataAction(payload))
 }

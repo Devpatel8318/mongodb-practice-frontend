@@ -1,6 +1,8 @@
 import { createSlice } from 'src/deps'
 import {
 	evaluateAnswerAction,
+	runAnswerAction,
+	runOnlyRetrieveDataAction,
 	submitAnswerAction,
 } from 'src/features/queryPractice/panels/submissionPanel/submission.actions'
 import { ReducerErrorObject } from 'src/Types/global'
@@ -14,10 +16,16 @@ export interface EvaluateResultResponse {
 	pending?: boolean
 }
 
+export interface RunOnlyRetrieveDataResponse {
+	questionId: number
+	output: string
+	isRunOnly: boolean
+}
+
 export interface SubmissionStateType {
 	status: API_STATUS_TYPE
 	error: null | ReducerErrorObject
-	data: null | EvaluateResultResponse
+	data: null | EvaluateResultResponse | RunOnlyRetrieveDataResponse
 	submissionFlowLoading: boolean
 }
 
@@ -57,6 +65,29 @@ const submissionSlice = createSlice({
 					submissionFlowLoading: false,
 				})
 			})
+			.addCase(runAnswerAction.pending, (state) => {
+				Object.assign(state, {
+					status: API_STATUS.PENDING,
+					error: null,
+					submissionFlowLoading: true,
+				})
+			})
+			.addCase(runAnswerAction.fulfilled, (state, { payload }) => {
+				const { pending } = payload.data || {}
+
+				Object.assign(state, {
+					status: API_STATUS.SUCCESS,
+					error: null,
+					submissionFlowLoading: !!pending,
+				})
+			})
+			.addCase(runAnswerAction.rejected, (state, action) => {
+				Object.assign(state, {
+					status: API_STATUS.REJECTED,
+					error: action.payload,
+					submissionFlowLoading: false,
+				})
+			})
 			.addCase(evaluateAnswerAction.pending, (state) => {
 				Object.assign(state, {
 					status: API_STATUS.PENDING,
@@ -73,6 +104,32 @@ const submissionSlice = createSlice({
 				})
 			})
 			.addCase(evaluateAnswerAction.rejected, (state, action) => {
+				Object.assign(state, {
+					status: API_STATUS.REJECTED,
+					error: action.payload,
+					data: null,
+					submissionFlowLoading: false,
+				})
+			})
+			.addCase(runOnlyRetrieveDataAction.pending, (state) => {
+				Object.assign(state, {
+					status: API_STATUS.PENDING,
+					error: null,
+					data: null,
+				})
+			})
+			.addCase(
+				runOnlyRetrieveDataAction.fulfilled,
+				(state, { payload }) => {
+					Object.assign(state, {
+						status: API_STATUS.SUCCESS,
+						error: null,
+						data: payload.data,
+						submissionFlowLoading: false,
+					})
+				}
+			)
+			.addCase(runOnlyRetrieveDataAction.rejected, (state, action) => {
 				Object.assign(state, {
 					status: API_STATUS.REJECTED,
 					error: action.payload,

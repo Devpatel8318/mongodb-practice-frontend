@@ -9,7 +9,10 @@ import { useAppSelector } from 'src/Store'
 import { API_STATUS } from 'src/utils/callApi'
 import showToast from 'src/utils/showToast'
 
-import { submitAnswerActionDispatcher } from './submission.actions'
+import {
+	runAnswerActionDispatcher,
+	submitAnswerActionDispatcher,
+} from './submission.actions'
 
 const SubmissionPanel = ({
 	isMaximized,
@@ -63,17 +66,55 @@ const SubmissionPanel = ({
 		})
 	}
 
+	const handleRun = () => {
+		const validatorResponse = validate()
+
+		if (validatorResponse) return showToast('error', validatorResponse)
+
+		if (!selectedQuestionId) {
+			console.error('selectedQuestionId not found', selectedQuestionId)
+			showToast('error', 'Something went wrong')
+			return navigate('/')
+		}
+
+		runAnswerActionDispatcher({
+			questionId: selectedQuestionId,
+			answer: code,
+			socketId,
+		})
+	}
+
 	const Header = () => (
 		<div className="flex items-center justify-between bg-gray-50 p-2">
 			<div className="text-sm">Submission</div>
-			<Button
-				variant="success"
-				size="sm"
-				label="Submit"
-				dontShowFocusClasses={true}
-				onClick={handleSubmit}
-				// disabled={page >= totalPages}
-			/>
+			<div>
+				<Button
+					variant="outlineGray"
+					size="sm"
+					label="Run"
+					dontShowFocusClasses={true}
+					onClick={handleRun}
+					className="mr-2"
+					endIcon={
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="24px"
+							viewBox="0 -960 960 960"
+							width="24px"
+							fill="#1f2937"
+						>
+							<path d="M320-200v-560l440 280-440 280Z" />
+						</svg>
+					}
+				/>
+				<Button
+					variant="success"
+					size="sm"
+					label="Submit"
+					dontShowFocusClasses={true}
+					onClick={handleSubmit}
+				/>
+			</div>
 			<div className="flex gap-2">
 				{!isMaximized && (
 					<button
@@ -102,35 +143,36 @@ const SubmissionPanel = ({
 	)
 
 	const Content = () => {
-		if (!data) return <div></div>
+		if (!data || data.questionId !== selectedQuestionId) return null
 
-		const { questionId, correct, expected, output } = data
+		const { output } = data
 
-		// if socket is for questionId which user is not currently solving then show nothing
-		if (questionId !== selectedQuestionId) {
-			return <div></div>
-		}
-
-		let className = ''
-
-		if (correct) {
-			className = 'text-green-500'
-		} else {
-			className = 'text-red-500'
-		}
+		const isRunOnly = 'isRunOnly' in data
+		const correct =
+			!isRunOnly && 'correct' in data ? data.correct : undefined
+		const expected =
+			!isRunOnly && 'expected' in data ? data.expected : undefined
 
 		return (
 			<div>
-				<div className="flex items-center gap-2 text-lg">
-					<div className={className}>
-						{correct ? 'Correct' : 'Incorrect'}
+				{!isRunOnly && (
+					<div className="flex items-center gap-2 text-lg">
+						<div
+							className={
+								correct ? 'text-green-500' : 'text-red-500'
+							}
+						>
+							{correct ? 'Correct' : 'Incorrect'}
+						</div>
 					</div>
-				</div>
+				)}
+
 				<div className="mt-2">
 					Output:
 					<JsonView>{output}</JsonView>
 				</div>
-				{!correct && (
+
+				{!isRunOnly && correct === false && (
 					<div className="mt-2">
 						Expected:
 						<JsonView>{expected}</JsonView>
