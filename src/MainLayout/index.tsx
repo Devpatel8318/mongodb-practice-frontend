@@ -1,5 +1,6 @@
 import { memo, useCallback } from 'react'
 import Icons from 'src/assets/svg'
+import Image from 'src/components/Image/Image'
 import { Link, React, useRef, useState } from 'src/deps'
 import { logoutActionDispatcher } from 'src/features/auth/auth.dispatcher'
 import useOnClickOutside from 'src/hooks/useOnClickOutside'
@@ -8,7 +9,6 @@ import { useAppSelector } from 'src/Store'
 const Header = () => {
 	const filterRef = useRef<HTMLDivElement | null>(null)
 	const [showDropDown, setShowDropDown] = useState(false)
-	const [isProfileImageUrlError, setIsProfileImageUrlError] = useState(false)
 
 	const toggleFilter = useCallback(() => {
 		setShowDropDown((prev) => !prev)
@@ -60,21 +60,10 @@ const Header = () => {
 							aria-label="Open profile menu"
 							className="flex size-10 items-center justify-center rounded-full bg-white focus:outline-none"
 						>
-							{profilePictureUrl && !isProfileImageUrlError ? (
-								<img
-									src={profilePictureUrl}
-									alt="profile"
-									width={32}
-									height={32}
-									className="size-8 rounded-full object-cover"
-									// TODO: use a better way to handle image error, use   onError={(e) => e.currentTarget.src = '/default-avatar.png'}
-									onError={() =>
-										setIsProfileImageUrlError(true)
-									}
-								/>
-							) : (
-								<Icons.Images24.Profile />
-							)}
+							<Image
+								src={profilePictureUrl || ''}
+								fallback={<Icons.Images24.Profile />}
+							/>
 						</button>
 
 						{showDropDown && (
@@ -105,7 +94,7 @@ const Header = () => {
 	)
 }
 
-const MemoizedHeader = memo(Header) // Memoized Header
+const MemoizedHeader = memo(Header)
 
 interface MainLayoutProps {
 	children: React.ReactNode
