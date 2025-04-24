@@ -1,6 +1,7 @@
 import { createAsyncThunk } from 'src/deps'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
+import { tryCatch } from 'src/utils/tryCatch'
 
 export type GoogleAuthPayload =
 	| { code: string; credential?: never }
@@ -13,12 +14,15 @@ export const oauthGoogleAction = createAsyncThunk<
 		rejectValue: ErrorResponse
 	}
 >('auth/oauthGoogle', async (payload, { rejectWithValue }) => {
-	try {
-		const { code, credential } = payload
-		return await callApi('/auth/google', 'POST', { code, credential })
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	const [data, error] = await tryCatch<SuccessResponse>(
+		callApi('/auth/google', 'POST', payload)
+	)
+
+	if (error) {
+		return rejectWithValue(error)
 	}
+
+	return data
 })
 
 export const signInAction = createAsyncThunk<
@@ -29,14 +33,19 @@ export const signInAction = createAsyncThunk<
 	}
 >('auth/signIn', async (payload, { rejectWithValue }) => {
 	const { email, password } = payload
-	try {
-		return await callApi('/auth/login', 'POST', {
+
+	const [data, error] = await tryCatch<SuccessResponse>(
+		callApi('/auth/login', 'POST', {
 			email,
 			password,
 		})
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	)
+
+	if (error) {
+		return rejectWithValue(error)
 	}
+
+	return data
 })
 
 export const signUpAction = createAsyncThunk<
@@ -47,14 +56,17 @@ export const signUpAction = createAsyncThunk<
 	}
 >('auth/signUp', async (payload, { rejectWithValue }) => {
 	const { email, password } = payload
-	try {
-		return await callApi('/auth/signup', 'POST', {
+
+	const [data, error] = await tryCatch<SuccessResponse>(
+		callApi('/auth/signup', 'POST', {
 			email,
 			password,
 		})
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	)
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })
 
 export const refreshAction = createAsyncThunk<
@@ -64,11 +76,13 @@ export const refreshAction = createAsyncThunk<
 		rejectValue: ErrorResponse
 	}
 >('auth/refresh', async (_payload, { rejectWithValue }) => {
-	try {
-		return await callApi('/auth/refresh', 'GET')
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	const [data, error] = await tryCatch<SuccessResponse>(
+		callApi('/auth/refresh', 'GET')
+	)
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })
 
 // this will be used when we need to clear access-token, refresh-token and localStorage
@@ -79,9 +93,11 @@ export const logoutAction = createAsyncThunk<
 		rejectValue: ErrorResponse
 	}
 >('auth/logout', async (_payload, { rejectWithValue }) => {
-	try {
-		return await callApi('/auth/logout', 'GET')
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	const [data, error] = await tryCatch<SuccessResponse>(
+		callApi('/auth/logout', 'GET')
+	)
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })

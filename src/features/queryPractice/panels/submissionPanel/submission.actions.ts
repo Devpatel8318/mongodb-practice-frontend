@@ -6,6 +6,7 @@ import {
 } from 'src/Store/reducers/submission.reducer'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
+import { tryCatch } from 'src/utils/tryCatch'
 
 export const submitAnswerAction = createAsyncThunk<
 	SuccessResponse<{
@@ -21,14 +22,27 @@ export const submitAnswerAction = createAsyncThunk<
 	}
 >('questionPanel/submit', async (payload, { rejectWithValue }) => {
 	const { questionId, answer, socketId } = payload
-	try {
-		return await callApi(`/answer/submit/${questionId}`, 'POST', {
+
+	const [data, error] = await tryCatch<
+		SuccessResponse<{
+			questionId: number
+			correct?: boolean
+			expected?: object
+			output?: object
+			pending?: boolean
+		}>
+	>(
+		callApi(`/answer/submit/${questionId}`, 'POST', {
 			answerQuery: answer,
 			socketId,
 		})
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	)
+
+	if (error) {
+		return rejectWithValue(error)
 	}
+
+	return data
 })
 
 export const submitAnswerActionDispatcher = (payload: {
@@ -51,14 +65,24 @@ export const runAnswerAction = createAsyncThunk<
 	}
 >('questionPanel/run', async (payload, { rejectWithValue }) => {
 	const { questionId, answer, socketId } = payload
-	try {
-		return await callApi(`/answer/run/${questionId}`, 'POST', {
+
+	const [data, error] = await tryCatch<
+		SuccessResponse<{
+			questionId: number
+			output?: object
+			pending?: boolean
+		}>
+	>(
+		callApi(`/answer/run/${questionId}`, 'POST', {
 			answerQuery: answer,
 			socketId,
 		})
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	)
+
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })
 
 export const runAnswerActionDispatcher = (payload: {
@@ -66,7 +90,6 @@ export const runAnswerActionDispatcher = (payload: {
 	answer: string
 	socketId: string
 }) => {
-	console.log('selectedQuestionId', payload.questionId)
 	appDispatcher(runAnswerAction(payload))
 }
 
@@ -83,15 +106,20 @@ export const evaluateAnswerAction = createAsyncThunk<
 	}
 >('questionPanel/evaluate', async (payload, { rejectWithValue }) => {
 	const { questionId, question, answer, submissionId } = payload
-	try {
-		return await callApi(`/answer/evaluate/${questionId}`, 'POST', {
+
+	const [data, error] = await tryCatch<
+		SuccessResponse<EvaluateResultResponse>
+	>(
+		callApi(`/answer/evaluate/${questionId}`, 'POST', {
 			question,
 			answer,
 			submissionId,
 		})
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	)
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })
 
 export const evaluateAnswerDispatcher = (payload: {
@@ -114,13 +142,18 @@ export const runOnlyRetrieveDataAction = createAsyncThunk<
 	}
 >('questionPanel/runonly', async (payload, { rejectWithValue }) => {
 	const { questionId, answer } = payload
-	try {
-		return await callApi(`/answer/runonly/retrieve/${questionId}`, 'POST', {
+
+	const [data, error] = await tryCatch<
+		SuccessResponse<RunOnlyRetrieveDataResponse>
+	>(
+		callApi(`/answer/runonly/retrieve/${questionId}`, 'POST', {
 			answer,
 		})
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	)
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })
 
 export const runOnlyRetrieveDataActionDispatcher = (payload: {

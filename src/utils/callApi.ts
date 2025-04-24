@@ -49,7 +49,9 @@ const callApi = async <T>(
 				resolve(response?.data || { message: 'ok' })
 			})
 			.catch((err: AxiosError<ErrorResponse>) => {
-				const errObj = err.response?.data || { message: err.message }
+				const errObj: ErrorResponse = err.response?.data || {
+					message: err.message || 'Unknown error',
+				}
 				reject(errObj)
 			})
 	})

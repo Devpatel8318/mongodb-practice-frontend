@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { tryCatchSync } from 'src/utils/tryCatch'
 
 type DatabaseSchema = {
 	title: string
@@ -109,13 +110,16 @@ const Temp: React.FC = () => {
 		if (matches && matches.length > 2) {
 			collection = matches[1]
 			queryType = matches[2]
-			try {
+
+			const [, error] = tryCatchSync(() => {
 				// Try to parse the filter from the query
 				const filterText = matches[3]
 				if (filterText) {
 					queryFilter = JSON.parse(filterText)
 				}
-			} catch (error) {
+			})
+
+			if (error) {
 				console.error('Error parsing query filter:', error)
 			}
 		}

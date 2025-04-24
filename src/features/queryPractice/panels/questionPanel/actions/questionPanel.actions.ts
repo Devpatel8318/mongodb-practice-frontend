@@ -7,6 +7,7 @@ import {
 import { SolutionResponse } from 'src/Store/reducers/solution.reducer'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
+import { tryCatch } from 'src/utils/tryCatch'
 
 export const fetchQuestionDetailAction = createAsyncThunk<
 	SuccessResponse<QuestionDetail>,
@@ -15,11 +16,13 @@ export const fetchQuestionDetailAction = createAsyncThunk<
 		rejectValue: ErrorResponse
 	}
 >('questionPanel/questionDetail', async (questionId, { rejectWithValue }) => {
-	try {
-		return await callApi(`/question/view/${questionId}`, 'GET')
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	const [data, error] = await tryCatch<SuccessResponse<QuestionDetail>>(
+		callApi(`/question/view/${questionId}`, 'GET')
+	)
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })
 export const fetchQuestionDetailActionDispatcher = (questionId: number) => {
 	appDispatcher(fetchQuestionDetailAction(questionId))
@@ -32,11 +35,14 @@ export const toggleBookmarkAction = createAsyncThunk<
 		rejectValue: ErrorResponse
 	}
 >('questionPanel/bookmark', async (questionId, { rejectWithValue }) => {
-	try {
-		return await callApi(`/question/bookmark/${questionId}`, 'GET')
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	const [data, error] = await tryCatch<
+		SuccessResponse<{ questionId: number; isBookmarked: boolean }>
+	>(callApi(`/question/bookmark/${questionId}`, 'POST'))
+
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })
 
 export const toggleBookmarkActionDispatcher = (questionId: number) => {
@@ -50,11 +56,13 @@ export const fetchSubmissionsAction = createAsyncThunk<
 		rejectValue: ErrorResponse
 	}
 >('questionPanel/submissions', async (questionId, { rejectWithValue }) => {
-	try {
-		return await callApi(`/answer/submissions/${questionId}`, 'GET')
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	const [data, error] = await tryCatch<SuccessResponse<Submission[]>>(
+		callApi(`/answer/submissions/${questionId}`, 'GET')
+	)
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })
 export const fetchSubmissionsActionDispatcher = (questionId: number) => {
 	appDispatcher(fetchSubmissionsAction(questionId))
@@ -67,11 +75,13 @@ export const fetchSolutionAction = createAsyncThunk<
 		rejectValue: ErrorResponse
 	}
 >('questionPanel/solution', async (questionId, { rejectWithValue }) => {
-	try {
-		return await callApi(`/question/solution/${questionId}`, 'GET')
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	const [data, error] = await tryCatch<SuccessResponse<SolutionResponse>>(
+		callApi(`/question/solution/${questionId}`, 'GET')
+	)
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })
 export const fetchSolutionActionDispatcher = (questionId: number) => {
 	appDispatcher(fetchSolutionAction(questionId))

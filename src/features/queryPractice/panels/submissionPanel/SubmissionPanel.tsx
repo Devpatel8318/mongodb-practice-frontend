@@ -191,6 +191,8 @@ const SubmissionPanel = ({
 			return
 		}
 
+		console.log('submissionError', submissionError)
+
 		const defaultErrorMessage = 'Something went wrong'
 		const firstErrorReason = submissionError?.reasons?.[0]
 		const message = firstErrorReason?.message || defaultErrorMessage

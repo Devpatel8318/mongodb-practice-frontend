@@ -2,19 +2,29 @@ import { createAsyncThunk } from 'src/deps'
 import { appDispatcher } from 'src/Store'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
+import { tryCatch } from 'src/utils/tryCatch'
+
+type UserSettingSuccessResponse = SuccessResponse<{
+	email: string
+	profilePictureUrl: string
+}>
 
 export const userSettingAction = createAsyncThunk<
-	SuccessResponse<{ email: string; profilePictureUrl: string }>,
+	UserSettingSuccessResponse,
 	void,
 	{
 		rejectValue: ErrorResponse
 	}
->('user/setting', async (payload, { rejectWithValue }) => {
-	try {
-		return await callApi('/user/setting', 'GET')
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+>('user/setting', async (_, { rejectWithValue }) => {
+	const [data, error] = await tryCatch<UserSettingSuccessResponse>(
+		callApi('/user/setting', 'GET')
+	)
+
+	if (error) {
+		return rejectWithValue(error)
 	}
+
+	return data
 })
 
 export const userSettingActionDispatcher = () => {

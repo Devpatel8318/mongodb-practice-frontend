@@ -3,6 +3,7 @@ import { appDispatcher } from 'src/Store'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
+import { tryCatch } from 'src/utils/tryCatch'
 
 export const getAllQuestionsAction = createAsyncThunk<
 	SuccessResponse<{ list: Question[]; total: number }>,
@@ -44,16 +45,13 @@ export const getAllQuestionsAction = createAsyncThunk<
 		url += `&onlyBookmarked=true`
 	}
 
-	try {
-		const data = await callApi<{ list: Question[]; total: number }>(
-			url,
-			'GET'
-		)
-
-		return data
-	} catch (e) {
-		return rejectWithValue(e as ErrorResponse)
+	const [data, error] = await tryCatch<
+		SuccessResponse<{ list: Question[]; total: number }>
+	>(callApi(url, 'GET'))
+	if (error) {
+		return rejectWithValue(error)
 	}
+	return data
 })
 
 export const getAllQuestionsActionDispatcher = ({

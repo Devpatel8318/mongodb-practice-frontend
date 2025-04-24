@@ -8,14 +8,10 @@ const OAuthButton: React.FC = () => {
 		code?: string
 		error?: string
 	}) => {
-		try {
-			if (authResult['code']) {
-				oauthGoogleActionDispatcher({ code: authResult.code })
-			} else {
-				console.log('Error occurred in responseGoogle:', authResult)
-			}
-		} catch (e) {
-			console.log(e)
+		if (authResult['code']) {
+			oauthGoogleActionDispatcher({ code: authResult.code })
+		} else {
+			console.log('Error occurred in responseGoogle:', authResult)
 		}
 	}
 

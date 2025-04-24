@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { tryCatchSync } from 'src/utils/tryCatch'
 
 export type useLocalStorageSetValue<T> = (
 	valueOrFn: T | ((prev: T) => T)
@@ -9,19 +10,25 @@ const useLocalStorage = <T,>(
 	defaultValue: T
 ): [T, useLocalStorageSetValue<T>, () => void] => {
 	const [localStorageValue, setLocalStorageValue] = useState<T>(() => {
-		try {
-			const value = localStorage.getItem(key)
-			return value ? (JSON.parse(value) as T) : defaultValue
-		} catch (error) {
+		const [value, error] = tryCatchSync(() => {
+			const stored = localStorage.getItem(key)
+			return stored ? (JSON.parse(stored) as T) : defaultValue
+		})
+
+		if (error) {
 			console.error(`Error reading localStorage key "${key}":`, error)
 			return defaultValue
 		}
+
+		return value
 	})
 
 	useEffect(() => {
-		try {
+		const [, error] = tryCatchSync(() => {
 			localStorage.setItem(key, JSON.stringify(localStorageValue))
-		} catch (error) {
+		})
+
+		if (error) {
 			console.error(`Error setting localStorage key "${key}":`, error)
 		}
 	}, [key, localStorageValue])
@@ -35,9 +42,11 @@ const useLocalStorage = <T,>(
 	}
 
 	const removeLocalStorage = () => {
-		try {
+		const [, error] = tryCatchSync(() => {
 			localStorage.removeItem(key)
-		} catch (error) {
+		})
+
+		if (error) {
 			console.error(`Error removing localStorage key "${key}":`, error)
 		}
 	}
