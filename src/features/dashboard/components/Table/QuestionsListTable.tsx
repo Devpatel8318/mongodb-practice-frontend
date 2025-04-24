@@ -91,7 +91,10 @@ const QuestionsListTable = () => {
 	)
 
 	const fetchQuestions = () => {
-		if (isFirstRender) return
+		if (isFirstRender) {
+			// TODO: testing, if ui works without this then delete this code
+			// ignore
+		}
 
 		const filterQuery = formatFilters(filters)
 		const sortQuery = formatSortQuery(sort)
