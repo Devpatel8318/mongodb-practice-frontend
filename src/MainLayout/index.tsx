@@ -69,17 +69,17 @@ const Header = () => {
 						{showDropDown && (
 							<div
 								ref={filterRef}
-								className="absolute right-0 z-50 w-32 overflow-visible rounded-lg bg-white shadow-lg"
+								className="absolute right-0 z-50 w-32 overflow-hidden rounded-lg bg-white shadow-lg"
 							>
 								<button
-									className="flex w-full items-center justify-between border-b px-4 py-2 text-left text-sm text-gray-800 hover:bg-gray-100"
+									className="flex w-full items-center justify-between border-b px-4 py-2 text-left text-sm text-gray-800 hover:bg-brand-hover"
 									onClick={logoutActionDispatcher}
 								>
 									Profile
 									<Icons.Images16.Profile />
 								</button>
 								<button
-									className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-gray-800 hover:bg-gray-100"
+									className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-gray-800 hover:bg-brand-hover"
 									onClick={logoutActionDispatcher}
 								>
 									Logout
@@ -104,7 +104,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 	return (
 		<div className="flex min-h-screen w-full flex-col">
 			<MemoizedHeader />
-			<div className="flex grow bg-gray-100 p-2">
+			<div className="flex grow bg-brand-bg p-2">
 				<div className="grow rounded-md">{children}</div>
 			</div>
 		</div>

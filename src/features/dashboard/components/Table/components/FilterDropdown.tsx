@@ -81,7 +81,7 @@ const FilterDropdown = ({
 							([filter, value]) => (
 								<label
 									key={filter}
-									className="flex px-4 py-2 hover:bg-gray-100"
+									className="flex px-4 py-2 hover:bg-brand-hover"
 								>
 									<button
 										className="flex grow justify-between border-gray-300"

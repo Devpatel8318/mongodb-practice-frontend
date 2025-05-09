@@ -52,7 +52,7 @@ const RightSection = ({
 							onMaximize={handleMaximizeCodeEditor}
 						/>
 					</SectionPanel>
-					<PanelResizeHandle className="h-1.5 rounded-full bg-gray-100 transition-colors hover:bg-gray-200" />
+					<PanelResizeHandle className="h-1.5 rounded-full transition-colors hover:bg-brand-lighter" />
 					<SectionPanel
 						sectionName="submission"
 						panelRef={panelRefs.submission}

@@ -21,7 +21,7 @@ const Header = memo(
 		handleToggle: () => void
 		isCollapsed: boolean
 	}) => (
-		<div className="flex items-center justify-between bg-gray-50 p-2">
+		<div className="flex items-center justify-between bg-brand-lightest p-2">
 			<div className="text-sm">Code Editor</div>
 			<Timer />
 			<div className="flex gap-2">

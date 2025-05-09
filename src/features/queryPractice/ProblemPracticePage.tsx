@@ -135,7 +135,7 @@ const ProblemPracticeContent: React.FC = () => {
 					maximizeSection={maximizeSection}
 				/>
 			) : (
-				<div className="flex h-full bg-gray-100">
+				<div className="flex h-full">
 					<PanelGroup
 						direction="horizontal"
 						className="h-full rounded-lg"
@@ -148,7 +148,7 @@ const ProblemPracticeContent: React.FC = () => {
 							createMaximizeHandler={createMaximizeHandler}
 						/>
 
-						<PanelResizeHandle className="w-1.5 rounded-full bg-gray-100 transition-colors hover:bg-gray-200" />
+						<PanelResizeHandle className="w-1.5 rounded-full transition-colors hover:bg-brand-lighter" />
 
 						<RightSection
 							panelRefs={panelRefs}

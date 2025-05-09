@@ -74,15 +74,14 @@ const Button: React.FC<ButtonProps> = ({
 	const variantClasses = {
 		primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
 		secondary:
-			'bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400',
+			'bg-brand-lighter text-gray-800 hover:bg-gray-300 focus:ring-gray-400',
 		outline:
 			'bg-transparent border border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500',
 		danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
 		success:
 			'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500',
 		ghost: 'bg-transparent text-blue-600 hover:bg-blue-50 focus:ring-blue-500',
-		outlineGray:
-			'bg-transparent border bg-white text-gray-800 hover:bg-gray-50',
+		outlineGray: 'border bg-white text-gray-800 hover:bg-brand-lightest',
 	}[variant]
 
 	// Size styles

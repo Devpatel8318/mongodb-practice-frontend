@@ -56,7 +56,7 @@ const ItemsPerPageDropdown = ({
 						{itemsPerPageOptions.map((option) => (
 							<label
 								key={option}
-								className="flex px-4 py-2 hover:bg-gray-100"
+								className="flex px-4 py-2 hover:bg-brand-hover"
 							>
 								<button
 									className="flex grow justify-between rounded-sm border-gray-300"

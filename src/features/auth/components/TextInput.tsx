@@ -72,7 +72,7 @@ const TextInput: React.FC<TextInputProps> = ({
 							? 'border-red-500 focus:border-red-500 focus:ring-red-500'
 							: 'border-gray-200 focus:border-blue-500 focus:ring-blue-500',
 						disabled &&
-							'cursor-not-allowed bg-gray-100 text-gray-500'
+							'cursor-not-allowed bg-brand-bg text-gray-500'
 					)}
 				/>
 

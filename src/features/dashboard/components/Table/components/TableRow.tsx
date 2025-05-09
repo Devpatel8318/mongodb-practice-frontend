@@ -32,7 +32,10 @@ const TableRow = ({ item }: { item: Question }) => {
 	}
 
 	return (
-		<tr onClick={handleClick} className="cursor-pointer hover:bg-gray-100">
+		<tr
+			onClick={handleClick}
+			className="cursor-pointer hover:bg-brand-hover"
+		>
 			<td className="h-px w-2/12 whitespace-nowrap px-6 py-3">
 				<span className="flex items-center gap-1 text-sm font-medium text-gray-500">
 					{getStatusIcon(item.status)}

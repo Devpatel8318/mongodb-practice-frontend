@@ -158,7 +158,7 @@ const QuestionsListTable = () => {
 								className={`absolute inset-0 rounded-full transition-colors duration-200 ease-in-out ${
 									showOnlyBookmarked
 										? 'bg-blue-600'
-										: 'bg-gray-200'
+										: 'bg-brand-lighter'
 								}`}
 							></span>
 							<span

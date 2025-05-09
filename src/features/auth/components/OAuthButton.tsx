@@ -45,7 +45,7 @@ const OAuthButton: React.FC = () => {
 		<button
 			type="button"
 			onClick={googleLogin}
-			className="flex w-full items-center justify-center gap-x-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 focus:outline-none"
+			className="flex w-full items-center justify-center gap-x-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-800 hover:bg-brand-lightest focus:outline-none"
 		>
 			<svg
 				className="h-auto w-4"

@@ -75,12 +75,12 @@ const QuestionDescription = () => {
 		<>
 			<h2 className="mb-5 text-2xl font-semibold">{question}</h2>
 			<div className="mb-5 flex items-center gap-3">
-				<span className="flex gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs">
+				<span className="flex gap-1 rounded-full bg-brand-bg px-2 py-1 text-xs">
 					{getStatusIcon(status || 'TODO')}
 				</span>
 
 				<span
-					className={`rounded-full bg-gray-100 px-2 py-1 text-xs ${getDifficultyColor(difficulty || 1)}`}
+					className={`rounded-full bg-brand-bg px-2 py-1 text-xs ${getDifficultyColor(difficulty || 1)}`}
 				>
 					{difficultyLabel}
 				</span>
