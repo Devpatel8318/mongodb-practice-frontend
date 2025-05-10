@@ -58,7 +58,7 @@ const Header = () => {
 							type="button"
 							onClick={toggleFilter}
 							aria-label="Open profile menu"
-							className="flex size-10 items-center justify-center rounded-full bg-white focus:outline-none"
+							className="my-1 flex size-8 items-center justify-center overflow-hidden rounded-full bg-white focus:outline-none"
 						>
 							<Image
 								src={profilePictureUrl || ''}
