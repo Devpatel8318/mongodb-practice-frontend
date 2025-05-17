@@ -23,3 +23,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# IntelliJ/WebStorm specific
+.idea/*
+!.idea/codeStyles
+!.idea/runConfigurations
+!.idea/misc.xml
+!.idea/modules.xml
+!.idea/vcs.xml
+*.iml
