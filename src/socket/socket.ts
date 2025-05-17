@@ -11,7 +11,7 @@ const URL = process.env.REACT_APP_SOCKET_URL
 let socket: Socket | null = null
 
 export const initializeSocket = () => {
-	if (socket) return socket // Return existing socket if already initialized
+	if (socket) return socket // Return an existing socket if already initialized
 
 	console.log('Socket.IO connecting to:', URL)
 
@@ -55,4 +55,4 @@ export const initializeSocket = () => {
 	return socket
 }
 
-export const getSocket = () => socket
+// export const getSocket = () => socket
