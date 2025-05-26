@@ -25,6 +25,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # IntelliJ/WebStorm specific
+.idea/
 .idea/*
 !.idea/codeStyles
 !.idea/runConfigurations
