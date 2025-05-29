@@ -1,5 +1,5 @@
 import { Dispatch, memo, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { useAppSelector } from 'src/Store'
 import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/questionPanel.reducer'
 import { cn } from 'src/utils/cn'
@@ -76,11 +76,10 @@ const QuestionPanel = ({
 	const [navItem, setNavItem] = useState<NavItem>('description')
 
 	const params = useParams()
-	const navigate = useNavigate()
 	const { questionId } = params
 
 	const Header = () => (
-		<div className="absolute inset-x-0 top-0 z-10 flex h-10 items-center justify-between bg-brand-lightest p-2">
+		<div className="bg-brand-lightest absolute inset-x-0 top-0 z-10 flex h-10 items-center justify-between p-2">
 			<NavButtons navItem={navItem} setNavItem={setNavItem} />
 			<LayoutButtons
 				isMaximized={isMaximized}
@@ -95,17 +94,19 @@ const QuestionPanel = ({
 	)
 
 	useEffect(() => {
-		if (questionId) {
-			// when page is refreshed, redux will be empty so, if params contains questionId then set this to redux
-			if (!selectedQuestionId) {
-				setSelectedQuestionIdDispatcher(+questionId)
-			}
-			fetchQuestionDetailActionDispatcher(+questionId)
-		} else {
-			// something went wrong
-			navigate('/')
+		if (!questionId) return // for typescript
+
+		// when page is refreshed, redux will be empty so, if params contains questionId then set this to redux
+		if (!selectedQuestionId) {
+			setSelectedQuestionIdDispatcher(+questionId)
 		}
-	}, [questionId, navigate, selectedQuestionId])
+	}, [questionId, selectedQuestionId])
+
+	useEffect(() => {
+		if (!questionId) return // for typescript
+
+		fetchQuestionDetailActionDispatcher(+questionId)
+	}, [questionId])
 
 	const renderContent = () => {
 		switch (navItem) {
@@ -122,6 +123,8 @@ const QuestionPanel = ({
 				return null
 		}
 	}
+
+	if (!questionId) return <Navigate to="/" replace />
 
 	return (
 		<div className="relative h-[calc(100vh-60px)]">
