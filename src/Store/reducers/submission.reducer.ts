@@ -43,11 +43,7 @@ const submissionSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(submitAnswerAction.pending, (state) => {
-				Object.assign(state, {
-					status: API_STATUS.PENDING,
-					error: null,
-					submissionFlowLoading: true,
-				})
+				Object.assign(state, initialState)
 			})
 			.addCase(submitAnswerAction.fulfilled, (state, { payload }) => {
 				const { pending } = payload.data || {}
@@ -55,6 +51,7 @@ const submissionSlice = createSlice({
 				Object.assign(state, {
 					status: API_STATUS.SUCCESS,
 					error: null,
+					data: payload.data,
 					submissionFlowLoading: !!pending,
 				})
 			})
@@ -78,6 +75,7 @@ const submissionSlice = createSlice({
 				Object.assign(state, {
 					status: API_STATUS.SUCCESS,
 					error: null,
+					data: payload.data,
 					submissionFlowLoading: !!pending,
 				})
 			})

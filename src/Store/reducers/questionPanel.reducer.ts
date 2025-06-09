@@ -5,18 +5,20 @@ import {
 	toggleBookmarkAction,
 } from 'src/features/queryPractice/panels/questionPanel/actions/questionPanel.actions'
 import { appDispatcher } from 'src/Store'
+import {
+	DifficultyEnum,
+	QuestionStatusEnum,
+	SubmissionStatusEnum,
+} from 'src/Types/enums'
 import { ReducerErrorObject } from 'src/Types/global'
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
-
-import { Question } from './dashboard.reducer'
 
 export interface QuestionDetail {
 	questionId: number
 	question: string
 	description: string
-	difficulty: Question['difficulty']
-	status: Question['status']
-	difficultyLabel: Question['difficultyLabel']
+	difficulty: DifficultyEnum
+	status: QuestionStatusEnum
 	dataBaseSchema: { title: string; schema: object }[]
 	isBookmarked: boolean
 }
@@ -122,7 +124,7 @@ export interface Submission {
 	userId: number
 	questionId: number
 	query: string
-	status: 'CORRECT' | 'INCORRECT' | 'PENDING'
+	status: SubmissionStatusEnum
 	createdAt: number
 }
 

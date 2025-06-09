@@ -1,5 +1,6 @@
 import { createSlice } from 'src/deps'
 import { getAllQuestionsAction } from 'src/features/dashboard/dashboard.action'
+import { DifficultyEnum, QuestionStatusEnum } from 'src/Types/enums'
 import { FieldError } from 'src/Types/global'
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
 
@@ -8,9 +9,8 @@ export type Question = {
 	question: string
 	answer: string
 	questionId: number
-	difficulty: 1 | 5 | 10
-	difficultyLabel: 'Easy' | 'Medium' | 'Hard'
-	status: 'TODO' | 'SOLVED' | 'ATTEMPTED'
+	difficulty: DifficultyEnum
+	status: QuestionStatusEnum
 }
 
 export interface QuestionsStateType {

@@ -2,9 +2,10 @@ import Icons from 'src/assets/svg'
 import { useNavigate } from 'src/deps'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/questionPanel.reducer'
+import { DifficultyEnum, QuestionStatusEnum } from 'src/Types/enums'
 import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
 
-const getStatusIcon = (status: Question['status']) => {
+const getStatusIcon = (status: QuestionStatusEnum) => {
 	const icons = {
 		TODO: <Icons.Images16.Todo />,
 		SOLVED: <Icons.Images16.Tick />,
@@ -13,13 +14,13 @@ const getStatusIcon = (status: Question['status']) => {
 	return icons[status] || null
 }
 
-const getDifficultyColor = (difficulty: Question['difficulty']) => {
-	const colors: Record<number, string> = {
-		1: 'text-teal-800 bg-teal-100',
-		5: 'text-yellow-800 bg-yellow-100',
-		10: 'text-red-800 bg-red-100',
+const getDifficultyColor = (difficulty: DifficultyEnum) => {
+	const colors: Record<DifficultyEnum, string> = {
+		[DifficultyEnum.EASY]: 'text-teal-800 bg-teal-100',
+		[DifficultyEnum.MEDIUM]: 'text-yellow-800 bg-yellow-100',
+		[DifficultyEnum.HARD]: 'text-red-800 bg-red-100',
 	}
-	return colors[difficulty] || ''
+	return colors[difficulty]
 }
 
 const TableRow = ({ item }: { item: Question }) => {
@@ -51,7 +52,7 @@ const TableRow = ({ item }: { item: Question }) => {
 				<span
 					className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium capitalize ${getDifficultyColor(item.difficulty)}`}
 				>
-					{item.difficultyLabel}
+					{capitalizeFirstLetter(item.difficulty)}
 				</span>
 			</td>
 		</tr>

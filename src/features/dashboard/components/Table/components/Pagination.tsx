@@ -152,8 +152,7 @@ const Pagination = () => {
 				/>
 			</div>
 			<div className="text-sm">
-				Showing {start} - {end}{' '}
-				{totalRecords && `of ${totalRecords} entries`}
+				Showing {start} - {end} {totalRecords && `of ${totalRecords}`}
 			</div>
 			<div className="inline-flex items-center gap-x-2">
 				<Button

@@ -43,7 +43,7 @@ const SubmissionPanel = ({
 	const { socketId } = useAppSelector((store) => store.socket)
 
 	const validate = (): string | false => {
-		if (!code) return 'code editor can not be empty'
+		if (!code.trim()) return 'code editor can not be empty'
 
 		return false
 	}

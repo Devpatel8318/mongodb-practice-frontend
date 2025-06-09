@@ -2,9 +2,9 @@ import Icons from 'src/assets/svg'
 import JsonView from 'src/components/jsonView/JsonView'
 import Loader from 'src/components/Loader/Loader'
 import { useAppSelector } from 'src/Store'
-import { Question } from 'src/Store/reducers/dashboard.reducer'
+import { DifficultyEnum, QuestionStatusEnum } from 'src/Types/enums'
 
-const getStatusIcon = (status: Question['status']) => {
+const getStatusIcon = (status: QuestionStatusEnum) => {
 	const icons = {
 		TODO: (
 			<>
@@ -28,24 +28,18 @@ const getStatusIcon = (status: Question['status']) => {
 	return icons[status] || null
 }
 
-const getDifficultyColor = (difficulty: Question['difficulty']) => {
-	const colors: Record<number, string> = {
-		1: 'text-teal-500',
-		5: 'text-orange-500',
-		10: 'text-red-500',
+const getDifficultyColor = (difficulty: DifficultyEnum) => {
+	const colors: Record<DifficultyEnum, string> = {
+		[DifficultyEnum.EASY]: 'text-teal-500',
+		[DifficultyEnum.MEDIUM]: 'text-orange-500',
+		[DifficultyEnum.HARD]: 'text-red-500',
 	}
 	return colors[difficulty] || ''
 }
 
 const QuestionDescription = () => {
-	const {
-		question,
-		description,
-		status,
-		difficulty,
-		difficultyLabel,
-		dataBaseSchema,
-	} = useAppSelector((store) => store.questionPanel.data) || {}
+	const { question, description, status, difficulty, dataBaseSchema } =
+		useAppSelector((store) => store.questionPanel.data) || {}
 
 	const { loading } = useAppSelector((state) => state.questionPanel)
 
@@ -76,13 +70,13 @@ const QuestionDescription = () => {
 			<h2 className="mb-5 text-2xl font-semibold">{question}</h2>
 			<div className="mb-5 flex items-center gap-3">
 				<span className="flex gap-1 rounded-full bg-brand-bg px-2 py-1 text-xs">
-					{getStatusIcon(status || 'TODO')}
+					{getStatusIcon(status || QuestionStatusEnum.TODO)}
 				</span>
 
 				<span
-					className={`rounded-full bg-brand-bg px-2 py-1 text-xs ${getDifficultyColor(difficulty || 1)}`}
+					className={`rounded-full bg-brand-bg px-2 py-1 text-xs ${getDifficultyColor(difficulty || DifficultyEnum.EASY)}`}
 				>
-					{difficultyLabel}
+					{difficulty?.toLowerCase()}
 				</span>
 			</div>
 			<div className="mb-8 text-sm">{description}</div>

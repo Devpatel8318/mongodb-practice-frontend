@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import Loader from 'src/components/Loader/Loader'
 import Card from 'src/features/dashboard/components/Table/components/Card'
 import { useAppSelector } from 'src/Store'
+import { Submission } from 'src/Store/reducers/questionPanel.reducer'
+import { SubmissionStatusEnum } from 'src/Types/enums'
 
 // import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
 import { fetchSubmissionsActionDispatcher } from './actions/questionPanel.actions'
@@ -25,6 +27,14 @@ const Submissions = () => {
 
 	if (loading) return <Loader />
 
+	const getCardBorderColor = (submission: Submission) => {
+		return submission.status === SubmissionStatusEnum.CORRECT
+			? 'border border-green-300'
+			: submission.status === SubmissionStatusEnum.INCORRECT
+				? 'border border-red-300'
+				: ''
+	}
+
 	return (
 		<>
 			{data && data.list.length ? (
@@ -39,13 +49,7 @@ const Submissions = () => {
 					{data.list.map((submission) => (
 						<Card
 							key={submission.submissionId}
-							className={`mb-2 flex items-center justify-between p-4 ${
-								submission.status === 'CORRECT'
-									? 'border border-green-300'
-									: submission.status === 'INCORRECT'
-										? 'border border-red-300'
-										: ''
-							}`}
+							className={`mb-2 flex items-center justify-between p-4 ${getCardBorderColor(submission)}`}
 						>
 							{/* <div className="text-sm text-gray-500">
 								{capitalizeFirstLetter(submission.status)}

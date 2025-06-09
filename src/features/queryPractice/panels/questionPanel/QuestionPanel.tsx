@@ -79,7 +79,7 @@ const QuestionPanel = ({
 	const { questionId } = params
 
 	const Header = () => (
-		<div className="bg-brand-lightest absolute inset-x-0 top-0 z-10 flex h-10 items-center justify-between p-2">
+		<div className="absolute inset-x-0 top-0 z-10 flex h-10 items-center justify-between bg-brand-lightest p-2">
 			<NavButtons navItem={navItem} setNavItem={setNavItem} />
 			<LayoutButtons
 				isMaximized={isMaximized}
