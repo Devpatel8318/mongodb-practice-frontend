@@ -4,7 +4,7 @@ export enum DifficultyEnum {
 	HARD = 'HARD',
 }
 
-export enum QuestionStatusEnum {
+export enum QuestionProgressEnum {
 	TODO = 'TODO',
 	ATTEMPTED = 'ATTEMPTED',
 	SOLVED = 'SOLVED',

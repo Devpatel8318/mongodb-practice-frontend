@@ -1,7 +1,7 @@
 import Icons from 'src/assets/svg'
 
 export type Filters = {
-	status: {
+	progress: {
 		todo: boolean
 		attempted: boolean
 		solved: boolean

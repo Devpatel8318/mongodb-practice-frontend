@@ -41,29 +41,3 @@ export const mongodbCustomLightTheme: monaco.editor.IStandaloneThemeData = {
 		{ token: 'function', foreground: blue },
 	],
 }
-
-export const mongodbCustomDarkTheme: monaco.editor.IStandaloneThemeData = {
-	base: 'vs-dark',
-	inherit: true,
-	colors: {
-		'editor.background': '#0f1c1c', // Dark MongoDB-like background
-		'editor.foreground': '#ffffff',
-		'editorLineNumber.foreground': '#5b7f7f',
-		'editorLineNumber.activeForeground': '#ffffff',
-		'editorCursor.foreground': '#00ffcc',
-		'editor.selectionBackground': '#264f4f',
-		'editor.inactiveSelectionBackground': '#1e3939',
-	},
-
-	rules: [
-		{ token: 'comment', foreground: '6c8c8c', fontStyle: 'italic' }, // muted gray
-		{ token: 'keyword', foreground: '4fc1ff', fontStyle: 'bold' }, // light blue
-		{ token: 'operator', foreground: '3cb3ff' }, // cyan
-		{ token: 'field', foreground: 'ff8c3f' }, // warm orange
-		{ token: 'string', foreground: '7ee787' }, // green (like Mongo strings)
-		{ token: 'number', foreground: 'd29b5e' }, // slightly orange-y
-		{ token: 'objectId', foreground: '7ee787' }, // same green as string
-		{ token: 'regexp', foreground: 'd16969' }, // light red for regex
-		{ token: 'delimiter', foreground: 'c0c0c0' }, // light gray
-	],
-}

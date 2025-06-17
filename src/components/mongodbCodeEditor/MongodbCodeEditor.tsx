@@ -3,7 +3,7 @@ import * as monaco from 'monaco-editor'
 import { memo, useCallback } from 'react'
 import { useEffect, useRef } from 'src/deps'
 
-import { mongodbCompletion } from './mongodbLanguageSupport/mongodbCompletion'
+import { mongodbCompletion as _mongodbCompletion } from './mongodbLanguageSupport/mongodbCompletion'
 import { mongodbCustomLightTheme } from './mongodbLanguageSupport/mongodbCustomTheme'
 import mongodbDocumentSemantic from './mongodbLanguageSupport/mongodbDocumentSemantic'
 import formatMongoDBQuery from './mongodbLanguageSupport/mongodbFormatter'
@@ -98,13 +98,14 @@ const MongodbCodeEditor = ({
 				)
 			disposablesRef.current.push(semanticTokensProvider)
 
+			// * removing the MongoDB completion item provider registration, might added later
 			// Register the MongoDB completion item provider
-			const completionProvider =
-				monacoNew.languages.registerCompletionItemProvider(
-					'mongodb',
-					mongodbCompletion
-				)
-			disposablesRef.current.push(completionProvider)
+			// const completionProvider =
+			// 	monacoNew.languages.registerCompletionItemProvider(
+			// 		'mongodb',
+			// 		mongodbCompletion
+			// 	)
+			// disposablesRef.current.push(completionProvider)
 
 			// Register document formatting provider
 			const formattingProvider =

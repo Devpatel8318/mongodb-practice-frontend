@@ -53,13 +53,7 @@ const App = () => {
 
 	return (
 		<GoogleOAuthProvider clientId={clientId}>
-			<Toaster
-				toastOptions={{
-					duration: 5000,
-					success: { duration: 1000 },
-					error: { duration: 2000 },
-				}}
-			/>
+			<Toaster />
 			<Routers />
 		</GoogleOAuthProvider>
 	)

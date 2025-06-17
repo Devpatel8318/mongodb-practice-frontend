@@ -6,7 +6,13 @@ import { CodeContext } from 'src/contexts/codeContext/CodeContext'
 import Button from 'src/features/auth/components/Button'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import { useAppSelector } from 'src/Store'
+import {
+	setQuestionStatusAsAttemptedDispatcher,
+	setQuestionStatusAsSolvedDispatcher,
+} from 'src/Store/reducers/questionPanel.reducer'
+import { QuestionProgressEnum } from 'src/Types/enums'
 import { API_STATUS } from 'src/utils/callApi'
+import getErrorMessageAndField from 'src/utils/getErrorMessageAndField'
 import showToast from 'src/utils/showToast'
 
 import {
@@ -34,9 +40,10 @@ const SubmissionPanel = ({
 		error: submissionError,
 	} = useAppSelector((store) => store.submission)
 
-	const { selectedQuestionId } = useAppSelector(
+	const { selectedQuestionId, data: questionData } = useAppSelector(
 		(store) => store.questionPanel
 	)
+	const questionStatus = questionData?.progress
 
 	const navigate = useNavigate()
 	const { code } = useContext(CodeContext)
@@ -53,12 +60,16 @@ const SubmissionPanel = ({
 
 		if (validatorResponse) return showToast('error', validatorResponse)
 
+		//for type script
 		if (!selectedQuestionId) {
 			console.error('selectedQuestionId not found', selectedQuestionId)
 			showToast('error', 'Something went wrong')
 			return navigate('/')
 		}
 
+		if (questionStatus === QuestionProgressEnum.TODO) {
+			setQuestionStatusAsAttemptedDispatcher()
+		}
 		submitAnswerActionDispatcher({
 			questionId: selectedQuestionId,
 			answer: code,
@@ -71,6 +82,7 @@ const SubmissionPanel = ({
 
 		if (validatorResponse) return showToast('error', validatorResponse)
 
+		//for type script
 		if (!selectedQuestionId) {
 			console.error('selectedQuestionId not found', selectedQuestionId)
 			showToast('error', 'Something went wrong')
@@ -148,10 +160,8 @@ const SubmissionPanel = ({
 		const { output } = data
 
 		const isRunOnly = 'isRunOnly' in data
-		const correct =
-			!isRunOnly && 'correct' in data ? data.correct : undefined
-		const expected =
-			!isRunOnly && 'expected' in data ? data.expected : undefined
+		const correct = !isRunOnly && data.correct
+		const expected = !isRunOnly && data.expected
 
 		return (
 			<div>
@@ -184,19 +194,26 @@ const SubmissionPanel = ({
 
 	// Handle error for both submission and evaluation apis
 	useEffect(() => {
-		if (
-			isFirstRender ||
-			(status !== API_STATUS.REJECTED && !submissionError)
-		) {
+		if (isFirstRender) {
 			return
 		}
 
-		console.log('submissionError', submissionError)
+		if (status === API_STATUS.REJECTED && submissionError) {
+			const { message } = getErrorMessageAndField(submissionError)
+			showToast('error', message, 3000)
+		}
 
-		const defaultErrorMessage = 'Something went wrong'
-		const firstErrorReason = submissionError?.reasons?.[0]
-		const message = firstErrorReason?.message || defaultErrorMessage
-		showToast('error', message)
+		if (
+			status === API_STATUS.SUCCESS &&
+			data?.questionId === selectedQuestionId
+		) {
+			const isRunOnly = 'isRunOnly' in data
+			const correct = !isRunOnly && data.correct
+
+			if (correct) {
+				setQuestionStatusAsSolvedDispatcher()
+			}
+		}
 
 		// only show error only when status has changed
 		// eslint-disable-next-line react-hooks/exhaustive-deps

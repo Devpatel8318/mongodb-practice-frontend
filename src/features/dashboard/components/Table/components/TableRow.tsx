@@ -2,16 +2,16 @@ import Icons from 'src/assets/svg'
 import { useNavigate } from 'src/deps'
 import { Question } from 'src/Store/reducers/dashboard.reducer'
 import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/questionPanel.reducer'
-import { DifficultyEnum, QuestionStatusEnum } from 'src/Types/enums'
+import { DifficultyEnum, QuestionProgressEnum } from 'src/Types/enums'
 import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
 
-const getStatusIcon = (status: QuestionStatusEnum) => {
+const getProgressIcon = (progress: QuestionProgressEnum) => {
 	const icons = {
 		TODO: <Icons.Images16.Todo />,
 		SOLVED: <Icons.Images16.Tick />,
 		ATTEMPTED: <Icons.Images16.Attempted />,
 	}
-	return icons[status] || null
+	return icons[progress] || null
 }
 
 const getDifficultyColor = (difficulty: DifficultyEnum) => {
@@ -39,8 +39,8 @@ const TableRow = ({ item }: { item: Question }) => {
 		>
 			<td className="h-px w-2/12 whitespace-nowrap px-6 py-3">
 				<span className="flex items-center gap-1 text-sm font-medium text-gray-500">
-					{getStatusIcon(item.status)}
-					{item.status?.toLowerCase()}
+					{getProgressIcon(item.progress)}
+					{item.progress?.toLowerCase()}
 				</span>
 			</td>
 			<td className="size-px w-8/12 whitespace-nowrap py-3 ps-6">

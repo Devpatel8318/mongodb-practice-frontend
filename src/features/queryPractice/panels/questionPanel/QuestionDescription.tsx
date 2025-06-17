@@ -2,9 +2,9 @@ import Icons from 'src/assets/svg'
 import JsonView from 'src/components/jsonView/JsonView'
 import Loader from 'src/components/Loader/Loader'
 import { useAppSelector } from 'src/Store'
-import { DifficultyEnum, QuestionStatusEnum } from 'src/Types/enums'
+import { DifficultyEnum, QuestionProgressEnum } from 'src/Types/enums'
 
-const getStatusIcon = (status: QuestionStatusEnum) => {
+const getProgressIcon = (progress: QuestionProgressEnum) => {
 	const icons = {
 		TODO: (
 			<>
@@ -25,7 +25,7 @@ const getStatusIcon = (status: QuestionStatusEnum) => {
 			</>
 		),
 	}
-	return icons[status] || null
+	return icons[progress] || null
 }
 
 const getDifficultyColor = (difficulty: DifficultyEnum) => {
@@ -38,7 +38,7 @@ const getDifficultyColor = (difficulty: DifficultyEnum) => {
 }
 
 const QuestionDescription = () => {
-	const { question, description, status, difficulty, dataBaseSchema } =
+	const { question, description, progress, difficulty, dataBaseSchema } =
 		useAppSelector((store) => store.questionPanel.data) || {}
 
 	const { loading } = useAppSelector((state) => state.questionPanel)
@@ -70,7 +70,7 @@ const QuestionDescription = () => {
 			<h2 className="mb-5 text-2xl font-semibold">{question}</h2>
 			<div className="mb-5 flex items-center gap-3">
 				<span className="flex gap-1 rounded-full bg-brand-bg px-2 py-1 text-xs">
-					{getStatusIcon(status || QuestionStatusEnum.TODO)}
+					{getProgressIcon(progress || QuestionProgressEnum.TODO)}
 				</span>
 
 				<span

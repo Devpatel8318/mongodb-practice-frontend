@@ -28,9 +28,9 @@ const Submissions = () => {
 	if (loading) return <Loader />
 
 	const getCardBorderColor = (submission: Submission) => {
-		return submission.status === SubmissionStatusEnum.CORRECT
+		return submission.submissionStatus === SubmissionStatusEnum.CORRECT
 			? 'border border-green-300'
-			: submission.status === SubmissionStatusEnum.INCORRECT
+			: submission.submissionStatus === SubmissionStatusEnum.INCORRECT
 				? 'border border-red-300'
 				: ''
 	}

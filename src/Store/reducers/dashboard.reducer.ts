@@ -1,6 +1,6 @@
 import { createSlice } from 'src/deps'
 import { getAllQuestionsAction } from 'src/features/dashboard/dashboard.action'
-import { DifficultyEnum, QuestionStatusEnum } from 'src/Types/enums'
+import { DifficultyEnum, QuestionProgressEnum } from 'src/Types/enums'
 import { FieldError } from 'src/Types/global'
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
 
@@ -10,7 +10,7 @@ export type Question = {
 	answer: string
 	questionId: number
 	difficulty: DifficultyEnum
-	status: QuestionStatusEnum
+	progress: QuestionProgressEnum
 }
 
 export interface QuestionsStateType {
@@ -39,8 +39,8 @@ const questionsSlice = createSlice({
 			.addCase(getAllQuestionsAction.pending, (state) => {
 				Object.assign(state, {
 					status: API_STATUS.PENDING,
-					data: [],
 					error: null,
+					data: [],
 					loading: true,
 				})
 			})

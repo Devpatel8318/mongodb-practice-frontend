@@ -7,7 +7,7 @@ import {
 import { appDispatcher } from 'src/Store'
 import {
 	DifficultyEnum,
-	QuestionStatusEnum,
+	QuestionProgressEnum,
 	SubmissionStatusEnum,
 } from 'src/Types/enums'
 import { ReducerErrorObject } from 'src/Types/global'
@@ -18,7 +18,7 @@ export interface QuestionDetail {
 	question: string
 	description: string
 	difficulty: DifficultyEnum
-	status: QuestionStatusEnum
+	progress: QuestionProgressEnum
 	dataBaseSchema: { title: string; schema: object }[]
 	isBookmarked: boolean
 }
@@ -45,6 +45,16 @@ const questionPanelSlice = createSlice({
 	reducers: {
 		setSelectedQuestionId: (state, { payload }) => {
 			state.selectedQuestionId = payload
+		},
+		setQuestionStatusAsAttempted: (state) => {
+			if (state.data) {
+				state.data.progress = QuestionProgressEnum.ATTEMPTED
+			}
+		},
+		setQuestionStatusAsSolved: (state) => {
+			if (state.data) {
+				state.data.progress = QuestionProgressEnum.SOLVED
+			}
 		},
 	},
 	extraReducers: (builder) => {
@@ -109,10 +119,20 @@ const questionPanelSlice = createSlice({
 	},
 })
 
-const { setSelectedQuestionId } = questionPanelSlice.actions
+const {
+	setSelectedQuestionId,
+	setQuestionStatusAsAttempted,
+	setQuestionStatusAsSolved,
+} = questionPanelSlice.actions
 
 export const setSelectedQuestionIdDispatcher = (questionId: number) => {
 	appDispatcher(setSelectedQuestionId(questionId))
+}
+export const setQuestionStatusAsAttemptedDispatcher = () => {
+	appDispatcher(setQuestionStatusAsAttempted())
+}
+export const setQuestionStatusAsSolvedDispatcher = () => {
+	appDispatcher(setQuestionStatusAsSolved())
 }
 
 export const questionPanelReducer = questionPanelSlice.reducer
@@ -124,7 +144,7 @@ export interface Submission {
 	userId: number
 	questionId: number
 	query: string
-	status: SubmissionStatusEnum
+	submissionStatus: SubmissionStatusEnum
 	createdAt: number
 }
 

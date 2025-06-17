@@ -5,7 +5,7 @@ import { useLocalStorageSetValue } from 'src/hooks/useLocalStorage'
 import { Sort } from '../QuestionsListTable'
 
 const tableHeaderData = [
-	{ name: 'status', colWidth: 'w-2/12', allowSorting: true },
+	{ name: 'progress', colWidth: 'w-2/12', allowSorting: true },
 	{ name: 'question', colWidth: 'w-8/12', allowSorting: false },
 	{ name: 'difficulty', colWidth: 'w-2/12', allowSorting: true },
 ]

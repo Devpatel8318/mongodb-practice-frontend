@@ -16,7 +16,7 @@ import TableRow from './components/TableRow'
 import { formatFilters, formatSortQuery } from './helper'
 
 const questionFilters = {
-	status: {
+	progress: {
 		todo: false,
 		attempted: false,
 		solved: false,
@@ -37,7 +37,7 @@ const QuestionsListTable = () => {
 	)
 
 	const [sort, setSort] = useLocalStorage<Sort>('questions-sort', {})
-	const [search, setSearch] = useState('')
+	const [search, setSearch] = useLocalStorage<string>('questions-search', '')
 	const [showOnlyBookmarked, setShowOnlyBookmarked] = useState(false)
 	const [openFilter, setOpenFilter] = useState<string | null>(null)
 
@@ -126,8 +126,8 @@ const QuestionsListTable = () => {
 			<Card className="mb-2 px-6 py-4">
 				<div className="flex items-center gap-6">
 					<FilterDropdown
-						type="status"
-						label="Status"
+						type="progress"
+						label="Progress"
 						filters={filters}
 						openFilter={openFilter}
 						handleFilterChange={handleFilterChange}

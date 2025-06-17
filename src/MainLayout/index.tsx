@@ -20,8 +20,8 @@ const Header = () => {
 		const buttonName = closestButton?.getAttribute('name')
 
 		if (buttonName === 'profile-dropdown-button') {
-			// * Scenario example: "status" filter dropdown is open and user once again clicks on the "status" filter button
-			// * In this case, we should close the status dropdown
+			// * Scenario example: "difficulty" filter dropdown is open and user once again clicks on the "difficulty" filter button
+			// * In this case, we should close the difficulty dropdown
 			// * but what was happening is that usOnClickOutside was closing the dropdown and then toggleFilter was opening it again
 			// * So,need to check if the clicked element is the filter button itself then don't close the dropdown
 
