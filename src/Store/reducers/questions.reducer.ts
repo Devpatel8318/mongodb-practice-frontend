@@ -1,4 +1,5 @@
 import { createSlice } from 'src/deps'
+import { getAllQuestionsAction } from 'src/features/dashboard/dashboard.action'
 import {
 	fetchQuestionDetailAction,
 	fetchSubmissionsAction,
@@ -10,8 +11,65 @@ import {
 	QuestionProgressEnum,
 	SubmissionStatusEnum,
 } from 'src/Types/enums'
-import { ReducerErrorObject } from 'src/Types/global'
+import { FieldError, ReducerErrorObject } from 'src/Types/global'
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
+
+export interface DashboardStateType {
+	status: null | API_STATUS_TYPE
+	data: null | {
+		list: QuestionDetail[]
+		total: number
+	}
+	error: null | FieldError[]
+	loading: boolean
+}
+
+const dashboardInitialState: DashboardStateType = {
+	status: null,
+	data: null,
+	error: null,
+	loading: false,
+}
+
+const dashboardSlice = createSlice({
+	name: 'dashboard',
+	initialState: dashboardInitialState,
+	reducers: {},
+	extraReducers: (builder) => {
+		builder
+			.addCase(getAllQuestionsAction.pending, (state) => {
+				Object.assign(state, {
+					status: API_STATUS.PENDING,
+					error: null,
+					data: [],
+					loading: true,
+				})
+			})
+			.addCase(getAllQuestionsAction.fulfilled, (state, { payload }) => {
+				Object.assign(state, {
+					status: API_STATUS.SUCCESS,
+					loading: false,
+					data: payload.data,
+					error: null,
+				})
+			})
+			.addCase(getAllQuestionsAction.rejected, (state, { payload }) => {
+				Object.assign(state, {
+					status: API_STATUS.REJECTED,
+					data: [],
+					error: {
+						message: payload?.message,
+						reasons: payload?.reasons,
+					},
+					loading: false,
+				})
+			})
+	},
+})
+
+export const dashboard = dashboardSlice.reducer
+
+// *********************** //
 
 export interface QuestionDetail {
 	questionId: number
@@ -21,6 +79,8 @@ export interface QuestionDetail {
 	progress: QuestionProgressEnum
 	dataBaseSchema: { title: string; schema: object }[]
 	isBookmarked: boolean
+	isSolutionSeen: boolean
+	answer?: string
 }
 
 export interface QuestionPanelStateType {
@@ -54,6 +114,11 @@ const questionPanelSlice = createSlice({
 		setQuestionStatusAsSolved: (state) => {
 			if (state.data) {
 				state.data.progress = QuestionProgressEnum.SOLVED
+			}
+		},
+		setSolutionSeen: (state) => {
+			if (state.data) {
+				state.data.isSolutionSeen = true
 			}
 		},
 	},
@@ -123,6 +188,7 @@ const {
 	setSelectedQuestionId,
 	setQuestionStatusAsAttempted,
 	setQuestionStatusAsSolved,
+	setSolutionSeen,
 } = questionPanelSlice.actions
 
 export const setSelectedQuestionIdDispatcher = (questionId: number) => {
@@ -133,6 +199,9 @@ export const setQuestionStatusAsAttemptedDispatcher = () => {
 }
 export const setQuestionStatusAsSolvedDispatcher = () => {
 	appDispatcher(setQuestionStatusAsSolved())
+}
+export const setSolutionSeenDispatcher = () => {
+	appDispatcher(setSolutionSeen())
 }
 
 export const questionPanelReducer = questionPanelSlice.reducer
@@ -173,7 +242,7 @@ const submissionsSlice = createSlice({
 					status: API_STATUS.PENDING,
 					loading: true,
 					error: null,
-					data: null,
+					// data: null, // if this is set to null, it will cause UI to show no submissions between fetches (experimental, might delete later)
 				})
 			})
 			.addCase(fetchSubmissionsAction.fulfilled, (state, { payload }) => {

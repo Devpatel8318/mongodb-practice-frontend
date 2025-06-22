@@ -5,6 +5,7 @@ import { ReactComponent as DownArrowPaginationIcon } from './downArrowPagination
 import { ReactComponent as FilterIcon } from './filterIcon.svg'
 import { ReactComponent as HamburgerMenuIcon } from './hamburgerMenuIcon.svg'
 import { ReactComponent as LeftArrowPaginationIcon } from './leftArrowPaginationIcon.svg'
+import { ReactComponent as LockIcon } from './lock.svg'
 import { ReactComponent as MaximizeIcon } from './maximizeIcon.svg'
 import { ReactComponent as MinimizeIcon } from './minimizeIcon.svg'
 import { ReactComponent as ProfileIcon } from './profileIcon.svg'
@@ -27,3 +28,4 @@ export const Search = memo(SearchIcon)
 export const Tick = memo(TickIcon)
 export const Filter = memo(FilterIcon)
 export const Attempted = memo(AttemptedIcon)
+export const Lock = memo(LockIcon)

@@ -5,6 +5,7 @@ import callApi from 'src/utils/callApi'
 import { tryCatch } from 'src/utils/tryCatch'
 
 type UserSettingSuccessResponse = SuccessResponse<{
+	userId: number
 	email: string
 	profilePictureUrl: string
 }>

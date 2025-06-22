@@ -3,7 +3,7 @@ import { appDispatcher } from 'src/Store'
 import {
 	QuestionDetail,
 	Submission,
-} from 'src/Store/reducers/questionPanel.reducer'
+} from 'src/Store/reducers/questions.reducer'
 import { SolutionResponse } from 'src/Store/reducers/solution.reducer'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'

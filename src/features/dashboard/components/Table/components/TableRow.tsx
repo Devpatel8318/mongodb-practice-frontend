@@ -1,7 +1,9 @@
 import Icons from 'src/assets/svg'
 import { useNavigate } from 'src/deps'
-import { Question } from 'src/Store/reducers/dashboard.reducer'
-import { setSelectedQuestionIdDispatcher } from 'src/Store/reducers/questionPanel.reducer'
+import {
+	QuestionDetail,
+	setSelectedQuestionIdDispatcher,
+} from 'src/Store/reducers/questions.reducer'
 import { DifficultyEnum, QuestionProgressEnum } from 'src/Types/enums'
 import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
 
@@ -23,7 +25,7 @@ const getDifficultyColor = (difficulty: DifficultyEnum) => {
 	return colors[difficulty]
 }
 
-const TableRow = ({ item }: { item: Question }) => {
+const TableRow = ({ item }: { item: QuestionDetail }) => {
 	const navigate = useNavigate()
 
 	const handleClick = () => {

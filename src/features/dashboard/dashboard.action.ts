@@ -1,12 +1,12 @@
 import { createAsyncThunk } from 'src/deps'
 import { appDispatcher } from 'src/Store'
-import { Question } from 'src/Store/reducers/dashboard.reducer'
+import { QuestionDetail } from 'src/Store/reducers/questions.reducer'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
 import { tryCatch } from 'src/utils/tryCatch'
 
 export const getAllQuestionsAction = createAsyncThunk<
-	SuccessResponse<{ list: Question[]; total: number }>,
+	SuccessResponse<{ list: QuestionDetail[]; total: number }>,
 	{
 		page?: number
 		limit?: number
@@ -46,7 +46,7 @@ export const getAllQuestionsAction = createAsyncThunk<
 	}
 
 	const [data, error] = await tryCatch<
-		SuccessResponse<{ list: Question[]; total: number }>
+		SuccessResponse<{ list: QuestionDetail[]; total: number }>
 	>(callApi(url, 'GET'))
 	if (error) {
 		return rejectWithValue(error)

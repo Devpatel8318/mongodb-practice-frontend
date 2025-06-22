@@ -1,9 +1,9 @@
 import auth from './auth.reducer'
-import dashboard from './dashboard.reducer'
 import {
+	dashboard as dashboard,
 	questionPanelReducer as questionPanel,
 	submissionsReducer as submissions,
-} from './questionPanel.reducer'
+} from './questions.reducer'
 import socket from './socket.reducer'
 import solution from './solution.reducer'
 import submission from './submission.reducer'

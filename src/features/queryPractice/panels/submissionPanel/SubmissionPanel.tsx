@@ -1,20 +1,21 @@
+// 1. Imports
 import { memo, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Icons from 'src/assets/svg'
-import JsonView from 'src/components/jsonView/JsonView'
 import { CodeContext } from 'src/contexts/codeContext/CodeContext'
-import Button from 'src/features/auth/components/Button'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import { useAppSelector } from 'src/Store'
 import {
 	setQuestionStatusAsAttemptedDispatcher,
 	setQuestionStatusAsSolvedDispatcher,
-} from 'src/Store/reducers/questionPanel.reducer'
+} from 'src/Store/reducers/questions.reducer'
 import { QuestionProgressEnum } from 'src/Types/enums'
 import { API_STATUS } from 'src/utils/callApi'
 import getErrorMessageAndField from 'src/utils/getErrorMessageAndField'
 import showToast from 'src/utils/showToast'
 
+import { fetchSubmissionsActionDispatcher } from '../questionPanel/actions/questionPanel.actions'
+import SubmissionContent from './components/SubmissionContent'
+import SubmissionHeader from './components/SubmissionHeader'
 import {
 	runAnswerActionDispatcher,
 	submitAnswerActionDispatcher,
@@ -32,6 +33,9 @@ const SubmissionPanel = ({
 	onMaximize: () => void
 }) => {
 	const isFirstRender = useIsFirstRender()
+	const navigate = useNavigate()
+
+	const { code } = useContext(CodeContext)
 
 	const {
 		submissionFlowLoading,
@@ -43,15 +47,11 @@ const SubmissionPanel = ({
 	const { selectedQuestionId, data: questionData } = useAppSelector(
 		(store) => store.questionPanel
 	)
-	const questionStatus = questionData?.progress
-
-	const navigate = useNavigate()
-	const { code } = useContext(CodeContext)
 	const { socketId } = useAppSelector((store) => store.socket)
+	const questionStatus = questionData?.progress
 
 	const validate = (): string | false => {
 		if (!code.trim()) return 'code editor can not be empty'
-
 		return false
 	}
 
@@ -96,106 +96,16 @@ const SubmissionPanel = ({
 		})
 	}
 
-	const Header = () => (
-		<div className="flex items-center justify-between bg-brand-lightest px-2 py-1">
-			<div className="text-sm">Submission</div>
-			<div>
-				<Button
-					variant="outlineGray"
-					size="xs"
-					label="Run"
-					dontShowFocusClasses={true}
-					onClick={handleRun}
-					className="mr-2"
-					endIcon={
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							height="24px"
-							viewBox="0 -960 960 960"
-							width="24px"
-							fill="#1f2937"
-						>
-							<path d="M320-200v-560l440 280-440 280Z" />
-						</svg>
-					}
-				/>
-				<Button
-					variant="success"
-					size="sm"
-					label="Submit"
-					dontShowFocusClasses={true}
-					onClick={handleSubmit}
-				/>
-			</div>
-			<div className="flex gap-2">
-				{!isMaximized && (
-					<button
-						onClick={onToggle}
-						aria-label={isCollapsed ? 'Expand' : 'Collapse'}
-					>
-						{isCollapsed ? (
-							<Icons.Images24.UpArrowPagination />
-						) : (
-							<Icons.Images24.DownArrowPagination />
-						)}
-					</button>
-				)}
-				<button
-					onClick={onMaximize}
-					aria-label={isMaximized ? 'Minimize' : 'Maximize'}
-				>
-					{isMaximized ? (
-						<Icons.Images24.Minimize />
-					) : (
-						<Icons.Images24.Maximize />
-					)}
-				</button>
-			</div>
-		</div>
-	)
-
-	const Content = () => {
-		if (!data || data.questionId !== selectedQuestionId) return null
-
-		const { output } = data
-
-		const isRunOnly = 'isRunOnly' in data
-		const correct = !isRunOnly && data.correct
-		const expected = !isRunOnly && data.expected
-
-		return (
-			<div>
-				{!isRunOnly && (
-					<div className="flex items-center gap-2 text-lg">
-						<div
-							className={
-								correct ? 'text-green-500' : 'text-red-500'
-							}
-						>
-							{correct ? 'Correct' : 'Incorrect'}
-						</div>
-					</div>
-				)}
-
-				<div className="mt-2">
-					Output:
-					<JsonView>{output}</JsonView>
-				</div>
-
-				{!isRunOnly && correct === false && (
-					<div className="mt-2">
-						Expected:
-						<JsonView>{expected}</JsonView>
-					</div>
-				)}
-			</div>
-		)
-	}
-
-	// Handle error for both submission and evaluation apis
 	useEffect(() => {
-		if (isFirstRender) {
-			return
+		if (isFirstRender) return
+
+		if (
+			selectedQuestionId &&
+			[API_STATUS.SUCCESS, API_STATUS.REJECTED].includes(
+				status as API_STATUS
+			)
+		) {
+			fetchSubmissionsActionDispatcher(+selectedQuestionId)
 		}
 
 		if (status === API_STATUS.REJECTED && submissionError) {
@@ -209,21 +119,32 @@ const SubmissionPanel = ({
 		) {
 			const isRunOnly = 'isRunOnly' in data
 			const correct = !isRunOnly && data.correct
-
 			if (correct) {
 				setQuestionStatusAsSolvedDispatcher()
 			}
 		}
-
-		// only show error only when status has changed
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [status])
 
 	return (
 		<div className="flex h-full flex-col">
-			<Header />
+			<SubmissionHeader
+				handleSubmit={handleSubmit}
+				handleRun={handleRun}
+				isMaximized={isMaximized}
+				isCollapsed={isCollapsed}
+				onToggle={onToggle}
+				onMaximize={onMaximize}
+			/>
 			<div className="mb-2 grow overflow-auto p-4 text-sm">
-				{submissionFlowLoading ? 'loading...' : <Content />}
+				{submissionFlowLoading ? (
+					'loading...'
+				) : (
+					<SubmissionContent
+						data={data}
+						selectedQuestionId={selectedQuestionId}
+					/>
+				)}
 			</div>
 		</div>
 	)
