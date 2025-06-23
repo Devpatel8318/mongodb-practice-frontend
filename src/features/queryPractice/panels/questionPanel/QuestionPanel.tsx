@@ -64,6 +64,22 @@ const NavButtons = ({ navItem, setNavItem }: NavButtonsProps) => {
 	)
 }
 
+const renderContent = ({ navItem }: { navItem: NavItem }) => {
+	switch (navItem) {
+		case 'description':
+			return <QuestionDescription />
+
+		case 'submissions':
+			return <Submissions />
+
+		case 'solution':
+			return <Solution />
+
+		default:
+			return null
+	}
+}
+
 const QuestionPanel = ({
 	isMaximized,
 	onToggle,
@@ -77,17 +93,6 @@ const QuestionPanel = ({
 
 	const params = useParams()
 	const { questionId } = params
-
-	const Header = () => (
-		<div className="absolute inset-x-0 top-0 z-10 flex h-10 items-center justify-between bg-brand-lightest p-2">
-			<NavButtons navItem={navItem} setNavItem={setNavItem} />
-			<LayoutButtons
-				isMaximized={isMaximized}
-				onToggle={onToggle}
-				onMaximize={onMaximize}
-			/>
-		</div>
-	)
 
 	const { selectedQuestionId } = useAppSelector(
 		(store) => store.questionPanel
@@ -108,29 +113,24 @@ const QuestionPanel = ({
 		fetchQuestionDetailActionDispatcher(+questionId)
 	}, [questionId])
 
-	const renderContent = () => {
-		switch (navItem) {
-			case 'description':
-				return <QuestionDescription />
-
-			case 'submissions':
-				return <Submissions />
-
-			case 'solution':
-				return <Solution />
-
-			default:
-				return null
-		}
-	}
-
 	if (!questionId) return <Navigate to="/" replace />
+
+	const Header = () => (
+		<div className="absolute inset-x-0 top-0 z-10 flex h-10 items-center justify-between bg-brand-lightest p-2">
+			<NavButtons navItem={navItem} setNavItem={setNavItem} />
+			<LayoutButtons
+				isMaximized={isMaximized}
+				onToggle={onToggle}
+				onMaximize={onMaximize}
+			/>
+		</div>
+	)
 
 	return (
 		<div className="relative h-[calc(100vh-60px)]">
 			<Header />
 			<div className="absolute inset-x-0 bottom-0 top-10 min-w-96 overflow-auto p-4">
-				{renderContent()}
+				{renderContent({ navItem })}
 			</div>
 		</div>
 	)

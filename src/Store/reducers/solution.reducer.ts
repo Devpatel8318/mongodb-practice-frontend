@@ -3,7 +3,7 @@ import { fetchSolutionAction } from 'src/features/queryPractice/panels/questionP
 import { ReducerErrorObject } from 'src/Types/global'
 import { API_STATUS, API_STATUS_TYPE } from 'src/utils/callApi'
 
-export interface SolutionResponse {
+export interface Solution {
 	questionId: number
 	answer: string
 }
@@ -12,7 +12,7 @@ export interface SolutionStateType {
 	status: API_STATUS_TYPE
 	error: null | ReducerErrorObject
 	loading: boolean
-	data: null | SolutionResponse
+	data: null | Solution
 }
 
 export const initialState: SolutionStateType = {

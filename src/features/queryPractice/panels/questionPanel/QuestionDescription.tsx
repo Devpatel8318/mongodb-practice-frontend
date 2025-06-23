@@ -2,6 +2,7 @@ import Icons from 'src/assets/svg'
 import JsonView from 'src/components/jsonView/JsonView'
 import Loader from 'src/components/Loader/Loader'
 import { useAppSelector } from 'src/Store'
+import { QuestionDetail } from 'src/Store/reducers/questions.reducer'
 import { DifficultyEnum, QuestionProgressEnum } from 'src/Types/enums'
 
 const getProgressIcon = (progress: QuestionProgressEnum) => {
@@ -37,29 +38,29 @@ const getDifficultyColor = (difficulty: DifficultyEnum) => {
 	return colors[difficulty] || ''
 }
 
+const Schema = ({
+	dataBaseSchema,
+}: {
+	dataBaseSchema: QuestionDetail['dataBaseSchema'] | undefined
+}) => (
+	<div className="mb-8">
+		<div className="mb-1 text-sm font-semibold">Database Schema</div>
+		<div className="flex flex-col gap-2">
+			{dataBaseSchema?.map((item, index) => (
+				<div key={index}>
+					<span className="text-sm">{item.title}</span>
+					<JsonView>{item.schema}</JsonView>
+				</div>
+			))}
+		</div>
+	</div>
+)
+
 const QuestionDescription = () => {
 	const { question, description, progress, difficulty, dataBaseSchema } =
 		useAppSelector((store) => store.questionPanel.data) || {}
 
 	const { loading } = useAppSelector((state) => state.questionPanel)
-
-	const Schema = () => {
-		return (
-			<div className="mb-8">
-				<div className="mb-1 text-sm font-semibold">
-					Database Schema
-				</div>
-				<div className="flex flex-col gap-2">
-					{dataBaseSchema?.map((item, index) => (
-						<div key={index}>
-							<span className="text-sm">{item.title}</span>
-							<JsonView>{item.schema}</JsonView>
-						</div>
-					))}
-				</div>
-			</div>
-		)
-	}
 
 	if (loading) {
 		return <Loader />
@@ -80,23 +81,7 @@ const QuestionDescription = () => {
 				</span>
 			</div>
 			<div className="mb-8 text-sm">{description}</div>
-			<Schema />
-			{/* <div>
-				<div className="mb-1 text-sm font-semibold">Constraints</div>
-				<ul style={{ listStyleType: 'disc' }} className="pl-4">
-					<li className="mb-1 text-sm">
-						A user may have zero or more orders in the orders
-						collection.
-					</li>
-					<li className="mb-1 text-sm">
-						Each order is associated with a user via the userId
-						field.
-					</li>
-					<li className="mb-1 text-sm">
-						The orders collection may contain thousands of records.
-					</li>
-				</ul>
-			</div> */}
+			<Schema dataBaseSchema={dataBaseSchema} />
 		</>
 	)
 }

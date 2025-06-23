@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Img } from 'react-image'
 
 import Loader from '../Loader/Loader'
@@ -29,4 +30,4 @@ const Image = ({ src, fallback }: ImageProps) => {
 	)
 }
 
-export default Image
+export default memo(Image)

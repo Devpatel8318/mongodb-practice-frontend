@@ -8,7 +8,10 @@ import { ReactComponent as LeftArrowPaginationIcon } from './leftArrowPagination
 import { ReactComponent as LockIcon } from './lock.svg'
 import { ReactComponent as MaximizeIcon } from './maximizeIcon.svg'
 import { ReactComponent as MinimizeIcon } from './minimizeIcon.svg'
+import { ReactComponent as PauseIcon } from './pause.svg'
+import { ReactComponent as PlayIcon } from './play.svg'
 import { ReactComponent as ProfileIcon } from './profileIcon.svg'
+import { ReactComponent as ResetIcon } from './reset.svg'
 import { ReactComponent as RightArrowPaginationIcon } from './rightArrowPaginationIcon.svg'
 import { ReactComponent as SearchIcon } from './searchIcon.svg'
 import { ReactComponent as TickIcon } from './tickIcon.svg'
@@ -29,3 +32,6 @@ export const Tick = memo(TickIcon)
 export const Filter = memo(FilterIcon)
 export const Attempted = memo(AttemptedIcon)
 export const Lock = memo(LockIcon)
+export const Play = memo(PlayIcon)
+export const Pause = memo(PauseIcon)
+export const Reset = memo(ResetIcon)

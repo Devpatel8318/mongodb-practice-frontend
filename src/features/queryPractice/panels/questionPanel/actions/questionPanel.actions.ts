@@ -4,7 +4,7 @@ import {
 	QuestionDetail,
 	Submission,
 } from 'src/Store/reducers/questions.reducer'
-import { SolutionResponse } from 'src/Store/reducers/solution.reducer'
+import { Solution } from 'src/Store/reducers/solution.reducer'
 import { ErrorResponse, SuccessResponse } from 'src/Types/global'
 import callApi from 'src/utils/callApi'
 import { tryCatch } from 'src/utils/tryCatch'
@@ -50,15 +50,15 @@ export const toggleBookmarkActionDispatcher = (questionId: number) => {
 }
 
 export const fetchSubmissionsAction = createAsyncThunk<
-	SuccessResponse<Submission[]>,
+	SuccessResponse<{ questionId: number; list: Submission[] }>,
 	number,
 	{
 		rejectValue: ErrorResponse
 	}
 >('questionPanel/submissions', async (questionId, { rejectWithValue }) => {
-	const [data, error] = await tryCatch<SuccessResponse<Submission[]>>(
-		callApi(`/answer/submissions/${questionId}`, 'GET')
-	)
+	const [data, error] = await tryCatch<
+		SuccessResponse<{ questionId: number; list: Submission[] }>
+	>(callApi(`/answer/submissions/${questionId}`, 'GET'))
 	if (error) {
 		return rejectWithValue(error)
 	}
@@ -69,13 +69,13 @@ export const fetchSubmissionsActionDispatcher = (questionId: number) => {
 }
 
 export const fetchSolutionAction = createAsyncThunk<
-	SuccessResponse<SolutionResponse>,
+	SuccessResponse<Solution>,
 	number,
 	{
 		rejectValue: ErrorResponse
 	}
 >('questionPanel/solution', async (questionId, { rejectWithValue }) => {
-	const [data, error] = await tryCatch<SuccessResponse<SolutionResponse>>(
+	const [data, error] = await tryCatch<SuccessResponse<Solution>>(
 		callApi(`/question/solution/${questionId}`, 'GET')
 	)
 	if (error) {
