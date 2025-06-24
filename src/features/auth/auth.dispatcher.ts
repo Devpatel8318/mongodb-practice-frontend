@@ -1,10 +1,12 @@
 import { appDispatcher } from 'src/Store'
 
 import {
+	forgotPasswordAction,
 	GoogleAuthPayload,
 	logoutAction,
 	oauthGoogleAction,
 	refreshAction,
+	resetPasswordAction,
 	signInAction,
 	signUpAction,
 } from './auth.action'
@@ -37,4 +39,15 @@ export const refreshActionDispatcher = ({
 
 export const logoutActionDispatcher = () => {
 	appDispatcher(logoutAction())
+}
+
+export const forgotPasswordActionDispatcher = (payload: { email: string }) => {
+	appDispatcher(forgotPasswordAction(payload))
+}
+
+export const resetPasswordActionDispatcher = (payload: {
+	password: string
+	token: string
+}) => {
+	appDispatcher(resetPasswordAction(payload))
 }

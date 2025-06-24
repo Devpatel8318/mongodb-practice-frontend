@@ -7,7 +7,7 @@ import {
 import { DifficultyEnum, QuestionProgressEnum } from 'src/Types/enums'
 import capitalizeFirstLetter from 'src/utils/capitalizeFirstLetter'
 
-const getProgressIcon = (progress: QuestionProgressEnum) => {
+const getProgressIcon = (progress: keyof typeof QuestionProgressEnum) => {
 	const icons = {
 		TODO: <Icons.Images16.Todo />,
 		SOLVED: <Icons.Images16.Tick />,
@@ -16,8 +16,8 @@ const getProgressIcon = (progress: QuestionProgressEnum) => {
 	return icons[progress] || null
 }
 
-const getDifficultyColor = (difficulty: DifficultyEnum) => {
-	const colors: Record<DifficultyEnum, string> = {
+const getDifficultyColor = (difficulty: keyof typeof DifficultyEnum) => {
+	const colors: Record<keyof typeof DifficultyEnum, string> = {
 		[DifficultyEnum.EASY]: 'text-teal-800 bg-teal-100',
 		[DifficultyEnum.MEDIUM]: 'text-yellow-800 bg-yellow-100',
 		[DifficultyEnum.HARD]: 'text-red-800 bg-red-100',

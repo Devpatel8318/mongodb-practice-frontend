@@ -1,10 +1,15 @@
-import ForgetPassword from 'src/features/auth/ForgetPassword'
-import Login from 'src/features/auth/Login'
-import Logout from 'src/features/auth/Logout'
-import Signup from 'src/features/auth/Signup'
-import Dashboard from 'src/features/dashboard/Dashboard'
-import ProblemPracticePage from 'src/features/queryPractice/ProblemPracticePage'
-import Temp from 'src/features/Temp/Temp'
+import { lazy } from 'react'
+
+const ForgetPassword = lazy(() => import('src/features/auth/ForgetPassword'))
+const Login = lazy(() => import('src/features/auth/Login'))
+const Logout = lazy(() => import('src/features/auth/Logout'))
+const ResetPassword = lazy(() => import('src/features/auth/ResetPassword'))
+const Signup = lazy(() => import('src/features/auth/Signup'))
+const Dashboard = lazy(() => import('src/features/dashboard/Dashboard'))
+const ProblemPracticePage = lazy(
+	() => import('src/features/queryPractice/ProblemPracticePage')
+)
+const Temp = lazy(() => import('src/features/Temp/Temp'))
 
 export interface RouteObjectType {
 	path: string
@@ -40,5 +45,8 @@ export const publicRoutes: RouteObjectType[] = [
 	),
 	...['/login', '/signin'].map((path) =>
 		createRouteObject(path, 'Login', Login)
+	),
+	...['/reset-password'].map((path) =>
+		createRouteObject(path, 'Reset Password', ResetPassword)
 	),
 ]

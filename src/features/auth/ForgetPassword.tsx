@@ -1,7 +1,11 @@
-import { Link, React, useState } from 'src/deps'
+import { Link, React, useEffect, useState } from 'src/deps'
 import { useAppSelector } from 'src/Store'
+import { API_STATUS } from 'src/utils/callApi'
 import { emailValidator } from 'src/utils/emailValidator'
+import getErrorMessageAndField from 'src/utils/getErrorMessageAndField'
+import showToast from 'src/utils/showToast'
 
+import { forgotPasswordActionDispatcher } from './auth.dispatcher'
 import AuthCard from './components/AuthCard'
 import Button from './components/Button'
 import TextInput from './components/TextInput'
@@ -10,7 +14,7 @@ const ForgetPassword = () => {
 	const [email, setEmail] = useState('')
 	const [emailError, setEmailError] = useState('')
 
-	const { loading } = useAppSelector((store) => store.auth)
+	const { loading, status, error } = useAppSelector((store) => store.auth)
 
 	const validateSubmit = (): boolean => {
 		const emailError = emailValidator(email)
@@ -27,9 +31,27 @@ const ForgetPassword = () => {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		if (validateSubmit()) {
-			// signInActionDispatcher(email);
+			forgotPasswordActionDispatcher({ email })
 		}
 	}
+
+	useEffect(() => {
+		if (status === API_STATUS.REJECTED) {
+			const { message } = getErrorMessageAndField(error)
+
+			if (message) {
+				setEmailError(message)
+			} else {
+				showToast('error', message)
+			}
+		}
+
+		if (status === API_STATUS.SUCCESS) {
+			showToast('success', 'Password reset link sent to your email.')
+			setEmail('')
+			setEmailError('')
+		}
+	}, [status, error])
 
 	return (
 		<AuthCard

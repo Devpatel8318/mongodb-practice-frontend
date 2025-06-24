@@ -1,9 +1,11 @@
 import { SerializedError } from '@reduxjs/toolkit'
 import { createSlice } from 'src/deps'
 import {
+	forgotPasswordAction,
 	logoutAction,
 	oauthGoogleAction,
 	refreshAction,
+	resetPasswordAction,
 	signInAction,
 	signUpAction,
 } from 'src/features/auth/auth.action'
@@ -100,6 +102,28 @@ const authSlice = createSlice({
 			.addCase(signUpAction.pending, handlePending)
 			.addCase(signUpAction.fulfilled, handleFulfilled)
 			.addCase(signUpAction.rejected, handleRejected)
+
+			.addCase(forgotPasswordAction.pending, handlePending)
+			.addCase(forgotPasswordAction.fulfilled, (state) => {
+				Object.assign(state, {
+					status: API_STATUS.SUCCESS,
+					loading: false,
+					error: null,
+					isUserLoggedIn: false,
+				})
+			})
+			.addCase(forgotPasswordAction.rejected, handleRejected)
+
+			.addCase(resetPasswordAction.pending, handlePending)
+			.addCase(resetPasswordAction.fulfilled, (state) => {
+				Object.assign(state, {
+					status: API_STATUS.SUCCESS,
+					loading: false,
+					error: null,
+					isUserLoggedIn: false,
+				})
+			})
+			.addCase(resetPasswordAction.rejected, handleRejected)
 
 			.addCase(refreshAction.pending, handlePending)
 			.addCase(refreshAction.fulfilled, (state, { payload }) => {

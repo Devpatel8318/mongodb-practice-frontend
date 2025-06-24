@@ -75,8 +75,8 @@ export interface QuestionDetail {
 	questionId: number
 	question: string
 	description: string
-	difficulty: DifficultyEnum
-	progress: QuestionProgressEnum
+	difficulty: keyof typeof DifficultyEnum
+	progress: keyof typeof QuestionProgressEnum
 	dataBaseSchema: { title: string; schema: object }[]
 	isBookmarked: boolean
 	isSolutionSeen: boolean
@@ -213,7 +213,7 @@ export interface Submission {
 	userId: number
 	questionId: number
 	query: string
-	submissionStatus: SubmissionStatusEnum
+	submissionStatus: keyof typeof SubmissionStatusEnum
 	createdAt: number
 }
 

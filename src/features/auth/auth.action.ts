@@ -101,3 +101,48 @@ export const logoutAction = createAsyncThunk<
 	}
 	return data
 })
+
+export const forgotPasswordAction = createAsyncThunk<
+	SuccessResponse,
+	{ email: string },
+	{
+		rejectValue: ErrorResponse
+	}
+>('auth/forgotPassword', async (payload, { rejectWithValue }) => {
+	const { email } = payload
+
+	const [data, error] = await tryCatch<SuccessResponse>(
+		callApi('/auth/forgot-password', 'POST', {
+			email,
+		})
+	)
+
+	if (error) {
+		return rejectWithValue(error)
+	}
+
+	return data
+})
+
+export const resetPasswordAction = createAsyncThunk<
+	SuccessResponse,
+	{ password: string; token: string },
+	{
+		rejectValue: ErrorResponse
+	}
+>('auth/resetPassword', async (payload, { rejectWithValue }) => {
+	const { password, token } = payload
+
+	const [data, error] = await tryCatch<SuccessResponse>(
+		callApi('/auth/reset-password', 'POST', {
+			password,
+			token,
+		})
+	)
+
+	if (error) {
+		return rejectWithValue(error)
+	}
+
+	return data
+})

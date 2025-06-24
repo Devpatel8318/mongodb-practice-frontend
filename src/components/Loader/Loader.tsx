@@ -19,4 +19,14 @@ const Loader = () => (
 	</div>
 )
 
+export const CenteredLoader: React.FC = () => {
+	return (
+		<div className="flex h-screen items-center justify-center bg-white">
+			<div className="flex flex-col items-center space-y-4">
+				<Loader />
+			</div>
+		</div>
+	)
+}
+
 export default Loader

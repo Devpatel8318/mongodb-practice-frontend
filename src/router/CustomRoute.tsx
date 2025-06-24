@@ -1,5 +1,8 @@
-import React, { JSX } from 'react'
+import React, { JSX, Suspense } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
+import { CenteredLoader } from 'src/components/Loader/Loader'
 import { Helmet, Route } from 'src/deps'
+import ErrorFallback from 'src/features/fallbackPages/ErrorFallback'
 
 export interface RouteObjectType {
 	path: string
@@ -18,7 +21,11 @@ const CustomRoute = (routes: RouteObjectType[]): JSX.Element[] => {
 						<Helmet>
 							<title>{`MongoAcademy - ${route.title}`}</title>
 						</Helmet>
-						<Component />
+						<ErrorBoundary FallbackComponent={ErrorFallback}>
+							<Suspense fallback={<CenteredLoader />}>
+								<Component />
+							</Suspense>
+						</ErrorBoundary>
 					</>
 				}
 				key={route.path}

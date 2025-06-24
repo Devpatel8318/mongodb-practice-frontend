@@ -5,7 +5,7 @@ import { useAppSelector } from 'src/Store'
 import { QuestionDetail } from 'src/Store/reducers/questions.reducer'
 import { DifficultyEnum, QuestionProgressEnum } from 'src/Types/enums'
 
-const getProgressIcon = (progress: QuestionProgressEnum) => {
+const getProgressIcon = (progress: keyof typeof QuestionProgressEnum) => {
 	const icons = {
 		TODO: (
 			<>
@@ -29,8 +29,8 @@ const getProgressIcon = (progress: QuestionProgressEnum) => {
 	return icons[progress] || null
 }
 
-const getDifficultyColor = (difficulty: DifficultyEnum) => {
-	const colors: Record<DifficultyEnum, string> = {
+const getDifficultyColor = (difficulty: keyof typeof DifficultyEnum) => {
+	const colors: Record<keyof typeof DifficultyEnum, string> = {
 		[DifficultyEnum.EASY]: 'text-teal-500',
 		[DifficultyEnum.MEDIUM]: 'text-orange-500',
 		[DifficultyEnum.HARD]: 'text-red-500',

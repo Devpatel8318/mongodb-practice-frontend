@@ -9,11 +9,10 @@ export const emailValidator = (email: string) => {
 
 	if (email.length > 254) return "Email can't be longer than 254 characters"
 
-	if (!tester.test(email)) return "Email doesn't match the pattern"
+	if (!tester.test(email)) return 'Email is not valid'
 
 	const parts = email.split('@')
-	if (parts.length !== 2 || parts[0].length > 64)
-		return "Email doesn't match the pattern"
+	if (parts.length !== 2 || parts[0].length > 64) return 'Email is not valid'
 
 	return ''
 }
