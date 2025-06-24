@@ -4,8 +4,8 @@ import {
 	PanelGroup,
 	PanelResizeHandle,
 } from 'react-resizable-panels'
-import { useNavigate } from 'react-router-dom'
 import { CodeProvider } from 'src/contexts/codeContext/CodeProvider'
+import { useNavigate } from 'src/deps'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import usePanelShortcuts from 'src/hooks/usePanelShortcuts'
 import { useAppSelector } from 'src/Store'

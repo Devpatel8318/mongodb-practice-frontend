@@ -1,4 +1,4 @@
-import { FallbackProps } from 'react-error-boundary'
+import { FallbackProps } from 'src/deps'
 import { isProd } from 'src/utils/environment'
 
 const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {

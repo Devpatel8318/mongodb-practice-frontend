@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Panel } from 'react-resizable-panels'
+import { Panel } from 'src/deps'
 
 import { SECTION_CONFIGS, SectionName } from '../helper/sectionConfig'
 import { PanelRefs } from '../ProblemPracticePage'

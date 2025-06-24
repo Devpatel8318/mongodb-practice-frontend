@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
+import { Panel, PanelGroup, PanelResizeHandle } from 'src/deps'
 
 import { SECTION_CONFIGS, SectionName } from '../helper/sectionConfig'
 import CodeEditorPanel from '../panels/codeEditorPanel/CodeEditorPanel'

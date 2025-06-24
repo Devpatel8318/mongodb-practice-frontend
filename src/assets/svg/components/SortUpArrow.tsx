@@ -1,4 +1,5 @@
-import { memo } from 'react'
+import { React } from 'src/deps'
+const { memo } = React
 
 const SortUpArrow = ({ color = '#000000' }) => {
 	return (

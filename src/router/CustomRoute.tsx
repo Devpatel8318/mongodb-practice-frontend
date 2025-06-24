@@ -1,8 +1,9 @@
-import React, { JSX, Suspense } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
+import type { JSX } from 'react'
 import { CenteredLoader } from 'src/components/Loader/Loader'
-import { Helmet, Route } from 'src/deps'
+import { ErrorBoundary, Helmet, React, Route } from 'src/deps'
 import ErrorFallback from 'src/features/fallbackPages/ErrorFallback'
+
+const { Suspense } = React
 
 export interface RouteObjectType {
 	path: string

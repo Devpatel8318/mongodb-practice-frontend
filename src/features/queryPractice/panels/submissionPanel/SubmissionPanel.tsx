@@ -1,7 +1,7 @@
 // 1. Imports
 import { memo, useContext, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { CodeContext } from 'src/contexts/codeContext/CodeContext'
+import { useNavigate } from 'src/deps'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import { useAppSelector } from 'src/Store'
 import {

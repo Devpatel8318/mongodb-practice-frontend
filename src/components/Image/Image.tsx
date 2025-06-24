@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Img } from 'react-image'
+import { Img } from 'src/deps'
 
 import Loader from '../Loader/Loader'
 

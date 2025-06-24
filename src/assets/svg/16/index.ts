@@ -1,4 +1,5 @@
-import { memo } from 'react'
+import { React } from 'src/deps'
+const { memo } = React
 
 import { ReactComponent as AttemptedIcon } from './attemptedIcon.svg'
 import { ReactComponent as CloseIcon } from './closeIcon.svg'

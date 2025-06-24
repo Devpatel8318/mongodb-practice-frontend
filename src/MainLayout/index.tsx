@@ -1,6 +1,6 @@
-import { memo } from 'react'
-import Icons from 'src/assets/svg'
 import { Link, React } from 'src/deps'
+const { memo } = React
+import Icons from 'src/assets/svg'
 import { logoutActionDispatcher } from 'src/features/auth/auth.dispatcher'
 
 const Header = () => (

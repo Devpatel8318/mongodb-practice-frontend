@@ -1,5 +1,4 @@
-import { SerializedError } from '@reduxjs/toolkit'
-import { createSlice } from 'src/deps'
+import { createSlice, SerializedError } from 'src/deps'
 import {
 	forgotPasswordAction,
 	logoutAction,

@@ -24,8 +24,7 @@ export default defineConfig({
 
 */
 
-import { GoogleOAuthProvider } from '@react-oauth/google'
-import { Toaster, useEffect, useState } from 'src/deps'
+import { GoogleOAuthProvider, Toaster, useEffect, useState } from 'src/deps'
 import Routers from 'src/router'
 
 import { initializeSocket } from './socket/socket'

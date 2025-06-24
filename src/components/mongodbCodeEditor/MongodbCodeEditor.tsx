@@ -1,7 +1,13 @@
-import MonacoEditor, { loader, useMonaco } from '@monaco-editor/react'
-import * as monaco from 'monaco-editor'
-import { memo, useCallback } from 'react'
-import { useEffect, useRef } from 'src/deps'
+import {
+	loader,
+	memo,
+	monaco,
+	MonacoEditor,
+	useCallback,
+	useEffect,
+	useMonaco,
+	useRef,
+} from 'src/deps'
 
 import { mongodbCompletion as _mongodbCompletion } from './mongodbLanguageSupport/mongodbCompletion'
 import { mongodbCustomLightTheme } from './mongodbLanguageSupport/mongodbCustomTheme'

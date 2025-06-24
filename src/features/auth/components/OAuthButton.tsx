@@ -1,4 +1,4 @@
-import { useGoogleLogin, useGoogleOneTapLogin } from '@react-oauth/google'
+import { useGoogleLogin, useGoogleOneTapLogin } from 'src/deps'
 import { React } from 'src/deps'
 
 import { oauthGoogleActionDispatcher } from '../auth.dispatcher'

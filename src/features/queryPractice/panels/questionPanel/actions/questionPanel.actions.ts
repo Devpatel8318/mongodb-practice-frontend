@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk } from 'src/deps'
 import { appDispatcher } from 'src/Store'
 import {
 	QuestionDetail,

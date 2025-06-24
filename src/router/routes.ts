@@ -1,4 +1,5 @@
-import { lazy } from 'react'
+import { React } from 'src/deps'
+const { lazy } = React
 
 const ForgetPassword = lazy(() => import('src/features/auth/ForgetPassword'))
 const Login = lazy(() => import('src/features/auth/Login'))
