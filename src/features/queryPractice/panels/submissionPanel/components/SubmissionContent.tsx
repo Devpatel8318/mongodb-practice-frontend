@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import JsonView from 'src/components/jsonView/JsonView'
 import { SubmissionStateType } from 'src/Store/reducers/submission.reducer'
 
@@ -43,4 +44,4 @@ const SubmissionContent = ({
 	)
 }
 
-export default SubmissionContent
+export default memo(SubmissionContent)

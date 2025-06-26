@@ -94,7 +94,7 @@ const QuestionPanel = ({
 	const params = useParams()
 	const { questionId } = params
 
-	const { selectedQuestionId } = useAppSelector(
+	const { selectedQuestionId, data } = useAppSelector(
 		(store) => store.questionPanel
 	)
 
@@ -110,8 +110,10 @@ const QuestionPanel = ({
 	useEffect(() => {
 		if (!questionId) return // for typescript
 
+		if (data?.questionId === +questionId) return // already fetched
+
 		fetchQuestionDetailActionDispatcher(+questionId)
-	}, [questionId])
+	}, [data?.questionId, questionId])
 
 	if (!questionId) return <Navigate to="/" replace />
 

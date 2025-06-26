@@ -48,9 +48,9 @@ const FilterDropdown = ({
 		setOpenFilter(null)
 	})
 
-	const activeFilterCount = Object.values(filters[type]).filter(
-		Boolean
-	).length
+	const activeFilterCount = filters[type]
+		? Object.values(filters[type]).filter(Boolean).length
+		: 0
 
 	return (
 		<div className="relative">

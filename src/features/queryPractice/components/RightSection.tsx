@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'src/deps'
 
 import { SECTION_CONFIGS, SectionName } from '../helper/sectionConfig'
@@ -21,11 +21,23 @@ const RightSection = ({
 	createToggleHandler: (sectionName: SectionName) => () => void
 	createMaximizeHandler: (sectionName: SectionName) => () => void
 }) => {
-	const handleToggleCodeEditor = createToggleHandler('codeEditor')
-	const handleToggleSubmission = createToggleHandler('submission')
+	const handleToggleCodeEditor = useCallback(
+		() => createToggleHandler('codeEditor')(),
+		[createToggleHandler]
+	)
+	const handleToggleSubmission = useCallback(
+		() => createToggleHandler('submission')(),
+		[createToggleHandler]
+	)
 
-	const handleMaximizeCodeEditor = createMaximizeHandler('codeEditor')
-	const handleMaximizeSubmission = createMaximizeHandler('submission')
+	const handleMaximizeCodeEditor = useCallback(
+		() => createMaximizeHandler('codeEditor')(),
+		[createMaximizeHandler]
+	)
+	const handleMaximizeSubmission = useCallback(
+		() => createMaximizeHandler('submission')(),
+		[createMaximizeHandler]
+	)
 
 	return (
 		<>

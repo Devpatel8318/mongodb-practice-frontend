@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import { memo, useCallback } from 'react'
 
 import { SectionName } from '../helper/sectionConfig'
 import QuestionPanel from '../panels/questionPanel/QuestionPanel'
@@ -19,8 +19,14 @@ const LeftSection = ({
 	createToggleHandler: (sectionName: SectionName) => () => void
 	createMaximizeHandler: (sectionName: SectionName) => () => void
 }) => {
-	const handleToggleQuestion = createToggleHandler('question')
-	const handleMaximizeQuestion = createMaximizeHandler('question')
+	const handleToggleQuestion = useCallback(
+		() => createToggleHandler('question')(),
+		[createToggleHandler]
+	)
+	const handleMaximizeQuestion = useCallback(
+		() => createMaximizeHandler('question')(),
+		[createMaximizeHandler]
+	)
 
 	return (
 		<>
