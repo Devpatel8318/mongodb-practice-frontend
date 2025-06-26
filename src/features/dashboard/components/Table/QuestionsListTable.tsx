@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'src/deps'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import useLocalStorage from 'src/hooks/useLocalStorage'
 import { useAppSelector } from 'src/Store'
+import { cn } from 'src/utils/cn'
 import debounce from 'src/utils/debounce'
 
 import { getAllQuestionsActionDispatcher } from '../../dashboard.action'
@@ -143,7 +144,14 @@ const QuestionsListTable = () => {
 					/>
 					<Searchbar search={search} setSearch={setSearch} />
 					<div className="flex items-center gap-x-3">
-						<label className="text-sm text-gray-500">All</label>
+						<label
+							className={cn(
+								'text-sm',
+								showOnlyBookmarked && 'text-gray-500'
+							)}
+						>
+							All
+						</label>
 
 						<label className="relative inline-block h-6 w-11 cursor-pointer">
 							<input
@@ -168,7 +176,12 @@ const QuestionsListTable = () => {
 							></span>
 						</label>
 
-						<label className="text-sm text-gray-500">
+						<label
+							className={cn(
+								'text-sm',
+								!showOnlyBookmarked && 'text-gray-500'
+							)}
+						>
 							Bookmarked
 						</label>
 					</div>
