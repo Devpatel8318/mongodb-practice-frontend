@@ -1,5 +1,5 @@
-import { memo } from 'react'
 import JsonView from 'src/components/jsonView/JsonView'
+import { memo } from 'src/deps'
 import { SubmissionStateType } from 'src/Store/reducers/submission.reducer'
 
 const SubmissionContent = ({

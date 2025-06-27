@@ -1,5 +1,5 @@
-import React from 'react'
 import Icons from 'src/assets/svg'
+import { memo, React } from 'src/deps'
 import { useLocalStorageSetValue } from 'src/hooks/useLocalStorage'
 
 import { Sort } from '../QuestionsListTable'
@@ -94,4 +94,4 @@ const Header = ({
 	)
 }
 
-export default Header
+export default memo(Header)

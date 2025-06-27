@@ -28,17 +28,7 @@ const SubmissionHeader = ({
 				dontShowFocusClasses={true}
 				onClick={handleRun}
 				className="mr-2"
-				endIcon={
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						height="24px"
-						viewBox="0 -960 960 960"
-						width="24px"
-						fill="#1f2937"
-					>
-						<path d="M320-200v-560l440 280-440 280Z" />
-					</svg>
-				}
+				EndIcon={Icons.Images24.Run}
 			/>
 			<Button
 				variant="success"

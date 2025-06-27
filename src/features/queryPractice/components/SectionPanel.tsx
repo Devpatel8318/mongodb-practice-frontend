@@ -1,5 +1,4 @@
-import React, { memo } from 'react'
-import { Panel } from 'src/deps'
+import { memo, Panel, React } from 'src/deps'
 
 import { SECTION_CONFIGS, SectionName } from '../helper/sectionConfig'
 import { PanelRefs } from '../ProblemPracticePage'

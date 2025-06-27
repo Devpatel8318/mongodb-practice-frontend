@@ -27,8 +27,9 @@ interface ButtonProps {
 	fullWidth?: boolean
 
 	// Icon support
-	startIcon?: React.ReactNode
-	endIcon?: React.ReactNode
+	StartIcon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
+	badgeContent?: React.ReactNode
+	EndIcon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
 	iconOnly?: boolean
 
 	// Additional props
@@ -57,8 +58,9 @@ const Button: React.FC<ButtonProps> = ({
 	fullWidth = false,
 
 	// Icon support
-	startIcon,
-	endIcon,
+	StartIcon,
+	badgeContent,
+	EndIcon,
 	iconOnly = false,
 
 	// Additional props
@@ -140,15 +142,20 @@ const Button: React.FC<ButtonProps> = ({
 				</>
 			) : (
 				<>
-					{startIcon && (
+					{StartIcon && (
 						<span className={cn(!iconOnly && content && 'mr-2')}>
-							{startIcon}
+							<StartIcon />
 						</span>
 					)}
-					{(!iconOnly || (!startIcon && !endIcon)) && content}
-					{endIcon && (
+					{(!iconOnly || (!StartIcon && !EndIcon)) && content}
+					{badgeContent !== undefined && badgeContent !== null && (
+						<span className="ml-2 inline-flex items-center justify-center rounded-full border border-gray-300 px-2 py-0.5 text-xs font-medium text-gray-800">
+							{badgeContent}
+						</span>
+					)}
+					{EndIcon && (
 						<span className={cn(!iconOnly && content && 'ml-2')}>
-							{endIcon}
+							<EndIcon />
 						</span>
 					)}
 				</>

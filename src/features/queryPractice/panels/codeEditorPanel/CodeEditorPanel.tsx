@@ -1,11 +1,11 @@
 // CodeEditorPanel.jsx
 import * as monaco from 'monaco-editor'
-import { memo, useCallback, useContext } from 'react'
 import Icons from 'src/assets/svg'
 import MongodbCodeEditor from 'src/components/mongodbCodeEditor/MongodbCodeEditor'
 import Timer from 'src/components/Timer/Timer'
 import { CodeContext } from 'src/contexts/codeContext/CodeContext'
 import { codeEditorDefaultValue } from 'src/contexts/codeContext/CodeProvider'
+import { memo, useCallback, useContext } from 'src/deps'
 
 const Header = memo(
 	({

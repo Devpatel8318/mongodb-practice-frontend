@@ -1,4 +1,4 @@
-import React from 'react'
+import { React } from 'src/deps'
 
 interface CodeBlockProps {
 	children: React.ReactNode

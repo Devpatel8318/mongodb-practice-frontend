@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import Icons from 'src/assets/svg'
+import { useEffect, useState } from 'src/deps'
 import useLocalStorage from 'src/hooks/useLocalStorage'
 
 const formatTimeUnit = (unit: number): string =>

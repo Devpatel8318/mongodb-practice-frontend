@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'src/deps'
 import { tryCatchSync } from 'src/utils/tryCatch'
 
 export type useLocalStorageSetValue<T> = (
@@ -33,15 +33,18 @@ const useLocalStorage = <T,>(
 		}
 	}, [key, localStorageValue])
 
-	const updateLocalStorage = (valueOrFn: T | ((prev: T) => T)) => {
-		setLocalStorageValue((prevValue) =>
-			typeof valueOrFn === 'function'
-				? (valueOrFn as (prev: T) => T)(prevValue)
-				: valueOrFn
-		)
-	}
+	const updateLocalStorage = useCallback(
+		(valueOrFn: T | ((prev: T) => T)) => {
+			setLocalStorageValue((prevValue) =>
+				typeof valueOrFn === 'function'
+					? (valueOrFn as (prev: T) => T)(prevValue)
+					: valueOrFn
+			)
+		},
+		[]
+	)
 
-	const removeLocalStorage = () => {
+	const removeLocalStorage = useCallback(() => {
 		const [, error] = tryCatchSync(() => {
 			localStorage.removeItem(key)
 		})
@@ -49,7 +52,7 @@ const useLocalStorage = <T,>(
 		if (error) {
 			console.error(`Error removing localStorage key "${key}":`, error)
 		}
-	}
+	}, [key])
 
 	return [localStorageValue, updateLocalStorage, removeLocalStorage]
 }

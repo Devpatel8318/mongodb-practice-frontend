@@ -14,6 +14,7 @@ import { ReactComponent as PlayIcon } from './play.svg'
 import { ReactComponent as ProfileIcon } from './profileIcon.svg'
 import { ReactComponent as ResetIcon } from './reset.svg'
 import { ReactComponent as RightArrowPaginationIcon } from './rightArrowPaginationIcon.svg'
+import { ReactComponent as RunIcon } from './run.svg'
 import { ReactComponent as SearchIcon } from './searchIcon.svg'
 import { ReactComponent as TickIcon } from './tickIcon.svg'
 import { ReactComponent as TodoIcon } from './todoIcon.svg'
@@ -36,3 +37,4 @@ export const Lock = memo(LockIcon)
 export const Play = memo(PlayIcon)
 export const Pause = memo(PauseIcon)
 export const Reset = memo(ResetIcon)
+export const Run = memo(RunIcon)

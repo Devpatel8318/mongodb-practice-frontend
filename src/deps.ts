@@ -25,10 +25,12 @@ import Cookies from 'js-cookie'
 import * as monaco from 'monaco-editor'
 import React, {
 	createContext,
+	type Dispatch,
 	memo,
 	type RefObject,
 	Suspense,
 	useCallback,
+	useContext,
 	useEffect,
 	useMemo,
 	useRef,
@@ -74,6 +76,7 @@ export {
 	createAsyncThunk,
 	createContext,
 	createSlice,
+	type Dispatch,
 	ErrorBoundary,
 	type FallbackProps,
 	GoogleOAuthProvider,
@@ -105,6 +108,7 @@ export {
 	Toaster,
 	type TypedUseSelectorHook,
 	useCallback,
+	useContext,
 	useDispatch,
 	useEffect,
 	useGoogleLogin,

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'src/deps'
 
 import { CodeContext, CustomCursorPosition } from './CodeContext'
 

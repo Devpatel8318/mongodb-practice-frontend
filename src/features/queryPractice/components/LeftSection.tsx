@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback } from 'src/deps'
 
 import { SectionName } from '../helper/sectionConfig'
 import QuestionPanel from '../panels/questionPanel/QuestionPanel'

@@ -7,6 +7,9 @@ import { useAppSelector } from 'src/Store'
 import debounce from 'src/utils/debounce'
 
 import { getAllQuestionsActionDispatcher } from '../../../dashboard.action'
+import { formatFilters, formatSortQuery } from '../helper'
+import { Sort } from '../QuestionsListTable'
+import { Filters } from './ActiveFilters'
 
 const ItemsPerPageDropdown = ({
 	itemsPerPageOptions,
@@ -92,7 +95,17 @@ const ItemsPerPageDropdown = ({
 	)
 }
 
-const Pagination = () => {
+const Pagination = ({
+	sort,
+	search,
+	filters,
+	showOnlyBookmarked,
+}: {
+	sort: Sort
+	search: string
+	filters: Filters
+	showOnlyBookmarked: boolean
+}) => {
 	const itemsPerPageOptions = [10, 20, 50, 100]
 
 	const [page, setPage] = useState(1)
@@ -120,11 +133,22 @@ const Pagination = () => {
 	const debouncedFetchQuestions = useMemo(
 		() =>
 			debounce(
-				300,
-				(currentPage: number, currentItemsPerPage: number) => {
+				400,
+				(
+					currentPage: number,
+					currentItemsPerPage: number,
+					filterQuery: string,
+					sortQuery: string,
+					searchQuery: string,
+					showOnlyBookmarked: boolean
+				) => {
 					getAllQuestionsActionDispatcher({
 						page: currentPage,
 						limit: currentItemsPerPage,
+						filterQuery,
+						sortQuery,
+						searchQuery,
+						showOnlyBookmarked,
 					})
 				}
 			),
@@ -134,7 +158,18 @@ const Pagination = () => {
 	useEffect(() => {
 		if (isFirstRender) return
 
-		debouncedFetchQuestions(page, itemsPerPage)
+		const filterQuery = formatFilters(filters)
+		const sortQuery = formatSortQuery(sort)
+		const searchQuery = search ? `search=${search}` : ''
+
+		debouncedFetchQuestions(
+			page,
+			itemsPerPage,
+			filterQuery,
+			sortQuery,
+			searchQuery,
+			showOnlyBookmarked
+		)
 
 		return () => {
 			debouncedFetchQuestions.cancel()
@@ -158,7 +193,7 @@ const Pagination = () => {
 				<Button
 					variant="outlineGray"
 					size="sm"
-					startIcon={<Icons.Images24.LeftArrowPagination />}
+					StartIcon={Icons.Images24.LeftArrowPagination}
 					label="Prev"
 					dontShowFocusClasses={true}
 					onClick={() => setPage((prev) => prev - 1)}
@@ -170,7 +205,7 @@ const Pagination = () => {
 				<Button
 					variant="outlineGray"
 					size="sm"
-					endIcon={<Icons.Images24.RightArrowPagination />}
+					EndIcon={Icons.Images24.RightArrowPagination}
 					label="Next"
 					dontShowFocusClasses={true}
 					onClick={() => setPage((prev) => prev + 1)}

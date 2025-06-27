@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'src/deps'
+import { useCallback, useEffect, useMemo, useState } from 'src/deps'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import useLocalStorage from 'src/hooks/useLocalStorage'
 import { useAppSelector } from 'src/Store'
@@ -44,18 +44,21 @@ const QuestionsListTable = () => {
 
 	const isFirstRender = useIsFirstRender()
 
-	const handleFilterChange = (
-		filterType: keyof Filters,
-		filterValue: keyof Filters[keyof Filters]
-	) => {
-		setFilters((prevFilters) => ({
-			...prevFilters,
-			[filterType]: {
-				...prevFilters[filterType],
-				[filterValue]: !prevFilters[filterType][filterValue],
-			},
-		}))
-	}
+	const handleFilterChange = useCallback(
+		(
+			filterType: keyof Filters,
+			filterValue: keyof Filters[keyof Filters]
+		) => {
+			setFilters((prevFilters) => ({
+				...prevFilters,
+				[filterType]: {
+					...prevFilters[filterType],
+					[filterValue]: !prevFilters[filterType][filterValue],
+				},
+			}))
+		},
+		[setFilters]
+	)
 
 	const handleRemoveAppliedFilter = (
 		filterParent: keyof Filters,
@@ -207,7 +210,12 @@ const QuestionsListTable = () => {
 			</Card>
 
 			<Card>
-				<Pagination />
+				<Pagination
+					sort={sort}
+					search={search}
+					filters={filters}
+					showOnlyBookmarked={showOnlyBookmarked}
+				/>
 			</Card>
 		</div>
 	)

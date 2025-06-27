@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo } from 'src/deps'
 
 import { SectionName } from '../helper/sectionConfig'
 import CodeEditorPanel from '../panels/codeEditorPanel/CodeEditorPanel'

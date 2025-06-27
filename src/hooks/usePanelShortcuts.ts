@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect } from 'src/deps'
 import { SECTION_CONFIGS } from 'src/features/queryPractice/helper/sectionConfig'
 import { PanelRefs } from 'src/features/queryPractice/ProblemPracticePage'
 

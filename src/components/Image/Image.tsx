@@ -1,5 +1,4 @@
-import { memo } from 'react'
-import { Img } from 'src/deps'
+import { Img, memo } from 'src/deps'
 
 import Loader from '../Loader/Loader'
 

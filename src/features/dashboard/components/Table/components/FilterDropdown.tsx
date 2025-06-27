@@ -1,5 +1,5 @@
 import Icons from 'src/assets/svg'
-import { React, useRef } from 'src/deps'
+import { memo, React, useCallback, useRef } from 'src/deps'
 import Button from 'src/features/auth/components/Button'
 import useOnClickOutside from 'src/hooks/useOnClickOutside'
 
@@ -26,11 +26,16 @@ const FilterDropdown = ({
 }: FilterDropdownProps) => {
 	const filterRef = useRef<HTMLDivElement | null>(null)
 
-	const toggleFilter = (filterType: string) => {
-		setOpenFilter((prev) => {
-			return prev === filterType ? null : filterType
-		})
-	}
+	const toggleFilter = useCallback(
+		(filterType: string) => {
+			setOpenFilter((prev) => (prev === filterType ? null : filterType))
+		},
+		[setOpenFilter]
+	)
+
+	const handleClick = useCallback(() => {
+		toggleFilter(type)
+	}, [toggleFilter, type])
 
 	useOnClickOutside(filterRef, (event) => {
 		const clickedElement = event.target as Element
@@ -48,9 +53,8 @@ const FilterDropdown = ({
 		setOpenFilter(null)
 	})
 
-	const activeFilterCount = Object.values(filters[type]).filter(
-		Boolean
-	).length
+	const activeFilterCount =
+		Object.values(filters[type]).filter(Boolean).length || 0
 
 	return (
 		<div className="relative">
@@ -58,17 +62,11 @@ const FilterDropdown = ({
 				name="questions-table-filter-button"
 				variant="outlineGray"
 				size="sm"
-				startIcon={<Icons.Images24.Filter />}
+				StartIcon={Icons.Images24.Filter}
 				label={label}
 				className="border-gray-200"
-				onClick={() => {
-					toggleFilter(type)
-				}}
-				endIcon={
-					<span className="flex aspect-square w-6 items-center justify-center rounded-full border border-gray-300 text-xs font-medium text-gray-800">
-						{activeFilterCount}
-					</span>
-				}
+				onClick={handleClick}
+				badgeContent={activeFilterCount}
 				dontShowFocusClasses={true}
 			/>
 			{openFilter === type && (
@@ -120,4 +118,4 @@ const FilterDropdown = ({
 	)
 }
 
-export default FilterDropdown
+export default memo(FilterDropdown)

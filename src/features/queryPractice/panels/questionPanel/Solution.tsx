@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
 import Icons from 'src/assets/svg'
 import JsonView from 'src/components/jsonView/JsonView'
 import Loader from 'src/components/Loader/Loader'
+import { useEffect } from 'src/deps'
 import Card from 'src/features/dashboard/components/Table/components/Card'
 import { useAppSelector } from 'src/Store'
 import { setSolutionSeenDispatcher } from 'src/Store/reducers/questions.reducer'

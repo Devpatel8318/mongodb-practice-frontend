@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo } from 'src/deps'
 import { cn } from 'src/utils/cn'
 
 import { CollapsedSections } from '../ProblemPracticePage'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { React, useState } from 'src/deps'
 import { tryCatchSync } from 'src/utils/tryCatch'
 
 type DatabaseSchema = {

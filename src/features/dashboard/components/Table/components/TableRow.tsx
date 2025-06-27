@@ -1,5 +1,5 @@
 import Icons from 'src/assets/svg'
-import { useNavigate } from 'src/deps'
+import { memo, useNavigate } from 'src/deps'
 import {
 	QuestionDetail,
 	setSelectedQuestionIdDispatcher,
@@ -61,4 +61,4 @@ const TableRow = ({ item }: { item: QuestionDetail }) => {
 	)
 }
 
-export default TableRow
+export default memo(TableRow)

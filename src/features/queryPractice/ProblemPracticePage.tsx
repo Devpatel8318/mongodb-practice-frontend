@@ -1,11 +1,18 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
 	ImperativePanelHandle,
 	PanelGroup,
 	PanelResizeHandle,
 } from 'react-resizable-panels'
 import { CodeProvider } from 'src/contexts/codeContext/CodeProvider'
-import { useNavigate } from 'src/deps'
+import {
+	React,
+	useCallback,
+	useEffect,
+	useMemo,
+	useNavigate,
+	useRef,
+	useState,
+} from 'src/deps'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import usePanelShortcuts from 'src/hooks/usePanelShortcuts'
 import { useAppSelector } from 'src/Store'

@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo } from 'src/deps'
 
 const JsonView = memo(
 	({ children }: { children: React.ReactNode | object }) => {
