@@ -39,7 +39,8 @@ const QuestionsListTable = () => {
 
 	const [sort, setSort] = useLocalStorage<Sort>('questions-sort', {})
 	const [search, setSearch] = useLocalStorage<string>('questions-search', '')
-	const [showOnlyBookmarked, setShowOnlyBookmarked] = useState(false)
+	const [showOnlyBookmarked, setShowOnlyBookmarked] =
+		useLocalStorage<boolean>('questions-show-only-bookmarked', false)
 	const [openFilter, setOpenFilter] = useState<string | null>(null)
 
 	const isFirstRender = useIsFirstRender()
