@@ -80,11 +80,3 @@ At this time, we are **not accepting contributions**. Please feel free to use th
 For any questions, suggestions, or feedback, please contact:
 
 * **Email:** [devpatelm8318@gmail.com](mailto:devpatelm8318@gmail.com)
-
----
-
-### Conclusion
-
-This **Frontend** enables users to practice MongoDB queries in an interactive environment while leveraging real-time updates from the **Backend** and **Socket Server**. The setup with **Docker Compose** makes it easy to develop and run the entire stack locally. The **CI/CD pipeline** ensures seamless, automated deployments for production.
-
-Let me know if you need any further changes or improvements to the README!
