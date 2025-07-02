@@ -1,46 +1,90 @@
-# Getting Started with Create React App
+# Mongo Academy Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+The **Frontend** of the **Mongo Academy** platform allows users to practice **MongoDB queries** in an interactive and user-friendly environment. It integrates with the **Backend API** to run queries, authenticate users via **Google OAuth** and **Email/Password**, and displays real-time results through **WebSockets**.
 
-In the project directory, you can run:
+This project is built using **React**, **TypeScript**, **Tailwind CSS**, and **Redux Toolkit** for state management.
 
-### `yarn start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 🔧 Technologies Used
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+* **Frontend Framework:** React.js (with TypeScript)
+* **State Management:** Redux Toolkit
+* **Styling:** Tailwind CSS
+* **Authentication:** Google OAuth, Email/Password (JWT-based authentication)
+* **Real-time Communication:** WebSockets (via Socket.IO)
+* **CI/CD:** GitHub Actions
 
-### `yarn test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🧰 Local Development Setup
 
-### `yarn build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Node.js** (>=22.x)
+2. **Yarn** (recommended) or **npm** for package management
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 1. Clone the repository
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. Install dependencies
 
-### `yarn eject`
+```bash
+yarn install
+# OR if you're using npm
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 3. Set up Environment Variables
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Before starting the frontend application, make sure to create a `.env.development` file in your project’s root directory with the following content (modify values as needed):
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+PORT
+REACT_APP_BACKEND_URL
+REACT_APP_GOOGLE_CLIENT_ID
+REACT_APP_SOCKET_URL
+REACT_APP_NODE_ENV
+GENERATE_SOURCEMAP
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 4. Start the Development Server
 
-## Learn More
+To start the frontend application in development mode:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+yarn start
+# OR if you're using npm
+npm start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This will start the **React** app on `http://localhost:PORT`. The app will automatically reload when you make changes to the code.
+
+---
+
+## 📝 License
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+## ❓ Contributing
+
+At this time, we are **not accepting contributions**. Please feel free to use the code for personal or educational purposes only.
+
+---
+
+### 📬 Contact
+
+For any questions, suggestions, or feedback, please contact:
+
+* **Email:** [devpatelm8318@gmail.com](mailto:devpatelm8318@gmail.com)
+
+---
+
+### Conclusion
+
+This **Frontend** enables users to practice MongoDB queries in an interactive environment while leveraging real-time updates from the **Backend** and **Socket Server**. The setup with **Docker Compose** makes it easy to develop and run the entire stack locally. The **CI/CD pipeline** ensures seamless, automated deployments for production.
+
+Let me know if you need any further changes or improvements to the README!
