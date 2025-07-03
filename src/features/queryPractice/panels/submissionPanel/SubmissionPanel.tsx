@@ -1,6 +1,6 @@
-// 1. Imports
 import { CodeContext } from 'src/contexts/codeContext/CodeContext'
 import { memo, useContext, useEffect, useNavigate } from 'src/deps'
+import SubmissionSkeletonLoader from 'src/features/dashboard/components/Table/components/SubmissionSkeletonLoader'
 import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import { useAppSelector } from 'src/Store'
 import {
@@ -137,7 +137,7 @@ const SubmissionPanel = ({
 			/>
 			<div className="mb-2 grow overflow-auto p-4 text-sm">
 				{submissionFlowLoading ? (
-					'loading...'
+					<SubmissionSkeletonLoader />
 				) : (
 					<SubmissionContent
 						data={data}
