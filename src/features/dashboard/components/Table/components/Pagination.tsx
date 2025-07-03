@@ -1,15 +1,8 @@
 import Icons from 'src/assets/svg'
-import { useEffect, useMemo, useRef, useState } from 'src/deps'
+import { useRef, useState } from 'src/deps'
 import Button from 'src/features/auth/components/Button'
-import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import useOnClickOutside from 'src/hooks/useOnClickOutside'
 import { useAppSelector } from 'src/Store'
-import debounce from 'src/utils/debounce'
-
-import { getAllQuestionsActionDispatcher } from '../../../dashboard.action'
-import { formatFilters, formatSortQuery } from '../helper'
-import { Sort } from '../QuestionsListTable'
-import { Filters } from './ActiveFilters'
 
 const ItemsPerPageDropdown = ({
 	itemsPerPageOptions,
@@ -96,22 +89,18 @@ const ItemsPerPageDropdown = ({
 }
 
 const Pagination = ({
-	sort,
-	search,
-	filters,
-	showOnlyBookmarked,
+	page,
+	setPage,
+	itemsPerPage,
+	itemsPerPageOptions,
+	handleItemsPerPageChange,
 }: {
-	sort: Sort
-	search: string
-	filters: Filters
-	showOnlyBookmarked: boolean
+	page: number
+	setPage: (value: number | ((prev: number) => number)) => void
+	itemsPerPage: number
+	itemsPerPageOptions: number[]
+	handleItemsPerPageChange: (value: number) => void
 }) => {
-	const itemsPerPageOptions = [10, 20, 50, 100]
-
-	const [page, setPage] = useState(1)
-	const [itemsPerPage, setItemsPerPage] = useState(itemsPerPageOptions[1])
-	const isFirstRender = useIsFirstRender()
-
 	const { data } = useAppSelector((store) => store.dashboard)
 	const { total: totalRecords } = data || {}
 
@@ -124,58 +113,6 @@ const Pagination = ({
 	const end = totalRecords
 		? Math.min(page * itemsPerPage, totalRecords)
 		: page * itemsPerPage
-
-	const handleItemsPerPageChange = (value: number) => {
-		setItemsPerPage(value)
-		setPage(1)
-	}
-
-	const debouncedFetchQuestions = useMemo(
-		() =>
-			debounce(
-				400,
-				(
-					currentPage: number,
-					currentItemsPerPage: number,
-					filterQuery: string,
-					sortQuery: string,
-					searchQuery: string,
-					showOnlyBookmarked: boolean
-				) => {
-					getAllQuestionsActionDispatcher({
-						page: currentPage,
-						limit: currentItemsPerPage,
-						filterQuery,
-						sortQuery,
-						searchQuery,
-						showOnlyBookmarked,
-					})
-				}
-			),
-		[]
-	)
-
-	useEffect(() => {
-		if (isFirstRender) return
-
-		const filterQuery = formatFilters(filters)
-		const sortQuery = formatSortQuery(sort)
-		const searchQuery = search ? `search=${search}` : ''
-
-		debouncedFetchQuestions(
-			page,
-			itemsPerPage,
-			filterQuery,
-			sortQuery,
-			searchQuery,
-			showOnlyBookmarked
-		)
-
-		return () => {
-			debouncedFetchQuestions.cancel()
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [page, itemsPerPage, debouncedFetchQuestions])
 
 	return (
 		<div className="flex items-center justify-between px-6 py-4">

@@ -36,12 +36,18 @@ const QuestionsListTable = () => {
 		'questions-filters',
 		questionFilters
 	)
-
 	const [sort, setSort] = useLocalStorage<Sort>('questions-sort', {})
 	const [search, setSearch] = useLocalStorage<string>('questions-search', '')
 	const [showOnlyBookmarked, setShowOnlyBookmarked] =
 		useLocalStorage<boolean>('questions-show-only-bookmarked', false)
 	const [openFilter, setOpenFilter] = useState<string | null>(null)
+
+	const itemsPerPageOptions = [10, 20, 50, 100]
+	const [page, setPage] = useLocalStorage<number>('questions-page', 1)
+	const [itemsPerPage, setItemsPerPage] = useLocalStorage<number>(
+		'questions-items-per-page',
+		itemsPerPageOptions[1]
+	)
 
 	const isFirstRender = useIsFirstRender()
 
@@ -74,17 +80,36 @@ const QuestionsListTable = () => {
 		}))
 	}
 
+	const handleItemsPerPageChange = useCallback(
+		(value: number) => {
+			setItemsPerPage(value)
+			setPage(1) // Reset to first page when changing items per page
+		},
+		[setItemsPerPage, setPage]
+	)
+
 	const debouncedFetchQuestions = useMemo(
 		() =>
 			debounce(
 				400,
 				({
+					page,
+					itemsPerPage,
 					filterQuery,
 					sortQuery,
 					searchQuery,
 					showOnlyBookmarked,
+				}: {
+					page: number
+					itemsPerPage: number
+					filterQuery: string
+					sortQuery: string
+					searchQuery: string
+					showOnlyBookmarked: boolean
 				}) => {
 					getAllQuestionsActionDispatcher({
+						page,
+						limit: itemsPerPage,
 						filterQuery,
 						sortQuery,
 						searchQuery,
@@ -106,6 +131,8 @@ const QuestionsListTable = () => {
 		const searchQuery = search ? `search=${search}` : ''
 
 		debouncedFetchQuestions({
+			page,
+			itemsPerPage,
 			filterQuery,
 			sortQuery,
 			searchQuery,
@@ -120,8 +147,13 @@ const QuestionsListTable = () => {
 	useEffect(
 		fetchQuestions,
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[filters, sort, search, showOnlyBookmarked]
+		[filters, sort, search, showOnlyBookmarked, page, itemsPerPage]
 	)
+
+	// Reset page to 1 when filters, sort, or search change
+	useEffect(() => {
+		setPage(1)
+	}, [filters, sort, search, setPage])
 
 	const { loading, data } = useAppSelector((store) => store.dashboard)
 	const { list: tableData = [] } = data || {}
@@ -212,10 +244,11 @@ const QuestionsListTable = () => {
 
 			<Card>
 				<Pagination
-					sort={sort}
-					search={search}
-					filters={filters}
-					showOnlyBookmarked={showOnlyBookmarked}
+					page={page}
+					setPage={setPage}
+					itemsPerPage={itemsPerPage}
+					itemsPerPageOptions={itemsPerPageOptions}
+					handleItemsPerPageChange={handleItemsPerPageChange}
 				/>
 			</Card>
 		</div>
