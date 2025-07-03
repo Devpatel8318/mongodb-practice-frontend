@@ -135,7 +135,7 @@ const QuestionPanel = ({
 	)
 
 	return (
-		<div className="relative h-[calc(100vh-60px)]">
+		<div className="relative h-[calc(100vh-65px)]">
 			<Header />
 			<div className="absolute inset-x-0 bottom-0 top-10 min-w-96 overflow-auto p-4">
 				{renderContent({ navItem })}
