@@ -157,7 +157,7 @@ const authSlice = createSlice({
 					error: null,
 					isUserLoggedIn: false,
 				})
-				localStorage.removeItem('isUserLoggedIn')
+				localStorage.clear()
 			})
 			.addCase(logoutAction.rejected, handleRejected)
 	},

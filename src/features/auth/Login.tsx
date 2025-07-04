@@ -1,7 +1,9 @@
 import { Link, React, useEffect, useState } from 'src/deps'
+import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import { useAppSelector } from 'src/Store'
 import { API_STATUS } from 'src/utils/callApi'
 import { emailValidator } from 'src/utils/emailValidator'
+import getErrorMessageAndField from 'src/utils/getErrorMessageAndField'
 import { passwordValidator } from 'src/utils/passwordValidator'
 import showToast from 'src/utils/showToast'
 
@@ -15,17 +17,16 @@ const Login = () => {
 	const [formData, setFormData] = useState({ email: '', password: '' })
 	const [errors, setErrors] = useState({ email: '', password: '' })
 
+	const isFirstRender = useIsFirstRender()
+
 	const { loading, status, error, doNotShowAlert } = useAppSelector(
 		(store) => store.auth
 	)
 
 	useEffect(() => {
-		if (status !== API_STATUS.REJECTED) return
+		if (status !== API_STATUS.REJECTED || isFirstRender) return
 
-		const defaultErrorMessage = 'Something went wrong'
-		const firstErrorReason = error?.reasons?.[0]
-		const field = firstErrorReason?.field
-		const message = firstErrorReason?.message || defaultErrorMessage
+		const { message, field } = getErrorMessageAndField(error)
 
 		if (field && Object.prototype.hasOwnProperty.call(errors, field)) {
 			setErrors((prevErrors) => ({ ...prevErrors, [field]: message }))
@@ -75,7 +76,7 @@ const Login = () => {
 				</p>
 			}
 		>
-			<OAuthButton />
+			<OAuthButton text="Sign in with Google" />
 
 			<div className="flex items-center py-3 text-xs uppercase text-gray-400 before:me-6 before:flex-1 before:border-t before:border-gray-200 after:ms-6 after:flex-1 after:border-t after:border-gray-200">
 				Or

@@ -1,8 +1,12 @@
-import { React, useGoogleLogin, useGoogleOneTapLogin } from 'src/deps'
+import { memo, React, useGoogleLogin, useGoogleOneTapLogin } from 'src/deps'
 
 import { oauthGoogleActionDispatcher } from '../auth.dispatcher'
 
-const OAuthButton: React.FC = () => {
+interface OAuthButtonProps {
+	text: string
+}
+
+const OAuthButton: React.FC<OAuthButtonProps> = ({ text }) => {
 	const responseGoogle = async (authResult: {
 		code?: string
 		error?: string
@@ -70,9 +74,9 @@ const OAuthButton: React.FC = () => {
 					fill="#EB4335"
 				/>
 			</svg>
-			Sign up with Google
+			{text}
 		</button>
 	)
 }
 
-export default OAuthButton
+export default memo(OAuthButton)

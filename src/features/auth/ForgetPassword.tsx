@@ -1,4 +1,5 @@
 import { Link, React, useEffect, useState } from 'src/deps'
+import useIsFirstRender from 'src/hooks/useIsFirstRender'
 import { useAppSelector } from 'src/Store'
 import { API_STATUS } from 'src/utils/callApi'
 import { emailValidator } from 'src/utils/emailValidator'
@@ -13,6 +14,8 @@ import TextInput from './components/TextInput'
 const ForgetPassword = () => {
 	const [email, setEmail] = useState('')
 	const [emailError, setEmailError] = useState('')
+
+	const isFirstRender = useIsFirstRender()
 
 	const { loading, status, error } = useAppSelector((store) => store.auth)
 
@@ -36,7 +39,7 @@ const ForgetPassword = () => {
 	}
 
 	useEffect(() => {
-		if (status === API_STATUS.REJECTED) {
+		if (status === API_STATUS.REJECTED || isFirstRender) {
 			const { message } = getErrorMessageAndField(error)
 
 			if (message) {
@@ -51,6 +54,7 @@ const ForgetPassword = () => {
 			setEmail('')
 			setEmailError('')
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [status, error])
 
 	return (
